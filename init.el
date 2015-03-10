@@ -52,12 +52,14 @@
 (use-package ido-ubiquitous
   :ensure t
   :init
-  ;; Fix ido-ubiquitous for newer packages
-  (defmacro ido-ubiquitous-use-new-completing-read (cmd package)
-    `(eval-after-load ,package
-       '(defadvice ,cmd (around ido-ubiquitous-new activate)
-          (let ((ido-ubiquitous-enable-compatibility nil))
-            ad-do-it))))
+  (progn
+    (ido-ubiquitous-mode 1)
+    ;; Fix ido-ubiquitous for newer packages
+    (defmacro ido-ubiquitous-use-new-completing-read (cmd package)
+      `(eval-after-load ,package
+         '(defadvice ,cmd (around ido-ubiquitous-new activate)
+            (let ((ido-ubiquitous-enable-compatibility nil))
+              ad-do-it)))))
   :config
   (progn
     (ido-ubiquitous-use-new-completing-read yas/expand 'yasnippet)
@@ -166,7 +168,7 @@
   (progn
     (evil-define-key 'visual evil-surround-mode-map "s" 'evil-surround-region)
     (evil-define-key 'visual evil-surround-mode-map "S" 'evil-substitute)))
-    
+
 (use-package evil-commentary
   :ensure t
   :idle
@@ -197,10 +199,41 @@
 
     (add-hook 'emacs-lisp-mode-hook '(lambda () (yas-minor-mode)))
     (add-hook 'LaTeX-mode-hook '(lambda () (yas-minor-mode))))
-   :diminish yas-minor-mode)
+  :diminish yas-minor-mode)
 
 ;; ======================================================================
 ;; latex!!
+
+(use-package reftex ; TeX/BibTeX cross-reference management
+  :defer t
+  :init (add-hook 'LaTeX-mode-hook #'reftex-mode)
+  :config
+  (progn
+    ;; Plug into AUCTeX
+    (setq reftex-plug-into-AUCTeX t
+          reftex-label-alist
+          '(("axiom" ?a "ax:" "~\\ref{%s}" t ("axiom" "ax.") -2)
+            ("theorem" ?h "thr:" "~\\ref{%s}" t ("theorem" "th.") -3)
+            ("lemma" ?l "lem:" "~\\ref{%s}" t ("lemma" "le.") -3)
+            ("claim" ?m "clm:" "~\\ref{%s}" t ("claim" "cl.") -3)
+            ("proposition" ?p "prop:" "~\\ref{%s}" t ("proposition" "pr.") -3)
+            ("wts" ?w "wts:" "~\\ref{%s}" t ("wts" "wt.") -3)
+            ("definition" ?d "defn:" "~\\ref{%s}" t ("definition" "de.") -3)))
+    ;; Provide basic RefTeX support for biblatex
+    (unless (assq 'biblatex reftex-cite-format-builtin)
+      (add-to-list 'reftex-cite-format-builtin
+                   '(biblatex "The biblatex package"
+                              ((?\C-m . "\\cite[]{%l}")
+                               (?t . "\\textcite{%l}")
+                               (?a . "\\autocite[]{%l}")
+                               (?p . "\\parencite{%l}")
+                               (?f . "\\footcite[][]{%l}")
+                               (?F . "\\fullcite[]{%l}")
+                               (?x . "[]{%l}")
+                               (?X . "{%l}"))))
+      (setq reftex-cite-format 'biblatex)))
+  :diminish reftex-mode)
+
 
 
 (use-package auctex
@@ -210,8 +243,6 @@
   (progn
     (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
     (add-hook 'LaTeX-mode-hook '(lambda () (electric-indent-mode -1)))
-    (add-hook 'LaTeX-mode-hook 'reftex-mode)
-    (setq reftex-plug-into-AuCTeX t)
     (add-hook 'LaTeX-mode-hook
               (lambda ()
                 (LaTeX-add-environments
@@ -224,15 +255,6 @@
                  '("definition" LaTeX-env-label)
                  )))
 
-    (setq reftex-label-alist
-          '(("axiom" ?a "ax:" "~\\ref{%s}" t ("axiom" "ax.") -2)
-            ("theorem" ?h "thr:" "~\\ref{%s}" t ("theorem" "th.") -3)
-            ("lemma" ?l "lem:" "~\\ref{%s}" t ("lemma" "le.") -3)
-            ("claim" ?m "clm:" "~\\ref{%s}" t ("claim" "cl.") -3)
-            ("proposition" ?p "prop:" "~\\ref{%s}" t ("proposition" "pr.") -3)
-            ("wts" ?w "wts:" "~\\ref{%s}" t ("wts" "wt.") -3)
-            ("definition" ?d "defn:" "~\\ref{%s}" t ("definition" "de.") -3)
-            ))
 
     (setq TeX-PDF-mode t)
 
