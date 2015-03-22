@@ -113,6 +113,10 @@
       "e v" '(lambda () (interactive) (find-file (expand-file-name "~/.emacs.d/init.el")))
       "t l" 'nlinum-mode)))
 
+(use-package key-chord
+  :ensure t
+  :init (key-chord-mode 1))
+
 (use-package evil
   :ensure t
   :init (evil-mode 1)
@@ -157,9 +161,6 @@
     (key-chord-define evil-insert-state-map "fd" 'evil-normal-state))
   :diminish undo-tree-mode)
 
-(use-package key-chord
-  :ensure t
-  :init (key-chord-mode 1))
 
 (use-package evil-surround
   :ensure t
@@ -383,11 +384,12 @@
   :commands (latex-extra-mode latex/compile-commands-until-done)
   :init (add-hook 'LaTeX-mode-hook #'latex-extra-mode)
   :config
-  (progn
-    (key-chord-define evil-insert-state-map ";;" '(lambda ()
-                                                    (interactive)
-                                                    (save-buffer)
-                                                    (call-interactively 'latex/compile-commands-until-done))))) 
+  (progn (key-chord-define-local ";;"
+                                 '(lambda ()
+                                    (interactive)
+                                    (save-buffer)
+                                    (call-interactively
+                                     'latex/compile-commands-until-done))))) 
 ;; ======================================================================
 
 
@@ -414,8 +416,34 @@
     (add-hook 'ielm-mode-hook 'enable-paredit-mode)
     (add-hook 'json-mode-hook 'enable-paredit-mode)))
 
+
+
+(use-package geiser
+  :ensure t
+  :defer t
+  :config
+  (progn
+    (setq scheme-progrma-name "racket")
+    (setq geiser-impl-installed-implementations '(racket))))
+
 ;; ======================================================================
 
 (use-package magit
   :ensure t
   :defer t)
+
+;; ======================================================================
+;; Other goodies
+
+(use-package fill-column-indicator
+  :ensure t
+  :commands turn-on-fci-mode
+  :init
+  (progn
+    (define-globalized-minor-mode global-fci-mode fci-mode
+      (lambda () (fci-mode 1)))
+    (global-fci-mode 1)))
+
+
+;; ======================================================================
+
