@@ -384,12 +384,16 @@
   :commands (latex-extra-mode latex/compile-commands-until-done)
   :init (add-hook 'LaTeX-mode-hook #'latex-extra-mode)
   :config
-  (progn (key-chord-define-local ";;"
-                                 '(lambda ()
-                                    (interactive)
-                                    (save-buffer)
-                                    (call-interactively
-                                     'latex/compile-commands-until-done))))) 
+  (progn
+    (add-hook 'LaTeX-mode-hook
+              (local-set-key (kbd "<f5>")
+                         '(lambda ()
+                            (interactive)
+                            (save-buffer)
+                            (call-interactively 'latex/compile-commands-until-done))))))
+
+
+
 ;; ======================================================================
 
 
