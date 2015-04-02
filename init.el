@@ -188,8 +188,6 @@
   :idle-priority 1
   :config
   (progn
-    ;; (let ((dir (expand-file-name "~/.emacs.d/snippets")))
-    ;;   (setq yas-snippet-dirs `(,dir)))
     (define-key yas-minor-mode-map (kbd "<tab>") nil)
     (define-key yas-minor-mode-map (kbd "TAB") nil)
     (define-key yas-minor-mode-map (kbd "C-;") 'yas-expand)
@@ -255,8 +253,6 @@
                  '("wts" LaTeX-env-label)
                  '("definition" LaTeX-env-label)
                  )))
-
-
     (setq TeX-PDF-mode t)
 
     (setq TeX-output-view-style '("^pdf$" "." "SumatraPDF.exe -reuse-instance %o"))
@@ -273,59 +269,7 @@
       (add-hook 'LaTeX-mode-hook
                 (lambda ()
                   (setq TeX-view-program-selection '((output-pdf "evince")
-                                                     (output-dvi "evince")))))))
-
-    (defun my-add-section ()
-      (interactive)
-      (let ((LaTeX-section-hook '(LaTeX-section-title
-                                  LaTeX-section-section
-                                  LaTeX-section-label)))
-        (LaTeX-section 2)))
-
-    (defun my-add-subsection ()
-      (interactive)
-      (let ((LaTeX-section-hook '(LaTeX-section-title
-                                  LaTeX-section-section
-                                  LaTeX-section-label)))
-        (LaTeX-section 3)))
-
-    (defun my-add-subsubsection ()
-      (interactive)
-      (let ((LaTeX-section-hook '(LaTeX-section-title
-                                  LaTeX-section-section
-                                  LaTeX-section-label)))
-        (LaTeX-section 4)))
-
-    (defun change-to-align ()
-      (interactive)
-      (LaTeX-modify-environment "align"))
-
-    (defun change-to-equation ()
-      (interactive)
-      (LaTeX-modify-environment "equation"))
-
-    (defun reorder-labels-no-ask ()
-      (interactive)
-      (flet ((yes-or-no-p (&rest args) t)
-             (y-or-n-p (&rest args) t))
-        (reftex-renumber-simple-labels)))
-
-
-    (add-hook 'LaTeX-mode-hook
-              (lambda ()
-                (local-set-key (kbd "<f1>") 'my-add-section)
-                (local-set-key (kbd "M-1") 'my-add-section)
-                (local-set-key (kbd "<f2>") 'my-add-subsection)
-                (local-set-key (kbd "M-2") 'my-add-subsection)
-                (local-set-key (kbd "<f3>") 'my-add-subsubsection)
-                (local-set-key (kbd "M-3") 'my-add-subsubsection)
-                (local-set-key (kbd "<f5>") 'change-to-align)
-                (local-set-key (kbd "M-a") 'change-to-align)
-                (local-set-key (kbd "<f6>") 'change-to-equation)
-                (local-set-key (kbd "M-e") 'change-to-equation)
-                (local-set-key (kbd "<f10>") 'reorder-labels-no-ask)
-                (local-set-key (kbd "M-r") 'reorder-labels-no-ask)
-                ))))
+                                                     (output-dvi "evince")))))))))
 
 (use-package cdlatex
   :ensure t
@@ -392,6 +336,9 @@
                             (save-buffer)
                             (call-interactively 'latex/compile-commands-until-done))))))
 
+(use-package legendre-latex
+  :load-path "lisp/")
+
 
 
 ;; ======================================================================
@@ -403,6 +350,11 @@
 (use-package nlinum
   :ensure t
   :commands nlinum-mode)
+
+(use-package s
+  :ensure t)
+(use-package dash
+  :ensure t)
 
 ;; ======================================================================
 ;; paredit hacking
