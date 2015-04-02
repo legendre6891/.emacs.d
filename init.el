@@ -399,7 +399,7 @@
   :commands nlinum-mode)
 
 ;; ======================================================================
-;; paredit hacking
+;; lisp hacking
 
 (use-package paredit
   :ensure t
@@ -413,6 +413,11 @@
     (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
     (add-hook 'ielm-mode-hook 'enable-paredit-mode)
     (add-hook 'json-mode-hook 'enable-paredit-mode)))
+
+(use-package racket-mode
+  :ensure t
+  )
+
 
 ;; ======================================================================
 
