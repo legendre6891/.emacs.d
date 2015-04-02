@@ -1,0 +1,53 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: template
+# key: template
+# binding: direct-keybinding
+# --
+\\documentclass[11pt]{article}
+\\usepackage[margin=1in]{geometry}
+\\usepackage{mathtools}
+\\usepackage[bf,sf,compact]{titlesec}
+\\setcounter{secnumdepth}{-2}
+\\usepackage{amssymb}
+\\usepackage{amsthm}
+\\usepackage{enumitem}
+
+\\theoremstyle{definition}
+\\newtheorem{theorem}{Theorem}
+\\newtheorem*{theorem*}{Theorem}
+\\newtheorem{lemma}[theorem]{Lemma}
+\\newtheorem{prop}[theorem]{Proposition}
+\\newtheorem{proposition}[theorem]{Proposition}
+\\newtheorem*{corollary}{Corollary}
+\\newtheorem{claim}[theorem]{Claim}
+
+\\theoremstyle{definition}
+\\newtheorem{definition}{Definition}
+\\newtheorem{conjecture}{Conjecture}
+\\newtheorem{example}{Example}
+
+
+\\newtheorem*{answer}{Final Answer}
+
+\\theoremstyle{remark}
+\\newtheorem*{remark}{Remark}
+\\newtheorem*{note}{Note}
+\\newtheorem{case}{Case}
+
+\\theoremstyle{definition}
+\\newtheorem*{wts}{Want To Show}
+
+
+\newcommand{\Q}{\mathbf{Q}}
+\renewcommand{\P}{\mathbf{P}}
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\N}{\mathbf{N}}
+\DeclareMathOperator{\E}{\mathbf{E}}
+
+
+\\def\\={\\coloneqq}
+
+\\begin{document}
+$0
+\\end{document}

@@ -1,0 +1,10 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: myheader
+# key: header
+# binding: <f12>
+# --
+{\\fontfamily{ccr} \\selectfont
+\\begin{center}
+   {\\Large $0}\\\\
+   Kevin Li \\quad `(format-time-string "%B %d, %Y")`
+\\end{center}}
