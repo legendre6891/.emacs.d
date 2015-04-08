@@ -323,18 +323,18 @@
   :config (add-hook 'LaTeX-mode-hook 'smartparens-mode)
   :diminish smartparens-mode)
 
-(use-package latex-extra
-  :ensure t
-  :commands (latex-extra-mode latex/compile-commands-until-done)
-  :init (add-hook 'LaTeX-mode-hook #'latex-extra-mode)
-  :config
-  (progn
-    (add-hook 'LaTeX-mode-hook
-              (local-set-key (kbd "<f5>")
-                         '(lambda ()
-                            (interactive)
-                            (save-buffer)
-                            (call-interactively 'latex/compile-commands-until-done))))))
+;; (use-package latex-extra
+;;   :ensure t
+;;   :commands (latex-extra-mode latex/compile-commands-until-done)
+;;   :init (add-hook 'LaTeX-mode-hook #'latex-extra-mode)
+;;   :config
+;;   (progn
+;;     (add-hook 'LaTeX-mode-hook
+;;               (local-set-key (kbd "<f5>")
+;;                          '(lambda ()
+;;                             (interactive)
+;;                             (save-buffer)
+;;                             (call-interactively 'latex/compile-commands-until-done))))))
 
 (use-package legendre-latex
   :load-path "lisp/")

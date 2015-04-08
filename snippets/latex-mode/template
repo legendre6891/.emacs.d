@@ -15,6 +15,7 @@
 \\theoremstyle{definition}
 \\newtheorem{theorem}{Theorem}
 \\newtheorem*{theorem*}{Theorem}
+\\newtheorem*{claim*}{Claim}
 \\newtheorem{lemma}[theorem]{Lemma}
 \\newtheorem{prop}[theorem]{Proposition}
 \\newtheorem{proposition}[theorem]{Proposition}
@@ -47,6 +48,14 @@
 
 
 \\def\\={\\coloneqq}
+
+
+\\newcommand\\problemfont[1]{{\\fontfamily{cmr}\\selectfont\\textbf{\\textsf{#1}}}}
+\\newcommand{\\newproblem}{\\par\\noindent\\rule{\\textwidth}{0.4pt}\\par}
+\\newcommand{\\problemheader}[1]{\\noindent\\problemfont{#1}\\quad}
+\\newcommand{\\problem}[1]{\\newproblem\\problemheader{#1}}
+
+
 
 \\begin{document}
 $0
