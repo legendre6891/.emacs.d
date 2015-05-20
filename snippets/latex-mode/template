@@ -49,12 +49,15 @@
 
 \\def\\={\\coloneqq}
 
+\\renewcommand{\\theequation}{\\oldstylenums{\\arabic{equation}}}
 
-\\newcommand\\problemfont[1]{{\\fontfamily{cmr}\\selectfont\\textbf{\\textsf{#1}}}}
-\\newcommand{\\newproblem}{\\par\\noindent\\rule{\\textwidth}{0.4pt}\\par}
-\\newcommand{\\problemheader}[1]{\\noindent\\problemfont{#1}\\quad}
+\\newcommand\\problemfont[1]{{\\fontfamily{lmss}\\fontseries{bx}\\selectfont#1}}
+\\newcommand{\\newproblem}{\\par\\noindent\\rule{\\linewidth}{0.4pt}\\par}
+\\newcommand{\\problemheader}[1]{\\noindent\\problemfont{#1}\\;}
 \\newcommand{\\problem}[1]{\\newproblem\\problemheader{#1}}
 
+
+\\newcommand{\medsquash}{\vglue-6.0pt}
 
 
 \\begin{document}
