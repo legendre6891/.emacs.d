@@ -22,160 +22,175 @@
 
 ;; Minimal defaults to make emacs a comfortable working environment
 (use-package better-defaults
-  :ensure t
-  :init
-  (progn
-    (setq ring-bell-function 'ignore)
-    (setq inhibit-startup-message t)
-    (setq ido-use-virtual-buffers t)
-    (setq ido-everyhwere t)
-    (setq ido-auto-merge-work-directories-length -1)
-    ;; Do garbage collection less and less
-    (setq gc-cons-threshold 50000000)))
+    :ensure t
+    :init
+    (progn
+      (setq ring-bell-function 'ignore)
+      (setq inhibit-startup-message t)
+      (setq ido-use-virtual-buffers t)
+      (setq ido-everyhwere t)
+      (setq ido-auto-merge-work-directories-length -1)
+      (setq lisp-indent-function 'common-lisp-indent-function)
+      ;; Do garbage collection less and less
+      (setq gc-cons-threshold 50000000)))
 
 (use-package flx-ido
-  :ensure t
-  :config (flx-ido-mode 1))
+    :ensure t
+    :config (flx-ido-mode 1))
 
 (use-package ido-vertical-mode
-  :ensure t
-  :config (ido-vertical-mode 1))
+    :ensure t
+    :config (ido-vertical-mode 1))
 
 (use-package ido-ubiquitous
-  :ensure t
-  :init
-  (progn
-    (ido-ubiquitous-mode 1)
-    ;; Fix ido-ubiquitous for newer packages
-    (defmacro ido-ubiquitous-use-new-completing-read (cmd package)
-      `(eval-after-load ,package
-         '(defadvice ,cmd (around ido-ubiquitous-new activate)
-            (let ((ido-ubiquitous-enable-compatibility nil))
-              ad-do-it)))))
-  :config
-  (progn
-    (ido-ubiquitous-use-new-completing-read yas/expand 'yasnippet)
-    (ido-ubiquitous-use-new-completing-read yas/visit-snippet-file 'yasnippet)))
+    :ensure t
+    :init
+    (progn
+      (ido-ubiquitous-mode 1)
+      ;; Fix ido-ubiquitous for newer packages
+      (defmacro ido-ubiquitous-use-new-completing-read (cmd package)
+        `(eval-after-load ,package
+           '(defadvice ,cmd (around ido-ubiquitous-new activate)
+             (let ((ido-ubiquitous-enable-compatibility nil))
+               ad-do-it)))))
+    :config
+    (progn
+      (ido-ubiquitous-use-new-completing-read yas/expand 'yasnippet)
+      (ido-ubiquitous-use-new-completing-read yas/visit-snippet-file 'yasnippet)))
 
 (use-package recentf
-  :config
+    :config
   (progn
     (recentf-mode 1)
     (setq recentf-max-menu-items 500)))
 
 (use-package smex
-  :ensure t
-  :bind
-  (("M-x" . smex)
-   ("C-x C-m" . smex)
-   ("C-c C-m" . smex)
-   ("C-c m" . smex)
-   ("C-x m" . smex)))
+    :ensure t
+    :bind
+    (("M-x" . smex)
+     ("C-x C-m" . smex)
+     ("C-c C-m" . smex)
+     ("C-c m" . smex)
+     ("C-x m" . smex)))
 
 (use-package bug-hunter
-  :ensure t)
+    :ensure t)
 
 ;; ===================================================================
 ;; Color Themes and font
 (use-package color-theme-sanityinc-tomorrow
-  :ensure t)
+    :defer t
+    :ensure t)
 (use-package ample-theme
-  :ensure t)
+    :defer t
+    :ensure t)
 (use-package smyx-theme
-  :ensure t)
+    :defer t
+    :ensure t)
+
+
 (set-face-attribute 'default nil
                     :family "PragmataPro"
                     :height 110
                     :weight 'normal
                     :width 'normal)
-;; (load-theme 'smyx 1)
+(load-theme 'smyx 1)
 
 ;; ===================================================================
 ;; Evil mode setup
 
 (use-package evil-leader
-  :ensure t
-  :config
-  (progn
-    (evil-leader/set-leader "<SPC>")
-    (global-evil-leader-mode 1)
-    (evil-leader/set-key
-      "SPC" 'smex
-      "u" 'undo-tree-visualize
-      ";" 'evil-commentary-line
-      "t m" 'menu-bar-mode
-      "t h" 'hl-line-mode
-      "t n" 'nlinum-mode
-      "e v" '(lambda () (interactive) (find-file (expand-file-name "~/.emacs.d/init.el")))
-      "t l" 'nlinum-mode)))
+    :ensure t
+    :config
+    (progn
+      (evil-leader/set-leader "<SPC>")
+      (global-evil-leader-mode 1)
+      (evil-leader/set-key
+          "SPC" 'smex
+        "u" 'undo-tree-visualize
+        ";" 'evil-commentary-line
+        "t m" 'menu-bar-mode
+        "t h" 'hl-line-mode
+        "t n" 'nlinum-mode
+        "e v" '(lambda () (interactive) (find-file (expand-file-name "~/.emacs.d/init.el")))
+        "t l" 'nlinum-mode)))
 
 (use-package key-chord
-  :ensure t
-  :init (key-chord-mode 1))
+    :ensure t
+    :init (key-chord-mode 1))
 
 (use-package evil
-  :ensure t
-  :init (evil-mode 1)
-  :config
-  (progn
-    (setq evil-default-cursor t)
-    (define-key evil-insert-state-map "\C-e" 'end-of-line)
-    (define-key evil-visual-state-map "\C-e" 'evil-end-of-line)
-    (define-key evil-insert-state-map "\C-f" 'evil-forward-char)
-    (define-key evil-insert-state-map "\C-b" 'evil-backward-char)
-    (define-key evil-visual-state-map "\C-b" 'evil-backward-char)
-    (define-key evil-insert-state-map "\C-d" 'evil-delete-char)
-    (define-key evil-visual-state-map "\C-d" 'evil-delete-char)
-    (define-key evil-insert-state-map "\C-n" 'evil-next-line)
-    (define-key evil-visual-state-map "\C-n" 'evil-next-line)
-    (define-key evil-insert-state-map "\C-p" 'evil-previous-line)
-    (define-key evil-visual-state-map "\C-p" 'evil-previous-line)
-    (define-key evil-insert-state-map "\C-w" 'evil-delete-backward-word)
-    (define-key evil-visual-state-map "\C-w" 'evil-delete)
-    (define-key evil-normal-state-map "\C-u" 'evil-scroll-up)
-    (define-key evil-visual-state-map "\C-u" 'evil-scroll-up)
-    (define-key evil-normal-state-map "\C-y" 'yank)
-    (define-key evil-insert-state-map "\C-y" 'yank)
-    (define-key evil-visual-state-map "\C-y" 'yank)
-    (define-key evil-insert-state-map "\C-k" 'kill-line)
-    (define-key evil-visual-state-map "\C-k" 'kill-line)
-    (define-key evil-normal-state-map "0" 'evil-beginning-of-line)
-    (define-key evil-normal-state-map "H" 'evil-first-non-blank)
-    (define-key evil-normal-state-map "L" 'evil-end-of-line)
-    (define-key evil-normal-state-map "\C-e" 'evil-end-of-line)
-    (define-key evil-normal-state-map "0" 'evil-beginning-of-line)
-    (define-key evil-visual-state-map "H" 'evil-first-non-blank)
-    (define-key evil-visual-state-map "L" 'evil-end-of-line)
-    (define-key evil-visual-state-map "k" 'evil-previous-visual-line)
-    (define-key evil-normal-state-map "j" 'evil-next-visual-line)
-    (define-key evil-normal-state-map "Q" 'call-last-kbd-macro)
-    (define-key evil-visual-state-map "Q" 'call-last-kbd-macro)
-    ;; (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
-    (key-chord-define evil-insert-state-map "fd" 'evil-normal-state))
-  :diminish undo-tree-mode)
+    :ensure t
+    :init (evil-mode 1)
+    :config
+    (progn
+      (setq evil-default-cursor t)
+      (define-key evil-insert-state-map "\C-e" 'end-of-line)
+      (define-key evil-visual-state-map "\C-e" 'evil-end-of-line)
+      (define-key evil-insert-state-map "\C-f" 'evil-forward-char)
+      (define-key evil-insert-state-map "\C-b" 'evil-backward-char)
+      (define-key evil-visual-state-map "\C-b" 'evil-backward-char)
+      (define-key evil-insert-state-map "\C-d" 'evil-delete-char)
+      (define-key evil-visual-state-map "\C-d" 'evil-delete-char)
+      (define-key evil-insert-state-map "\C-n" 'evil-next-line)
+      (define-key evil-visual-state-map "\C-n" 'evil-next-line)
+      (define-key evil-insert-state-map "\C-p" 'evil-previous-line)
+      (define-key evil-visual-state-map "\C-p" 'evil-previous-line)
+      (define-key evil-insert-state-map "\C-w" 'evil-delete-backward-word)
+      (define-key evil-visual-state-map "\C-w" 'evil-delete)
+      (define-key evil-normal-state-map "\C-u" 'evil-scroll-up)
+      (define-key evil-visual-state-map "\C-u" 'evil-scroll-up)
+      (define-key evil-normal-state-map "\C-y" 'yank)
+      (define-key evil-insert-state-map "\C-y" 'yank)
+      (define-key evil-visual-state-map "\C-y" 'yank)
+      (define-key evil-insert-state-map "\C-k" 'kill-line)
+      (define-key evil-visual-state-map "\C-k" 'kill-line)
+      (define-key evil-normal-state-map "0" 'evil-beginning-of-line)
+      (define-key evil-normal-state-map "H" 'evil-first-non-blank)
+      (define-key evil-normal-state-map "L" 'evil-end-of-line)
+      (define-key evil-normal-state-map "\C-e" 'evil-end-of-line)
+      (define-key evil-normal-state-map "0" 'evil-beginning-of-line)
+      (define-key evil-visual-state-map "H" 'evil-first-non-blank)
+      (define-key evil-visual-state-map "L" 'evil-end-of-line)
+      (define-key evil-visual-state-map "k" 'evil-previous-visual-line)
+      (define-key evil-normal-state-map "j" 'evil-next-visual-line)
+      (define-key evil-normal-state-map "Q" 'call-last-kbd-macro)
+      (define-key evil-visual-state-map "Q" 'call-last-kbd-macro)
+
+
+
+      
+      (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
+      
+
+
+
+      
+      (key-chord-define evil-insert-state-map "fd" 'evil-normal-state))
+    :diminish undo-tree-mode)
 
 (use-package evil-surround
-  :ensure t
-  :config
-  (progn
-    (global-evil-surround-mode 1)
-    (evil-define-key 'visual evil-surround-mode-map "s" 'evil-surround-region)
-    (evil-define-key 'visual evil-surround-mode-map "S" 'evil-substitute)))
+    :ensure t
+    :config
+    (progn
+      (global-evil-surround-mode 1)
+      (evil-define-key 'visual evil-surround-mode-map "s" 'evil-surround-region)
+      (evil-define-key 'visual evil-surround-mode-map "S" 'evil-substitute)))
 
 (use-package evil-commentary
-  :ensure t
-  :config
-  (evil-commentary-mode 1)
-  :bind
-  ("M-;" . evil-commentary-line)
-  :diminish evil-commentary-mode)
+    :ensure t
+    :config
+    (evil-commentary-mode 1)
+    :bind
+    ("M-;" . evil-commentary-line)
+    :diminish evil-commentary-mode)
 
 
 
-  ;; ======================================================================
-  ;; yasnippet
+;; ======================================================================
+;; yasnippet
 
-  (use-package yasnippet
+(use-package yasnippet
     :ensure t
     :config
     (progn
@@ -189,13 +204,14 @@
       (define-key yas-keymap (kbd "C-;") 'yas-next-field-or-maybe-expand)
 
       (add-hook 'emacs-lisp-mode-hook '(lambda () (yas-minor-mode)))
-      (add-hook 'LaTeX-mode-hook '(lambda () (yas-minor-mode))))
+      (add-hook 'LaTeX-mode-hook '(lambda () (yas-minor-mode)))
+      (add-hook 'LaTeX-mode-hook '(lambda () (key-chord-define evil-insert-state-map "jk" 'evil-normal-state))))
     :diminish yas-minor-mode)
 
-  ;; ======================================================================
-  ;; latex!!
+;; ======================================================================
+;; latex!!
 
-  (use-package reftex ; TeX/BibTeX cross-reference management
+(use-package reftex ; TeX/BibTeX cross-reference management
     :defer t
     :init (add-hook 'LaTeX-mode-hook #'reftex-mode)
     :config
@@ -214,27 +230,34 @@
       (unless (assq 'biblatex reftex-cite-format-builtin)
         (add-to-list 'reftex-cite-format-builtin
                      '(biblatex "The biblatex package"
-                                ((?\C-m . "\\cite[]{%l}")
-                                 (?t . "\\textcite{%l}")
-                                 (?a . "\\autocite[]{%l}")
-                                 (?p . "\\parencite{%l}")
-                                 (?f . "\\footcite[][]{%l}")
-                                 (?F . "\\fullcite[]{%l}")
-                                 (?x . "[]{%l}")
-                                 (?X . "{%l}"))))
+                       ((?\C-m . "\\cite[]{%l}")
+                        (?t . "\\textcite{%l}")
+                        (?a . "\\autocite[]{%l}")
+                        (?p . "\\parencite{%l}")
+                        (?f . "\\footcite[][]{%l}")
+                        (?F . "\\fullcite[]{%l}")
+                        (?x . "[]{%l}")
+                        (?X . "{%l}"))))
         (setq reftex-cite-format 'biblatex)))
     :diminish reftex-mode)
 
 
 
-  (use-package auctex
+(use-package auctex
     :ensure t
-    :commands (latex-mode LaTeX-mode plain-tex-mode)
+    :commands (latex-mode LaTeX-mode plain-tex-mode LaTeX-mode-map)
     :config
     (progn
       (setq TeX-parse-self t)			; Enable parse on load.
       (setq TeX-auto-save t)			; Enable parse on save.
       (setq TeX-PDF-mode t)
+      ;; (add-hook 'LaTeX-mode-hook '(lambda ()
+      ;;                              (message "HELLOW")
+      ;;                              (evil-define-key
+      ;;                                  'insert
+      ;;                                  LaTeX-mode-map
+      ;;                                "C-2"
+      ;;                                '(lambda () (insert "\\sqrt{}")))))
       (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
       (add-hook 'LaTeX-mode-hook '(lambda () (electric-indent-mode -1)))
       (add-hook 'LaTeX-mode-hook
@@ -254,23 +277,23 @@
             '(("SumatraPDF" "SumatraPDF.exe -reuse-instance %o")
               ))
       (cond
-       ((eq system-type 'windows-nt)
-        (add-hook 'LaTeX-mode-hook
-                  (lambda ()
-                    (setq TeX-view-program-selection '((output-pdf "SumatraPDF")
-                                                       (output-dvi "Yap"))))))
-       ((eq system-type 'gnu/linux)
-        (add-hook 'LaTeX-mode-hook
-                  (lambda ()
-                    (setq TeX-view-program-selection '((output-pdf "evince")
-                                                       (output-dvi "evince")))))))))
+        ((eq system-type 'windows-nt)
+         (add-hook 'LaTeX-mode-hook
+                   (lambda ()
+                     (setq TeX-view-program-selection '((output-pdf "SumatraPDF")
+                                                        (output-dvi "Yap"))))))
+        ((eq system-type 'gnu/linux)
+         (add-hook 'LaTeX-mode-hook
+                   (lambda ()
+                     (setq TeX-view-program-selection '((output-pdf "evince")
+                                                        (output-dvi "evince")))))))))
 
 
-  (use-package s
+(use-package s
     :ensure t)
 
 
-  (use-package cdlatex
+(use-package cdlatex
     :ensure t
     :config
     (progn
@@ -317,50 +340,51 @@
               )))
     :diminish cdlatex-mode)
 
-  (use-package smartparens-config
+(use-package smartparens-config
     :ensure smartparens
     :config (add-hook 'LaTeX-mode-hook 'smartparens-mode)
     :diminish smartparens-mode)
 
-  ;; (use-package latex-extra
-  ;;   :ensure t
-  ;;   :commands (latex-extra-mode latex/compile-commands-until-done)
-  ;;   :init (add-hook 'LaTeX-mode-hook #'latex-extra-mode)
-  ;;   :config
-  ;;   (progn
-  ;;     (add-hook 'LaTeX-mode-hook
-  ;;               (local-set-key (kbd "<f5>")
-  ;;                          '(lambda ()
-  ;;                             (interactive)
-  ;;                             (save-buffer)
-  ;;                             (call-interactively 'latex/compile-commands-until-done))))))
+;; (use-package latex-extra
+;;   :ensure t
+;;   :commands (latex-extra-mode latex/compile-commands-until-done)
+;;   :init (add-hook 'LaTeX-mode-hook #'latex-extra-mode)
+;;   :config
+;;   (progn
+;;     (add-hook 'LaTeX-mode-hook
+;;               (local-set-key (kbd "<f5>")
+;;                          '(lambda ()
+;;                             (interactive)
+;;                             (save-buffer)
+;;                             (call-interactively 'latex/compile-commands-until-done))))))
 
-  (use-package legendre-latex
+;; (use-package legendre-latex
+;;     :load-path "~/.emacs.d/lisp/")
+
+(use-package legendre-latex-keys
     :load-path "~/.emacs.d/lisp/")
 
 
+;; ======================================================================
 
-  ;; ======================================================================
 
+;; ======================================================================
+;; Other utilties for a better life
 
-  ;; ======================================================================
-  ;; Other utilties for a better life
-
-  (use-package nlinum
+(use-package nlinum
     :ensure t
     :commands nlinum-mode)
 
-  (use-package s
+(use-package s
     :ensure t)
-  (use-package dash
+(use-package dash
     :ensure t)
 
-  ;; ======================================================================
-  ;; lisp hacking
+;; ======================================================================
+;; lisp hacking
 
-  (use-package paredit
+(use-package paredit
     :ensure t
-    :diminish paredit-mode
     :config
     (progn
       (add-hook 'clojure-mode-hook 'enable-paredit-mode)
@@ -371,7 +395,7 @@
       (add-hook 'ielm-mode-hook 'enable-paredit-mode)
       (add-hook 'json-mode-hook 'enable-paredit-mode)))
 
-  (use-package geiser
+(use-package geiser
     :ensure t
     :defer t
     :config
@@ -379,41 +403,41 @@
       (setq scheme-progrma-name "racket")
       (setq geiser-impl-installed-implementations '(racket))))
 
-  ;; ======================================================================
+;; ======================================================================
 
-  (use-package magit
+(use-package magit
     :ensure t
     :config (setq magit-last-seen-setup-instructions "1.4.0")
     :defer t)
 
-  ;; ======================================================================
-  ;; Other goodies
+;; ======================================================================
+;; Other goodies
 
-  ;; (use-package fill-column-indicator
-  ;;   :ensure t
-  ;;   :commands turn-on-fci-mode
-  ;;   :init
-  ;;   (progn
-  ;;     (define-globalized-minor-mode global-fci-mode fci-mode
-  ;;       (lambda () (fci-mode 1)))
-  ;;     (global-fci-mode 1)))
+;; (use-package fill-column-indicator
+;;   :ensure t
+;;   :commands turn-on-fci-mode
+;;   :init
+;;   (progn
+;;     (define-globalized-minor-mode global-fci-mode fci-mode
+;;       (lambda () (fci-mode 1)))
+;;     (global-fci-mode 1)))
 
-  (use-package sublimity
+(use-package sublimity
     :ensure t)
 
-  (use-package sublimity-attractive
+(use-package sublimity-attractive
     :ensure sublimity
     :config
     (progn
       (sublimity-mode 1)
       (sublimity-attractive-hide-fringes)))
 
-  (use-package sublimity-scroll
+(use-package sublimity-scroll
     :ensure sublimity)
-  ;; ======================================================================
-  (use-package julia-mode
+;; ======================================================================
+(use-package julia-mode
     :ensure t)
-  ;; ======================================================================
+;; ======================================================================
 
 
 
@@ -424,10 +448,12 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("764e3a6472a3a4821d929cdbd786e759fab6ef6c2081884fca45f1e1e3077d1d" default))))
+    ("8288b9b453cdd2398339a9fd0cec94105bc5ca79b86695bd7bf0381b1fbe8147" "764e3a6472a3a4821d929cdbd786e759fab6ef6c2081884fca45f1e1e3077d1d" default))))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
+
+

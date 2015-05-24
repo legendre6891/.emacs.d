@@ -1,31 +1,33 @@
 (use-package hydra
-  :ensure t)
+    :ensure t)
 
-(defhydra hydra-change-mode ()
-  "change evil mode"
-  ("k" evil-normal-state "change to normal state"))
 
-(defhydra hydra-zoom ()
-  "zoom"
-  ("g" text-scale-increase "in")
-  ("l" text-scale-decrease "out"))
+(defhydra hydra-change-mode (:color blue
+                             :body-pre (insert "j")
+                             :idle 1.0)
+  ("k" (progn
+         (delete-char -1)
+         (evil-normal-state))))
 
-(defhydra hydra-circle-symbol (:color blue)
-  "string"
-  ("+" (insert "\\oplus") "⊕")
-  ("@" (insert "\\infty") "∞")
-  ("TAB" hydra-square-symbol/body "a")
-  )
+(define-key evil-insert-state-map (kbd "j") 'hydra-change-mode/body)
 
-(defhydra hydra-square-symbol (:color blue)
-  "string"
-  ("+" (insert "\\otimes") "⊕")
-  ("@" (insert "\\infty") "∞")
-  )
+(defhydra hydra-circle-symbol (:body-pre (insert "\\circ")
+                               :color blue
+                               :idle 1.0)
+  "insert symbol with circles"
+  ("+" (progn
+         (delete-backward-char 5)
+         (insert "\\oplus")) "⊕")
+  ("@" (progn
+         (delete-backward-char 5)
+         (insert "\\infty")) "⊕")
+  ("*" (progn
+         (delete-backward-char 5)
+         (insert "\\otimes")) "⊕")
+  ) 
 
-(define-key evil-insert-state-map (kbd "<f2>") 'hydra-zoom/body)
-;; (define-key evil-insert-state-map (kbd "j") 'hydra-change-mode/body)
 (evil-define-key 'insert LaTeX-mode-map (kbd "@") 'hydra-circle-symbol/body)
+
 
 
 

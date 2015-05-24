@@ -23,7 +23,6 @@
 
 (defvar legendre-latex-binary-relations-alist '())
 
-
 (defun legendre-latex-binary-relations-regexps () 
   (concat
    "\\("
@@ -45,7 +44,6 @@
 (defun legendre-latex-append-backslashes (astring)
   (interactive)
   (concat astring "\\\\"))
-
 
 (defun legendre-latex-add-alignment (astring)
   (legendre-latex-append-backslashes
@@ -82,4 +80,4 @@
    (mapcar 'legendre-latex-add-alignment (s-lines astring))))
 
 
-(provide 'legendre-latex)
+(provide 'legendre-latex-keys)
