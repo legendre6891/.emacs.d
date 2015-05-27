@@ -156,16 +156,6 @@
       (define-key evil-normal-state-map "j" 'evil-next-visual-line)
       (define-key evil-normal-state-map "Q" 'call-last-kbd-macro)
       (define-key evil-visual-state-map "Q" 'call-last-kbd-macro)
-
-
-
-      
-      (key-chord-define evil-insert-state-map "jk" 'evil-normal-state)
-      
-
-
-
-      
       (key-chord-define evil-insert-state-map "fd" 'evil-normal-state))
     :diminish undo-tree-mode)
 
@@ -185,8 +175,11 @@
     ("M-;" . evil-commentary-line)
     :diminish evil-commentary-mode)
 
+(use-package vim-hydra
+    :load-path "~/.emacs.d/lisp")
 
-
+(use-package latex-hydra
+    :load-path "~/.emacs.d/lisp")
 ;; ======================================================================
 ;; yasnippet
 
@@ -210,6 +203,9 @@
 
 ;; ======================================================================
 ;; latex!!
+
+(use-package s
+    :ensure t)
 
 (use-package reftex ; TeX/BibTeX cross-reference management
     :defer t
@@ -251,13 +247,6 @@
       (setq TeX-parse-self t)			; Enable parse on load.
       (setq TeX-auto-save t)			; Enable parse on save.
       (setq TeX-PDF-mode t)
-      ;; (add-hook 'LaTeX-mode-hook '(lambda ()
-      ;;                              (message "HELLOW")
-      ;;                              (evil-define-key
-      ;;                                  'insert
-      ;;                                  LaTeX-mode-map
-      ;;                                "C-2"
-      ;;                                '(lambda () (insert "\\sqrt{}")))))
       (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
       (add-hook 'LaTeX-mode-hook '(lambda () (electric-indent-mode -1)))
       (add-hook 'LaTeX-mode-hook
@@ -271,7 +260,6 @@
                    '("wts" LaTeX-env-label)
                    '("definition" LaTeX-env-label)
                    )))
-
       (setq TeX-output-view-style '("^pdf$" "." "SumatraPDF.exe -reuse-instance %o"))
       (setq TeX-view-program-list
             '(("SumatraPDF" "SumatraPDF.exe -reuse-instance %o")
@@ -289,14 +277,14 @@
                                                         (output-dvi "evince")))))))))
 
 
-(use-package s
-    :ensure t)
+
 
 
 (use-package cdlatex
     :ensure t
     :config
     (progn
+      (add-hook 'TeX-mode-hook 'turn-on-cdlatex)
       (add-hook 'LaTeX-mode-hook 'turn-on-cdlatex)
       (setq cdlatex-paired-parens "$[{(")
       (setq cdlatex-command-alist
@@ -342,15 +330,19 @@
 
 (use-package smartparens-config
     :ensure smartparens
-    :config (add-hook 'LaTeX-mode-hook 'smartparens-mode)
+    :config (progn
+              (add-hook 'TeX-mode-hook 'smartparens-mode)
+              (add-hook 'LaTeX-mode-hook 'smartparens-mode))
     :diminish smartparens-mode)
 
 ;; (use-package latex-extra
 ;;   :ensure t
+;;   :defer t
 ;;   :commands (latex-extra-mode latex/compile-commands-until-done)
 ;;   :init (add-hook 'LaTeX-mode-hook #'latex-extra-mode)
 ;;   :config
 ;;   (progn
+;;     (setq latex/view-after-compile nil)
 ;;     (add-hook 'LaTeX-mode-hook
 ;;               (local-set-key (kbd "<f5>")
 ;;                          '(lambda ()
@@ -448,7 +440,8 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("8288b9b453cdd2398339a9fd0cec94105bc5ca79b86695bd7bf0381b1fbe8147" "764e3a6472a3a4821d929cdbd786e759fab6ef6c2081884fca45f1e1e3077d1d" default))))
+    ("8288b9b453cdd2398339a9fd0cec94105bc5ca79b86695bd7bf0381b1fbe8147" "764e3a6472a3a4821d929cdbd786e759fab6ef6c2081884fca45f1e1e3077d1d" default)))
+ )
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
