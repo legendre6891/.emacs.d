@@ -17,5 +17,4 @@
   '(evil-define-key 'insert LaTeX-mode-map (kbd "C-_")
     (insert-latex-string "\\underline{?}")))
 
-
 (provide 'legendre-latex-keys)

@@ -18,13 +18,7 @@
 (evil-define-key 'insert LaTeX-mode-map (kbd "@") 'hydra-circle-symbol/body)
 (evil-define-key 'insert TeX-mode-map (kbd "@") 'hydra-circle-symbol/body)
 
-
-
-
-
 ;;; See http://stackoverflow.com/questions/16119853/elisp-close-async-shell-command-window-after-the-command-finishes
-
-
 (defun latex-sentinel (process event)
   (message event)
   (cond ((string-match-p "finished" event)

@@ -4,3 +4,6 @@ auto-save-list/
 eshell/
 tramp
 backups/
+recentf
+smex-items
+ido.last

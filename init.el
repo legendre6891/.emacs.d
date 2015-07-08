@@ -4,18 +4,44 @@
 (require 'cl)
 
 (prefer-coding-system 'utf-8) ;; so we don't get bothered about coding system
+
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives '("melpa" .
                                  "http://melpa.org/packages/"))
 (package-initialize)
-
 ;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
-
 (require 'use-package)
+
+
+
+
+;; ============================================================================
+(defun set-exec-path-from-shell-PATH ()
+  (let ((path-from-shell (shell-command-to-string "TERM=vt100 $SHELL -i -c 'echo $PATH'")))
+    (setenv "PATH" path-from-shell)
+    (setq exec-path (split-string path-from-shell path-separator))))
+
+(when window-system (set-exec-path-from-shell-PATH))
+
+(getenv "PATH")
+(setenv "PATH" (concat "/usr/texbin" ":" (getenv "PATH")))
+
+(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+(setq exec-path (append exec-path '("/usr/local/bin")))
+
+(setenv "PATH" (concat (getenv "PATH") ":/usr/bin"))
+(setq exec-path (append exec-path '("/usr/bin")))
+
+(defalias 'yes-or-no-p 'y-or-n-p)
+;; ============================================================================
+
+
+
+
 
 ;; ============================================================================
 ;; Next, install the necessary packages
@@ -31,7 +57,6 @@
       (setq ido-everyhwere t)
       (setq ido-auto-merge-work-directories-length -1)
       (setq lisp-indent-function 'common-lisp-indent-function)
-      ;; Do garbage collection less and less
       (setq gc-cons-threshold 50000000)))
 
 (use-package flx-ido
@@ -47,7 +72,6 @@
     :init
     (progn
       (ido-ubiquitous-mode 1)
-      ;; Fix ido-ubiquitous for newer packages
       (defmacro ido-ubiquitous-use-new-completing-read (cmd package)
         `(eval-after-load ,package
            '(defadvice ,cmd (around ido-ubiquitous-new activate)
@@ -88,10 +112,9 @@
     :defer t
     :ensure t)
 
-
 (set-face-attribute 'default nil
                     :family "PragmataPro"
-                    :height 110
+                    :height 140
                     :weight 'normal
                     :width 'normal)
 (load-theme 'smyx 1)
@@ -121,42 +144,10 @@
 
 (use-package evil
     :ensure t
+    :load-path "~/.emacs.d/lisp/"
     :init (evil-mode 1)
     :config
-    (progn
-      (setq evil-default-cursor t)
-      (define-key evil-insert-state-map "\C-e" 'end-of-line)
-      (define-key evil-visual-state-map "\C-e" 'evil-end-of-line)
-      (define-key evil-insert-state-map "\C-f" 'evil-forward-char)
-      (define-key evil-insert-state-map "\C-b" 'evil-backward-char)
-      (define-key evil-visual-state-map "\C-b" 'evil-backward-char)
-      (define-key evil-insert-state-map "\C-d" 'evil-delete-char)
-      (define-key evil-visual-state-map "\C-d" 'evil-delete-char)
-      (define-key evil-insert-state-map "\C-n" 'evil-next-line)
-      (define-key evil-visual-state-map "\C-n" 'evil-next-line)
-      (define-key evil-insert-state-map "\C-p" 'evil-previous-line)
-      (define-key evil-visual-state-map "\C-p" 'evil-previous-line)
-      (define-key evil-insert-state-map "\C-w" 'evil-delete-backward-word)
-      (define-key evil-visual-state-map "\C-w" 'evil-delete)
-      (define-key evil-normal-state-map "\C-u" 'evil-scroll-up)
-      (define-key evil-visual-state-map "\C-u" 'evil-scroll-up)
-      (define-key evil-normal-state-map "\C-y" 'yank)
-      (define-key evil-insert-state-map "\C-y" 'yank)
-      (define-key evil-visual-state-map "\C-y" 'yank)
-      (define-key evil-insert-state-map "\C-k" 'kill-line)
-      (define-key evil-visual-state-map "\C-k" 'kill-line)
-      (define-key evil-normal-state-map "0" 'evil-beginning-of-line)
-      (define-key evil-normal-state-map "H" 'evil-first-non-blank)
-      (define-key evil-normal-state-map "L" 'evil-end-of-line)
-      (define-key evil-normal-state-map "\C-e" 'evil-end-of-line)
-      (define-key evil-normal-state-map "0" 'evil-beginning-of-line)
-      (define-key evil-visual-state-map "H" 'evil-first-non-blank)
-      (define-key evil-visual-state-map "L" 'evil-end-of-line)
-      (define-key evil-visual-state-map "k" 'evil-previous-visual-line)
-      (define-key evil-normal-state-map "j" 'evil-next-visual-line)
-      (define-key evil-normal-state-map "Q" 'call-last-kbd-macro)
-      (define-key evil-visual-state-map "Q" 'call-last-kbd-macro)
-      (key-chord-define evil-insert-state-map "fd" 'evil-normal-state))
+      (load "~/.emacs.d/lisp/evil-shortcuts.el")
     :diminish undo-tree-mode)
 
 (use-package evil-surround
@@ -195,10 +186,8 @@
       (define-key yas-keymap (kbd "TAB")   nil)
       (define-key yas-keymap (kbd "C-j") 'yas-prev-field)
       (define-key yas-keymap (kbd "C-;") 'yas-next-field-or-maybe-expand)
-
       (add-hook 'emacs-lisp-mode-hook '(lambda () (yas-minor-mode)))
-      (add-hook 'LaTeX-mode-hook '(lambda () (yas-minor-mode)))
-      (add-hook 'LaTeX-mode-hook '(lambda () (key-chord-define evil-insert-state-map "jk" 'evil-normal-state))))
+      (add-hook 'LaTeX-mode-hook '(lambda () (yas-minor-mode))))
     :diminish yas-minor-mode)
 
 ;; ======================================================================
@@ -237,8 +226,6 @@
         (setq reftex-cite-format 'biblatex)))
     :diminish reftex-mode)
 
-
-
 (use-package auctex
     :ensure t
     :commands (latex-mode LaTeX-mode plain-tex-mode LaTeX-mode-map)
@@ -248,6 +235,7 @@
       (setq TeX-auto-save t)			; Enable parse on save.
       (setq TeX-PDF-mode t)
       (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
+      (add-hook 'LaTeX-mode-hook '(lambda () (fci-mode 1)))
       (add-hook 'LaTeX-mode-hook '(lambda () (electric-indent-mode -1)))
       (add-hook 'LaTeX-mode-hook
                 (lambda ()
@@ -275,11 +263,6 @@
                    (lambda ()
                      (setq TeX-view-program-selection '((output-pdf "evince")
                                                         (output-dvi "evince")))))))))
-
-
-
-
-
 (use-package cdlatex
     :ensure t
     :config
@@ -288,8 +271,7 @@
       (add-hook 'LaTeX-mode-hook 'turn-on-cdlatex)
       (setq cdlatex-paired-parens "$[{(")
       (setq cdlatex-command-alist
-            '(
-              ("bi" "Insert \\binom{}{}" "\\binom{?}{}" cdlatex-position-cursor nil nil t)
+            '(("bi" "Insert \\binom{}{}" "\\binom{?}{}" cdlatex-position-cursor nil nil t)
               ("ggr(" "Insert \biggl( \biggr)" "\\biggl(? \\biggr" cdlatex-position-cursor nil nil t)
               ("ggr|" "Insert \biggl| \biggr|" "\\biggl|? \\biggr|" cdlatex-position-cursor nil nil t)
               ("ggr{" "Insert \biggl\{ \biggr\}" "\\biggl\\{? \\biggr\\" cdlatex-position-cursor nil nil t)
@@ -302,7 +284,6 @@
               ("prod" "Insert products without limits" "\\prod_{?}^{}" cdlatex-position-cursor nil nil t)
               ("prodl" "Insert products" "\\prod\\limits_{?}^{}" cdlatex-position-cursor nil nil t)
               ("fl" "Insert floors" "\\biggl\\lfloor? \\biggr\\rfloor" cdlatex-position-cursor nil nil t)
-
               ("axm" "Insert axiom env" "" cdlatex-environment ("axiom") t nil)
               ("thr" "Insert theorem env" "" cdlatex-environment ("theorem") t nil)
               ("lem" "Insert lemma env" "" cdlatex-environment ("lemma") t nil)
@@ -310,13 +291,10 @@
               ("prop" "Insert proposition env" "" cdlatex-environment ("proposition") t nil)
               ("wts" "Insert want to show env" "" cdlatex-environment ("wts") t nil)
               ("def" "Insert definition env" "" cdlatex-environment ("definition") t nil)
-              ("pr" "Insert proof env" "" cdlatex-environment ("proof") t nil)
-              ))
+              ("pr" "Insert proof env" "" cdlatex-environment ("proof") t nil)))
       (setq cdlatex-math-modify-alist
-            '(
-              (?t "\\text" nil t nil nil)
-              (?s "\\mathscr" nil t nil nil)
-              ))
+            '((?t "\\text" nil t nil nil)
+              (?s "\\mathscr" nil t nil nil)))
       (setq cdlatex-env-alist
             '(("axiom" "\\begin{axiom}\nAUTOLABEL\n?\n\\end{axiom}\n" nil)
               ("theorem" "\\begin{theorem}\nAUTOLABEL\n?\n\\end{theorem}\n" nil)
@@ -324,8 +302,7 @@
               ("claim" "\\begin{claim}\nAUTOLABEL\n?\n\\end{claim}\n" nil)
               ("proposition" "\\begin{proposition}\nAUTOLABEL\n?\n\\end{proposition}\n" nil)
               ("wts" "\\begin{wts}\nAUTOLABEL\n?\n\\end{wts}\n" nil)
-              ("definition" "\\begin{definition}\nAUTOLABEL\n?\n\\end{definition}\n" nil)
-              )))
+              ("definition" "\\begin{definition}\nAUTOLABEL\n?\n\\end{definition}\n" nil))))
     :diminish cdlatex-mode)
 
 (use-package smartparens-config
@@ -335,46 +312,28 @@
               (add-hook 'LaTeX-mode-hook 'smartparens-mode))
     :diminish smartparens-mode)
 
-;; (use-package latex-extra
-;;   :ensure t
-;;   :defer t
-;;   :commands (latex-extra-mode latex/compile-commands-until-done)
-;;   :init (add-hook 'LaTeX-mode-hook #'latex-extra-mode)
-;;   :config
-;;   (progn
-;;     (setq latex/view-after-compile nil)
-;;     (add-hook 'LaTeX-mode-hook
-;;               (local-set-key (kbd "<f5>")
-;;                          '(lambda ()
-;;                             (interactive)
-;;                             (save-buffer)
-;;                             (call-interactively 'latex/compile-commands-until-done))))))
-
-;; (use-package legendre-latex
-;;     :load-path "~/.emacs.d/lisp/")
-
 (use-package legendre-latex-keys
     :load-path "~/.emacs.d/lisp/")
 
-
 ;; ======================================================================
-
-
 ;; ======================================================================
 ;; Other utilties for a better life
 
 (use-package nlinum
     :ensure t
     :commands nlinum-mode)
-
 (use-package s
     :ensure t)
 (use-package dash
     :ensure t)
+(use-package company
+    :ensure t
+    :config
+    (progn
+      (global-company-mode)))
 
 ;; ======================================================================
 ;; lisp hacking
-
 (use-package paredit
     :ensure t
     :config
@@ -395,8 +354,15 @@
       (setq scheme-progrma-name "racket")
       (setq geiser-impl-installed-implementations '(racket))))
 
-;; ======================================================================
+(use-package clojure-mode
+    :ensure t)
 
+(use-package cider
+    :ensure t
+    :init
+    (add-hook 'cider-mode-hook 'eldoc-mode))
+
+;; ======================================================================
 (use-package magit
     :ensure t
     :config (setq magit-last-seen-setup-instructions "1.4.0")
@@ -404,31 +370,22 @@
 
 ;; ======================================================================
 ;; Other goodies
-
-;; (use-package fill-column-indicator
-;;   :ensure t
-;;   :commands turn-on-fci-mode
-;;   :init
-;;   (progn
-;;     (define-globalized-minor-mode global-fci-mode fci-mode
-;;       (lambda () (fci-mode 1)))
-;;     (global-fci-mode 1)))
-
-(use-package sublimity
-    :ensure t)
-
-(use-package sublimity-attractive
-    :ensure sublimity
+(use-package fill-column-indicator
+    :ensure t
     :config
     (progn
-      (sublimity-mode 1)
-      (sublimity-attractive-hide-fringes)))
+      (setq fci-rule-width 1)
+      (setq fci-rule-color "darkblue")
+      (add-hook 'LaTeX-mode-hook '(lambda () (fci-mode 1)))))
 
-(use-package sublimity-scroll
-    :ensure sublimity)
+(use-package paradox
+    :ensure t)
 ;; ======================================================================
+;; Other programming languages
 (use-package julia-mode
     :ensure t)
+
+(load "~/.emacs.d/lisp/jemdoc.el")
 ;; ======================================================================
 
 
@@ -441,7 +398,9 @@
  '(custom-safe-themes
    (quote
     ("8288b9b453cdd2398339a9fd0cec94105bc5ca79b86695bd7bf0381b1fbe8147" "764e3a6472a3a4821d929cdbd786e759fab6ef6c2081884fca45f1e1e3077d1d" default)))
- )
+ '(paradox-github-token t)
+ '(show-paren-mode t)
+ '(tool-bar-mode nil))
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
