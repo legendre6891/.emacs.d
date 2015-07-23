@@ -39,10 +39,6 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 ;; ============================================================================
 
-
-
-
-
 ;; ============================================================================
 ;; Next, install the necessary packages
 
@@ -385,10 +381,10 @@
 (use-package julia-mode
     :ensure t)
 
-(load "~/.emacs.d/lisp/jemdoc.el")
+(use-package j-mode
+    :ensure t
+    :config (add-to-list 'auto-mode-alist '("\\.ij[rstp]$" . j-mode)))
 ;; ======================================================================
-
-
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -407,5 +403,3 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  )
-
-
