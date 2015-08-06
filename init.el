@@ -113,60 +113,60 @@
                     :height 140
                     :weight 'normal
                     :width 'normal)
-(load-theme 'smyx 1)
 
 ;; ===================================================================
 ;; Evil mode setup
 
-(use-package evil-leader
-    :ensure t
-    :config
-    (progn
-      (evil-leader/set-leader "<SPC>")
-      (global-evil-leader-mode 1)
-      (evil-leader/set-key
-          "SPC" 'smex
-        "u" 'undo-tree-visualize
-        ";" 'evil-commentary-line
-        "t m" 'menu-bar-mode
-        "t h" 'hl-line-mode
-        "t n" 'nlinum-mode
-        "e v" '(lambda () (interactive) (find-file (expand-file-name "~/.emacs.d/init.el")))
-        "t l" 'nlinum-mode)))
+;; (use-package evil-leader
+;;     :ensure t
+;;     :config
+;;     (progn
+;;       (evil-leader/set-leader "<SPC>")
+;;       (global-evil-leader-mode 1)
+;;       (evil-leader/set-key
+;;           "SPC" 'smex
+;;         "u" 'undo-tree-visualize
+;;         ";" 'evil-commentary-line
+;;         "t m" 'menu-bar-mode
+;;         "t h" 'hl-line-mode
+;;         "t n" 'nlinum-mode
+;;         "e v" '(lambda () (interactive) (find-file (expand-file-name "~/.emacs.d/init.el")))
+;;         "t l" 'nlinum-mode)))
 
-(use-package key-chord
-    :ensure t
-    :init (key-chord-mode 1))
+;; (use-package key-chord
+;;     :ensure t
+;;     :init (key-chord-mode 1))
 
-(use-package evil
-    :ensure t
-    :load-path "~/.emacs.d/lisp/"
-    :init (evil-mode 1)
-    :config
-      (load "~/.emacs.d/lisp/evil-shortcuts.el")
-    :diminish undo-tree-mode)
+;; (use-package evil
+;;     :ensure t
+;;     :load-path "~/.emacs.d/lisp/"
+;;     :init (evil-mode 1)
+;;     :config
+;;       (load "~/.emacs.d/lisp/evil-shortcuts.el")
+;;     :diminish undo-tree-mode)
 
-(use-package evil-surround
-    :ensure t
-    :config
-    (progn
-      (global-evil-surround-mode 1)
-      (evil-define-key 'visual evil-surround-mode-map "s" 'evil-surround-region)
-      (evil-define-key 'visual evil-surround-mode-map "S" 'evil-substitute)))
+;; (use-package evil-surround
+;;     :ensure t
+;;     :config
+;;     (progn
+;;       (global-evil-surround-mode 1)
+;;       (evil-define-key 'visual evil-surround-mode-map "s" 'evil-surround-region)
+;;       (evil-define-key 'visual evil-surround-mode-map "S" 'evil-substitute)))
 
-(use-package evil-commentary
-    :ensure t
-    :config
-    (evil-commentary-mode 1)
-    :bind
-    ("M-;" . evil-commentary-line)
-    :diminish evil-commentary-mode)
+;; (use-package evil-commentary
+;;     :ensure t
+;;     :config
+;;     (evil-commentary-mode 1)
+;;     :bind
+;;     ("M-;" . evil-commentary-line)
+;;     :diminish evil-commentary-mode)
 
-(use-package vim-hydra
-    :load-path "~/.emacs.d/lisp")
+;; (use-package vim-hydra
+;;     :load-path "~/.emacs.d/lisp")
 
-(use-package latex-hydra
-    :load-path "~/.emacs.d/lisp")
+;; (use-package latex-hydra
+;;     :load-path "~/.emacs.d/lisp")
+
 ;; ======================================================================
 ;; yasnippet
 
@@ -183,7 +183,8 @@
       (define-key yas-keymap (kbd "C-j") 'yas-prev-field)
       (define-key yas-keymap (kbd "C-;") 'yas-next-field-or-maybe-expand)
       (add-hook 'emacs-lisp-mode-hook '(lambda () (yas-minor-mode)))
-      (add-hook 'LaTeX-mode-hook '(lambda () (yas-minor-mode))))
+      (add-hook 'LaTeX-mode-hook '(lambda () (yas-minor-mode)))
+      (add-hook 'TeX-mode-hook '(lambda () (yas-minor-mode))))
     :diminish yas-minor-mode)
 
 ;; ======================================================================
@@ -225,7 +226,7 @@
 (use-package auctex
     :ensure t
     :commands (latex-mode LaTeX-mode plain-tex-mode LaTeX-mode-map)
-    :config
+    :init
     (progn
       (setq TeX-parse-self t)			; Enable parse on load.
       (setq TeX-auto-save t)			; Enable parse on save.
@@ -376,6 +377,9 @@
 
 (use-package paradox
     :ensure t)
+
+(use-package async
+    :ensure t)
 ;; ======================================================================
 ;; Other programming languages
 (use-package julia-mode
@@ -391,9 +395,13 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(ansi-color-faces-vector
+   [default default default italic underline success warning error])
+ '(ansi-color-names-vector
+   ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
  '(custom-safe-themes
    (quote
-    ("8288b9b453cdd2398339a9fd0cec94105bc5ca79b86695bd7bf0381b1fbe8147" "764e3a6472a3a4821d929cdbd786e759fab6ef6c2081884fca45f1e1e3077d1d" default)))
+    ("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "ffe39e540469ef05808ab4b75055cc81266875fa4a0d9e89c2fec1da7a6354f3" "eafda598b275a9d68cc1fbe1689925f503cab719ee16be23b10a9f2cc5872069" "8288b9b453cdd2398339a9fd0cec94105bc5ca79b86695bd7bf0381b1fbe8147" "764e3a6472a3a4821d929cdbd786e759fab6ef6c2081884fca45f1e1e3077d1d" default)))
  '(paradox-github-token t)
  '(show-paren-mode t)
  '(tool-bar-mode nil))
