@@ -1,0 +1,18 @@
+(defun complete-or-indent ()
+  (interactive)
+  (if (company-manual-begin)
+      (company-complete-common)
+      (indent-according-to-mode)))
+
+(defun my-c++-mode-hook ()
+  (define-key c++-mode-map (kbd "TAB") 'complete-or-indent)
+  (smartparens-mode t)
+  (setq tab-width 4)
+  (setq c-indent-level 4)
+  (setq c-default-style "bsd")
+  (setq c++-auto-hungry-initial-state 'none)
+  (setq c++-delete-function 'backward-delete-char)
+  (setq c-continued-statement-offset 4)
+  (setq c++-empty-arglist-indent 4))
+
+(add-hook 'c++-mode-hook 'my-c++-mode-hook)
