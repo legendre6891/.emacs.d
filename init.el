@@ -63,13 +63,15 @@
 
 (use-package ido-vertical-mode
     :ensure t
-    :config (progn
-              (ido-vertical-mode 1)
-              (defun ido-define-keys () ;; C-n/p is more intuitive in vertical layout
-                (define-key ido-completion-map (kbd "C-n") 'ido-next-match)
-                (define-key ido-completion-map (kbd "C-p") 'ido-prev-match))
-              (add-hook 'ido-setup-hook 'ido-define-keys)
-              ))
+    :config
+    (progn
+      (ido-vertical-mode 1)
+      (defun ido-define-keys () ;; C-n/p is more intuitive in vertical layout
+        (define-key ido-completion-map (kbd "C-n") 'ido-next-match)
+        (define-key ido-completion-map (kbd "C-j") 'ido-next-match)
+        (define-key ido-completion-map (kbd "C-k") 'ido-prev-match)
+        (define-key ido-completion-map (kbd "C-p") 'ido-prev-match))
+      (add-hook 'ido-setup-hook 'ido-define-keys)))
 
 (use-package ido-ubiquitous
     :ensure t
