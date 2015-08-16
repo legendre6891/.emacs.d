@@ -71,6 +71,21 @@
                    (lambda ()
                      (setq TeX-view-program-selection '((output-pdf "evince")
                                                         (output-dvi "evince")))))))))
+
+(if (eq system-type 'darwin)
+    (setq
+     ;; Set the list of viewers for Mac OS X.
+     TeX-view-program-list
+     '(("Preview.app" "open -a Preview.app %o")
+       ("Skim" "open -a Skim.app %o")
+       ("displayline" "displayline %n %o %b")
+       ("open" "open %o"))
+     ;; Select the viewers for each file type.
+     TeX-view-program-selection
+     '((output-dvi "open")
+       (output-pdf "Skim")
+       (output-html "open"))))
+
 (use-package cdlatex
     :ensure t
     :config

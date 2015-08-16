@@ -179,7 +179,6 @@
     :ensure t
     :config
     (progn
-      (global-company-mode)
       (let ((map company-active-map))
         (define-key map (kbd "C-/") 'company-search-candidates)
         (define-key map (kbd "C-M-/") 'company-filter-candidates)
@@ -281,6 +280,10 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(TeX-view-program-list
+   (quote
+    (("Skim"
+      (concat "/Applications/Skim.app/" "Contents/SharedSupport/displayline" " %n %o %b")))))
  '(ansi-color-faces-vector
    [default default default italic underline success warning error])
  '(ansi-color-names-vector
