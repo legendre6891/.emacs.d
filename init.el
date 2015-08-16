@@ -117,6 +117,9 @@
 (use-package smyx-theme
     :defer t
     :ensure t)
+(use-package aurora-theme
+    :defer t
+    :ensure t)
 
 (set-face-attribute 'default nil
                     :family "PragmataPro"
@@ -188,9 +191,6 @@
         (define-key map (kbd "C-l") 'company-complete-selection))
        ))
 
-
-
-
 ;; ======================================================================
 ;; lisp hacking
 (use-package paredit
@@ -226,7 +226,6 @@
     :ensure t
     :config (setq magit-last-seen-setup-instructions "1.4.0")
     :defer t)
-
 ;; ======================================================================
 ;; Other goodies
 (use-package fill-column-indicator
@@ -236,16 +235,12 @@
       (setq fci-rule-width 1)
       (setq fci-rule-color "darkblue")
       (add-hook 'LaTeX-mode-hook '(lambda () (fci-mode 1)))))
-
 (use-package paradox
     :ensure t)
-
 (use-package async
     :ensure t)
-
 (use-package reveal-in-osx-finder
     :ensure t)
-
 (use-package fuzzy-format
     :ensure t
     :config
@@ -253,10 +248,6 @@
       (setq fuzzy-format-default-indent-tabs-mode nil)
       (global-fuzzy-format-mode t))
     :diminish fuzzy-format-mode)
-
-
-
-
 ;; ======================================================================
 ;; Other programming languages
 (use-package julia-mode
@@ -266,11 +257,24 @@
     :ensure t
     :config (add-to-list 'auto-mode-alist '("\\.ij[rstp]$" . j-mode)))
 
-
 (load "~/.emacs.d/lisp/cplusplus.el")
-
-
 ;; ======================================================================
+;; Org mode changes
+
+(use-package htmlize
+    :ensure t)
+
+(use-package org
+    :ensure t
+    :init
+    (progn
+      (setq org-src-fontify-natively t)
+      (global-set-key "\C-cl" 'org-store-link)
+      (global-set-key "\C-ca" 'org-agenda)
+      (global-set-key "\C-cc" 'org-capture)
+      (global-set-key "\C-cb" 'org-iswitchb)))
+;; =================================================
+
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
@@ -283,7 +287,7 @@
    ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
  '(custom-safe-themes
    (quote
-    ("06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "ffe39e540469ef05808ab4b75055cc81266875fa4a0d9e89c2fec1da7a6354f3" "eafda598b275a9d68cc1fbe1689925f503cab719ee16be23b10a9f2cc5872069" "8288b9b453cdd2398339a9fd0cec94105bc5ca79b86695bd7bf0381b1fbe8147" "764e3a6472a3a4821d929cdbd786e759fab6ef6c2081884fca45f1e1e3077d1d" default)))
+    ("f8c697230b77a70f903401d97fe3d86c3f60461f39a2c925824dadba7354c495" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "ffe39e540469ef05808ab4b75055cc81266875fa4a0d9e89c2fec1da7a6354f3" "eafda598b275a9d68cc1fbe1689925f503cab719ee16be23b10a9f2cc5872069" "8288b9b453cdd2398339a9fd0cec94105bc5ca79b86695bd7bf0381b1fbe8147" "764e3a6472a3a4821d929cdbd786e759fab6ef6c2081884fca45f1e1e3077d1d" default)))
  '(paradox-github-token t)
  '(show-paren-mode t)
  '(tool-bar-mode nil))
