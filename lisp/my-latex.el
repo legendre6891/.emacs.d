@@ -55,22 +55,7 @@
                    '("proposition" LaTeX-env-label)
                    '("wts" LaTeX-env-label)
                    '("definition" LaTeX-env-label)
-                   )))
-      (setq TeX-output-view-style '("^pdf$" "." "SumatraPDF.exe -reuse-instance %o"))
-      (setq TeX-view-program-list
-            '(("SumatraPDF" "SumatraPDF.exe -reuse-instance %o")
-              ))
-      (cond
-        ((eq system-type 'windows-nt)
-         (add-hook 'LaTeX-mode-hook
-                   (lambda ()
-                     (setq TeX-view-program-selection '((output-pdf "SumatraPDF")
-                                                        (output-dvi "Yap"))))))
-        ((eq system-type 'gnu/linux)
-         (add-hook 'LaTeX-mode-hook
-                   (lambda ()
-                     (setq TeX-view-program-selection '((output-pdf "evince")
-                                                        (output-dvi "evince")))))))))
+                   )))))
 
 (if (eq system-type 'darwin)
     (setq
@@ -85,6 +70,46 @@
      '((output-dvi "open")
        (output-pdf "Skim")
        (output-html "open"))))
+
+(if (eq system-type 'windows-nt)
+    (progn 
+      (setq TeX-output-view-style '("^pdf$" "." "SumatraPDF.exe -reuse-instance %o"))
+      (setq TeX-view-program-list
+            '(("SumatraPDF" "SumatraPDF.exe -reuse-instance %o")))
+      (setq TeX-view-program-selection '((output-pdf "SumatraPDF")
+                                         (output-dvi "Yap")))))
+
+(if (eq system-type 'gnu/linux)
+    (setq TeX-view-program-selection '((output-pdf "evince")
+                                       (output-dvi "xdvi"))))
+
+
+
+(defun latex-sentinel (process event)
+  (message event)
+  (cond ((string-match-p "finished" event)
+         (progn
+           (kill-buffer "*latexmk*")
+           (message "latexmk done")))))
+
+(defun latex-compile ()
+  "Runs pdflatex on current file"
+  (interactive)
+  (let* ((file-name (shell-quote-argument (buffer-file-name)))
+         (process (start-process-shell-command
+                   "latexmk pdf"
+                   "*latexmk*"
+                   (concat "latexmk -pdf " file-name))))
+    (set-process-sentinel process 'latex-sentinel)))
+
+
+
+
+(eval-after-load 'latex
+  '(define-key LaTeX-mode-map (kbd "C-t") 'latex-compile))
+
+(eval-after-load 'latex
+  '(define-key LaTeX-mode-map (kbd "C-v") 'TeX-view))
 
 (use-package cdlatex
     :ensure t

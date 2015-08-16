@@ -122,7 +122,7 @@
     :ensure t)
 
 (set-face-attribute 'default nil
-                    :family "PragmataPro"
+                    :family "Menlo"
                     :height 140
                     :weight 'normal
                     :width 'normal)
@@ -273,33 +273,4 @@
       (global-set-key "\C-cc" 'org-capture)
       (global-set-key "\C-cb" 'org-iswitchb)))
 ;; =================================================
-
-
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(TeX-view-program-list
-   (quote
-    (("Skim"
-      (concat "/Applications/Skim.app/" "Contents/SharedSupport/displayline" " %n %o %b")))))
- '(ansi-color-faces-vector
-   [default default default italic underline success warning error])
- '(ansi-color-names-vector
-   ["black" "red3" "ForestGreen" "yellow3" "blue" "magenta3" "DeepSkyBlue" "gray50"])
- '(custom-safe-themes
-   (quote
-    ("f8c697230b77a70f903401d97fe3d86c3f60461f39a2c925824dadba7354c495" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "ffe39e540469ef05808ab4b75055cc81266875fa4a0d9e89c2fec1da7a6354f3" "eafda598b275a9d68cc1fbe1689925f503cab719ee16be23b10a9f2cc5872069" "8288b9b453cdd2398339a9fd0cec94105bc5ca79b86695bd7bf0381b1fbe8147" "764e3a6472a3a4821d929cdbd786e759fab6ef6c2081884fca45f1e1e3077d1d" default)))
- '(paradox-github-token t)
- '(show-paren-mode t)
- '(tool-bar-mode nil))
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
-
-
 
