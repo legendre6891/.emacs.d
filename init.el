@@ -1,4 +1,4 @@
-;; ============================================================================
+;; ===========================================================================
 ;; The first order of business is to
 ;; install use-package
 (require 'cl)
@@ -16,28 +16,35 @@
   (package-install 'use-package))
 (require 'use-package)
 
+(setq custom-file "~/.emacs.d/emacs-custom.el")
+(load custom-file)
 
 ;; ============================================================================
-(defun set-exec-path-from-shell-PATH ()
-  (let ((path-from-shell (shell-command-to-string "TERM=vt100 $SHELL -i -c 'echo $PATH'")))
-    (setenv "PATH" path-from-shell)
-    (setq exec-path (split-string path-from-shell path-separator))))
 
-(when window-system (set-exec-path-from-shell-PATH))
+;; Some nasty things to get things working on the mac
 
-(getenv "PATH")
-(setenv "PATH" (concat "/usr/texbin" ":" (getenv "PATH")))
 
-(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
-(setq exec-path (append exec-path '("/usr/local/bin")))
+(if (eq system-type 'darwin)
+    (progn
+      (defun set-exec-path-from-shell-PATH ()
+        (let ((path-from-shell 
+               (shell-command-to-string "TERM=vt100 $SHELL -i -c 'echo $PATH'")))
+          (setenv "PATH" path-from-shell)
+          (setq exec-path (split-string path-from-shell path-separator))))
 
-(setenv "PATH" (concat (getenv "PATH") ":/usr/bin"))
-(setq exec-path (append exec-path '("/usr/bin")))
+      (when window-system (set-exec-path-from-shell-PATH))
 
-(defalias 'yes-or-no-p 'y-or-n-p)
-;; ============================================================================
+      (getenv "PATH")
+      (setenv "PATH" (concat "/usr/texbin" ":" (getenv "PATH")))
+      
+      (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+      (setq exec-path (append exec-path '("/usr/local/bin")))
 
-;; ============================================================================
+      (setenv "PATH" (concat (getenv "PATH") ":/usr/bin"))
+      (setq exec-path (append exec-path '("/usr/bin")))))
+;; ========================================================================
+
+;; ========================================================================
 ;; Next, install the necessary packages
 
 ;; Minimal defaults to make emacs a comfortable working environment
@@ -55,6 +62,8 @@
       (setq-default tab-width 4) ; or any other preferred
       (defvaralias 'c-basic-offset 'tab-width)
       (defvaralias 'cperl-indent-level 'tab-width)
+      (defalias 'yes-or-no-p 'y-or-n-p)
+      (column-number-mode t)
       (setq gc-cons-threshold 50000000)))
 
 (use-package flx-ido
@@ -121,17 +130,29 @@
     :defer t
     :ensure t)
 
+(use-package smart-mode-line
+    :ensure smart-mode-line
+    :init
+    (progn
+      (setq sml/theme 'light)
+      (setq sml/name-width 40)
+      (setq sml/mode-width 'full)
+      )
+    :config
+    (progn
+      (sml/setup)))
+
 (set-face-attribute 'default nil
                     :family "Menlo"
                     :height 140
                     :weight 'normal
                     :width 'normal)
 
-
-;; ==============
+;; ======================================================================
 ;; evil mode
 ;; (load "~/.emacs.d/lisp/evil.el")
-;; ===========
+;; ======================================================================
+
 
 ;; ======================================================================
 ;; yasnippet
@@ -153,6 +174,9 @@
       (add-hook 'TeX-mode-hook '(lambda () (yas-minor-mode))))
     :diminish yas-minor-mode)
 
+;; ======================================================================
+;; Latex
+;; ======================================================================
 (load-file "~/.emacs.d/lisp/my-latex.el")
 
 (use-package smartparens-config
@@ -164,7 +188,6 @@
 
 ;; (use-package legendre-latex-keys
 ;;     :load-path "~/.emacs.d/lisp/")
-
 ;; ======================================================================
 ;; Other utilties for a better life
 
@@ -273,4 +296,5 @@
       (global-set-key "\C-cc" 'org-capture)
       (global-set-key "\C-cb" 'org-iswitchb)))
 ;; =================================================
+
 

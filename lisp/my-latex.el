@@ -83,27 +83,10 @@
     (setq TeX-view-program-selection '((output-pdf "evince")
                                        (output-dvi "xdvi"))))
 
-
-
-(defun latex-sentinel (process event)
-  (message event)
-  (cond ((string-match-p "finished" event)
-         (progn
-           (kill-buffer "*latexmk*")
-           (message "latexmk done")))))
-
 (defun latex-compile ()
-  "Runs pdflatex on current file"
   (interactive)
-  (let* ((file-name (shell-quote-argument (buffer-file-name)))
-         (process (start-process-shell-command
-                   "latexmk pdf"
-                   "*latexmk*"
-                   (concat "latexmk -pdf " file-name))))
-    (set-process-sentinel process 'latex-sentinel)))
-
-
-
+  (save-buffer)
+  (TeX-command "LaTeX" 'TeX-master-file))
 
 (eval-after-load 'latex
   '(define-key LaTeX-mode-map (kbd "C-t") 'latex-compile))
