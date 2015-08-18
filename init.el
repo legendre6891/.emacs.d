@@ -16,19 +16,24 @@
   (package-install 'use-package))
 (require 'use-package)
 
+;; ========================
+;; Load the custom file (create it first if it doesn't exist)
 (setq custom-file "~/.emacs.d/emacs-custom.el")
-(load custom-file)
+(if (not (file-exists-p custom-file))
+    (write-region "" nil custom-file))
 
+(load custom-file)
 ;; ============================================================================
 
+;; ============================================================================
 ;; Some nasty things to get things working on the mac
-
-
 (if (eq system-type 'darwin)
     (progn
       (defun set-exec-path-from-shell-PATH ()
-        (let ((path-from-shell 
-               (shell-command-to-string "TERM=vt100 $SHELL -i -c 'echo $PATH'")))
+        (let ((path-from-shell
+               (shell-command-to-string
+                "TERM=vt100 $SHELL -i -c 'echo $PATH'")))
+
           (setenv "PATH" path-from-shell)
           (setq exec-path (split-string path-from-shell path-separator))))
 
@@ -36,7 +41,7 @@
 
       (getenv "PATH")
       (setenv "PATH" (concat "/usr/texbin" ":" (getenv "PATH")))
-      
+
       (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
       (setq exec-path (append exec-path '("/usr/local/bin")))
 
@@ -64,6 +69,7 @@
       (defvaralias 'cperl-indent-level 'tab-width)
       (defalias 'yes-or-no-p 'y-or-n-p)
       (column-number-mode t)
+      (setq set-mark-command-repeat-pop t)
       (setq gc-cons-threshold 50000000)))
 
 (use-package flx-ido
@@ -212,7 +218,6 @@
         (define-key map (kbd "C-p") 'company-select-previous)
         (define-key map (kbd "C-l") 'company-complete-selection))
        ))
-
 ;; ======================================================================
 ;; lisp hacking
 (use-package paredit
@@ -248,6 +253,7 @@
     :ensure t
     :config (setq magit-last-seen-setup-instructions "1.4.0")
     :defer t)
+
 ;; ======================================================================
 ;; Other goodies
 (use-package fill-column-indicator
@@ -270,6 +276,14 @@
       (setq fuzzy-format-default-indent-tabs-mode nil)
       (global-fuzzy-format-mode t))
     :diminish fuzzy-format-mode)
+
+(use-package guide-key
+    :ensure t
+    :init
+    (progn
+      (setq guide-key/guide-key-sequence '("C-c")))
+    :config
+    (guide-key-mode t))
 ;; ======================================================================
 ;; Other programming languages
 (use-package julia-mode
@@ -291,6 +305,8 @@
     :init
     (progn
       (setq org-src-fontify-natively t)
+      (setq org-catch-invisible-edits 'smart)
+      (setq org-list-allow-alphabetical t)
       (global-set-key "\C-cl" 'org-store-link)
       (global-set-key "\C-ca" 'org-agenda)
       (global-set-key "\C-cc" 'org-capture)
