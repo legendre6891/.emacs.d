@@ -23,6 +23,24 @@
     (write-region "" nil custom-file))
 
 (load custom-file)
+
+;; Always make sure that we have
+;; full-name and email-address
+;; as part of our configuration.
+(defun ensure-in-custom (SYM PROMPT)
+  (interactive)
+  (if (not (boundp SYM))
+      (let* ((entry (read-from-minibuffer PROMPT))
+             (symbol (symbol-name SYM))
+             (piece `(setq ,SYM ,entry)))
+        (eval piece)
+        (write-region (concat (prin1-to-string piece) "\n")
+         nil custom-file 'append)
+        )))
+
+(ensure-in-custom 'full-name "Enter your full name: ")
+(ensure-in-custom 'email-address "Enter your email address: ")
+
 ;; ============================================================================
 
 ;; ============================================================================
