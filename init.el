@@ -40,10 +40,9 @@
 
 (ensure-in-custom 'full-name "Enter your full name: ")
 (ensure-in-custom 'email-address "Enter your email address: ")
+;; ===========================================================================
 
-;; ============================================================================
-
-;; ============================================================================
+;; ===========================================================================
 ;; Some nasty things to get things working on the mac
 (if (eq system-type 'darwin)
     (progn
@@ -75,7 +74,6 @@
     :ensure t
     :init
     (progn
-      (global-nlinum-mode t)
       (setq ring-bell-function 'ignore)
       (setq inhibit-startup-message t)
       (setq ido-use-virtual-buffers t)
@@ -165,6 +163,13 @@
     :config
     (progn
       (sml/setup)))
+
+(use-package nlinum
+    :ensure t
+    :init
+    (global-nlinum-mode t))
+
+(load-theme 'aurora t)
 
 (set-face-attribute 'default nil
                     :family "Menlo"
@@ -328,7 +333,11 @@
       (global-set-key "\C-cl" 'org-store-link)
       (global-set-key "\C-ca" 'org-agenda)
       (global-set-key "\C-cc" 'org-capture)
-      (global-set-key "\C-cb" 'org-iswitchb)))
+      (global-set-key "\C-cb" 'org-iswitchb))
+    :config
+    (progn
+      (org-defkey org-mode-map (kbd "C-.") 'org-toggle-latex-fragment)
+      (plist-put org-format-latex-options :scale 1.4)
+      (plist-put org-format-latex-options :html-scale 1.4)))
 ;; =================================================
-
 
