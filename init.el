@@ -2,6 +2,7 @@
 ;; The first order of business is to
 ;; install use-package
 (require 'cl)
+(require 'org)
 
 (prefer-coding-system 'utf-8) ;; so we don't get bothered about coding system
 
@@ -40,6 +41,20 @@
 
 (ensure-in-custom 'full-name "Enter your full name: ")
 (ensure-in-custom 'email-address "Enter your email address: ")
+;; ===========================================================================
+;; Home folder names and common paths
+;; I use the word "folder" here as to not conflict with
+;; built-in emacs variables, which uses "dir".
+
+(setq user-home-folder
+      (file-name-as-directory
+       (if (eq system-type 'windows-nt)
+           (substitute-in-file-name "$HOMEDRIVE$HOMEPATH")
+           "~")))
+
+(setq user-dropbox-folder
+      (file-name-as-directory
+       (concat user-home-folder "Dropbox")))
 ;; ===========================================================================
 
 ;; ===========================================================================
@@ -330,13 +345,22 @@
       (setq org-src-fontify-natively t)
       (setq org-catch-invisible-edits 'smart)
       (setq org-list-allow-alphabetical t)
+
+      ;; Set the org directory
+      (let ((org-folder
+             (file-name-as-directory (concat user-dropbox-folder "ORG"))))
+        (setq org-directory org-folder))
+
+      ;; Set the global hotkeys are recommended.
       (global-set-key "\C-cl" 'org-store-link)
       (global-set-key "\C-ca" 'org-agenda)
       (global-set-key "\C-cc" 'org-capture)
       (global-set-key "\C-cb" 'org-iswitchb))
+
+    ;; Easier LaTeX switching
+    :bind (("C-." . org-toggle-latex-fragment))
     :config
     (progn
-      (org-defkey org-mode-map (kbd "C-.") 'org-toggle-latex-fragment)
       (plist-put org-format-latex-options :scale 1.4)
       (plist-put org-format-latex-options :html-scale 1.4)))
 ;; =================================================
