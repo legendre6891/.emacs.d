@@ -8,3 +8,7 @@ recentf
 smex-items
 ido.last
 emacs-custom.el
+org/*.el
+org/*.html
+org/*.tex
+org/*.pdf

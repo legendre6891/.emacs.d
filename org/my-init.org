@@ -1,0 +1,529 @@
+#+TITLE: Emacs Configuration
+#+AUTHOR: Kevin Li
+#+DATE: August 2015
+
+* Prelude
+This file is tangled and loaded via =init.el=, which
+should just contain the following.
+#+BEGIN_SRC emacs-lisp :tangle no
+(require 'org)
+(org-babel-load-file
+ (expand-file-name
+  "my-init.org"
+  (concat user-emacs-directory "org"
+   )))
+#+END_SRC
+
+
+
+* Package Setup
+Most of the settings rely on installing packages. So the first
+order of business is to initialize the package system.
+#+BEGIN_SRC emacs-lisp
+;; so we don't get bothered about coding system
+(prefer-coding-system 'utf-8) 
+
+(require 'package)
+(setq package-enable-at-startup nil)
+(add-to-list 'package-archives '("melpa" .
+                                 "http://melpa.org/packages/"))
+(package-initialize)
+#+END_SRC
+Next, we pull in the conveninence package =use-package=,
+which is used to actually configure the packages
+#+BEGIN_SRC emacs-lisp
+;; Bootstrap `use-package'
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
+  (package-install 'use-package))
+(require 'use-package)
+#+END_SRC
+
+
+
+* General Settings
+These following settings should always be on, and depends
+only on an up-to-date Emacs installation. They try to
+provide a comfortable experience for debugging init files
+in the case that the rest of the things somehow break.
+** The Custom File
+Don't litter =init.el= with customizations with =Customize=.
+Create an empty file for it, in case it is not present.
+#+BEGIN_SRC emacs-lisp
+(setq custom-file "~/.emacs.d/emacs-custom.el")
+(if (not (file-exists-p custom-file))
+    (write-region "" nil custom-file))
+
+(load custom-file)
+#+END_SRC
+
+The =custom-file= is not kept under version control, so it is
+convenient to put some personal settings in there that shouldn't be
+seen on Github.  
+
+The following function takes in a symbol and a
+prompt; if the symbol isn't defined at this point (after the custom
+file's loaded), then prompt the user for its value. Afterwards, put in the
+custom file so it needn't be asked again.
+#+BEGIN_SRC emacs-lisp
+(defun ensure-in-custom (SYM PROMPT)
+  (interactive)
+  (if (not (boundp SYM))
+      (let* ((entry (read-from-minibuffer PROMPT))
+             (symbol (symbol-name SYM))
+             (piece `(setq ,SYM ,entry)))
+        (eval piece)
+        (write-region (concat (prin1-to-string piece) "\n")
+         nil custom-file 'append)
+        )))
+#+END_SRC
+Now make sure that our full name and email address are always defined.
+#+BEGIN_SRC emacs-lisp
+(ensure-in-custom 'user-full-name "Enter your full name: ")
+(ensure-in-custom 'email-address "Enter your email address: ")
+#+END_SRC
+
+
+** Home and Dropbox Folder setup
+It is convenient to know where my "home" folder is (not the folder
+that Emacs thinks is home), and also where the Dropbox folder
+is. Later, we may define some shortcuts using these constants.
+#+BEGIN_SRC emacs-lisp
+  (setq user-home-folder
+        (file-name-as-directory
+         ;; Windows doesn't use the ~ convention
+         (if (eq system-type 'windows-nt)
+             (substitute-in-file-name "$HOMEDRIVE$HOMEPATH")
+             "~")))
+
+  (setq user-dropbox-folder
+        (file-name-as-directory
+         (concat user-home-folder "Dropbox")))
+#+END_SRC
+
+
+** General Settings
+These settings should always be present.
+*** Better Defaults
+A no-frills package to set some sensible defaults.
+#+BEGIN_SRC emacs-lisp
+  (use-package better-defaults
+      :ensure t)
+#+END_SRC
+*** Visuals
+#+BEGIN_SRC emacs-lisp
+(setq ring-bell-function 'ignore)
+(setq inhibit-startup-message t)
+#+END_SRC
+
+*** Tab Settings
+#+BEGIN_SRC emacs-lisp
+(setq-default tab-width 4)
+(defvaralias 'c-basic-offset 'tab-width)
+(defvaralias 'cperl-indent-level 'tab-width)
+#+END_SRC
+
+*** Miscellaneous
+Always show column numbers
+#+BEGIN_SRC emacs-lisp
+(column-number-mode t)
+#+END_SRC
+
+Never make me type =yes= or =no=.
+#+BEGIN_SRC emacs-lisp
+(defalias 'yes-or-no-p 'y-or-n-p)
+#+END_SRC
+
+Easier navigation with mark ring.
+#+BEGIN_SRC emacs-lisp
+(setq set-mark-command-repeat-pop t)
+#+END_SRC
+
+Don't garbage collect so much.
+#+BEGIN_SRC emacs-lisp
+(setq gc-cons-threshold (* 1024 1024 50))
+#+END_SRC
+
+
+** Ido, Recentf, and Smex
+*** General settings
+Ido is one of the reasons why Emacs is great! It takes a little bit of
+setting up to make it more comfortable to use.
+
+Enable virtual buffers: even if a buffer is closed, we still have
+access to it.
+#+BEGIN_SRC emacs-lisp
+(setq ido-use-virtual-buffers t)
+#+END_SRC
+
+When a filename doesn't complete, ido will search recently used
+names. This is annoying, so disable it.
+#+BEGIN_SRC emacs-lisp
+(setq ido-auto-merge-work-directories-length -1)
+#+END_SRC
+
+=Flx Ido= uses another algorithm to calculate matches which seems to
+work better than the default.
+#+BEGIN_SRC emacs-lisp
+(use-package flx-ido
+    :ensure t
+    :config (flx-ido-mode 1))
+#+END_SRC
+
+Make the completion interface vertical; it is more legible this way.
+In addition, define up and down keys, because =<left>= and =<right>=
+arrows are too inconvenient.
+#+BEGIN_SRC emacs-lisp
+(use-package ido-vertical-mode
+    :ensure t
+    :config
+    (progn
+      (ido-vertical-mode 1)
+      (defun ido-define-keys () ;; C-n/p is more intuitive in vertical layout
+        (define-key ido-completion-map (kbd "C-n") 'ido-next-match)
+        (define-key ido-completion-map (kbd "C-j") 'ido-next-match)
+        (define-key ido-completion-map (kbd "C-k") 'ido-prev-match)
+        (define-key ido-completion-map (kbd "C-p") 'ido-prev-match))
+      (add-hook 'ido-setup-hook 'ido-define-keys)))
+#+END_SRC
+
+*** Ido everywhere
+Use Ido for most completions; sadly this doesn't quite cover 100% of
+the cases yet, but it's close.
+#+BEGIN_SRC emacs-lisp
+(ido-everywhere)
+(use-package ido-ubiquitous
+    :ensure t
+    :init
+    (progn
+      (ido-ubiquitous-mode 1)
+      (defmacro ido-ubiquitous-use-new-completing-read (cmd package)
+        `(eval-after-load ,package
+           '(defadvice ,cmd (around ido-ubiquitous-new activate)
+             (let ((ido-ubiquitous-enable-compatibility nil))
+               ad-do-it)))))
+    :config
+    (progn
+      (ido-ubiquitous-use-new-completing-read yas/expand 'yasnippet)
+      (ido-ubiquitous-use-new-completing-read yas/visit-snippet-file 'yasnippet)))
+#+END_SRC
+The last two lines are used to make make completing with =yasnippet=
+work well.
+
+**** TODO Investigate Helm?
+
+*** Recentf
+Recentf supports Ido mode by keeping track of recently organized files.
+#+BEGIN_SRC emacs-lisp
+(use-package recentf
+    :config
+  (progn
+    (recentf-mode 1)
+    (setq recentf-max-menu-items 500)))
+#+END_SRC
+
+*** Smex
+=M-x= support but for ido.
+#+BEGIN_SRC emacs-lisp
+(use-package smex
+    :ensure t
+    :bind
+    (("M-x" . smex)
+     ("C-x C-m" . smex)
+     ("C-c C-m" . smex)
+     ("C-c m" . smex)
+     ("C-x m" . smex)))
+#+END_SRC
+
+
+
+** Mac OS X specific settings
+We need let Emacs know about the the =LaTeX= path
+for =LaTeX= to work.
+#+BEGIN_SRC emacs-lisp
+  (if (eq system-type 'darwin)
+      (progn
+        (defun set-exec-path-from-shell-PATH ()
+          (let ((path-from-shell
+                 (shell-command-to-string
+                  "TERM=vt100 $SHELL -i -c 'echo $PATH'")))
+
+            (setenv "PATH" path-from-shell)
+            (setq exec-path (split-string path-from-shell path-separator))))
+
+        (when window-system (set-exec-path-from-shell-PATH))
+
+        (getenv "PATH")
+        (setenv "PATH" (concat "/usr/texbin" ":" (getenv "PATH")))
+
+        (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+        (setq exec-path (append exec-path '("/usr/local/bin")))
+
+        (setenv "PATH" (concat (getenv "PATH") ":/usr/bin"))
+        (setq exec-path (append exec-path '("/usr/bin")))))
+#+END_SRC
+
+
+* Look and Feel
+Here, we install various themes.  Install =emacs24= themes and set up
+a font. I'm not sure at this point whether to simply /install/ the
+themes or actually activate them.
+** Themes
+Install but defer.
+#+BEGIN_SRC emacs-lisp
+(use-package color-theme-sanityinc-tomorrow
+    :defer t
+    :ensure t)
+(use-package ample-theme
+    :defer t
+    :ensure t)
+(use-package smyx-theme
+    :defer t
+    :ensure t)
+(use-package aurora-theme
+    :defer t
+    :ensure t)
+#+END_SRC
+*** Activate theme
+The =aurora-theme= is the current favorite.
+The extra =t= flag is so we don't get asked about treating themes
+as safe.
+#+BEGIN_SRC emacs-lisp
+(load-theme 'aurora t)
+#+END_SRC
+
+
+** Fonts
+*** Activating a font
+#+BEGIN_SRC emacs-lisp
+(set-face-attribute 'default nil
+                    :family "Menlo"
+                    :height 140
+                    :weight 'normal
+                    :width 'normal)
+#+END_SRC
+
+*** TODO cycle between fonts
+Write a function (a la Spacemacs) that allows me to switch between fonts.
+**** With ido support?
+
+*** TODO Check whether the font exists
+
+
+** Smart Mode Line
+I'm actually not convined of the utility of this just yet,
+but let's throw it in because it does look somewhat nicer than the
+default mode line.
+#+BEGIN_SRC emacs-lisp
+(use-package smart-mode-line
+    :ensure smart-mode-line
+    :init
+    (progn
+      (setq sml/theme 'light)
+      (setq sml/name-width 40)
+      (setq sml/mode-width 'full))
+    :config
+    (progn
+      (sml/setup)))
+#+END_SRC
+
+*** TODO Investigate this more and make it more functional
+
+
+** Line Numbers
+Line numbers are surprisingly clunky in Emacs, which above all
+is a text editor. The =nlinum= package seems to be the best, and I
+find it useful enough to enable it everywhere.
+#+BEGIN_SRC emacs-lisp
+(use-package nlinum
+    :ensure t
+    :init
+    (global-nlinum-mode t))
+#+END_SRC
+
+
+
+* Evil Mode
+After several iterations of
+switching back and forth from Emacs and Vim, I gave Evil a go.
+It worked great for a while, but in the end it was just more hassle
+than it's worth, the reason being that key-binds in Emacs
+and its many modes are not designed with modal input in mind.
+
+Thus, it became a hassle to define new keys,
+especially when I wanted to enable keys only for
+insert mode only for certain key-maps. I can't find a good solution
+for this, so I turned off =evil-mode= for the time being.
+
+But my old =evil-mode= customizations are still useful
+if I ever wanted to come back to it, so I include them here.
+** TODO Include evil mode stuff
+I need to figure out a way to reference (and attach?) files
+to an org document.
+
+
+
+* Yasnippet
+Yasnippet is generally useful, except that it takes over
+the =TAB= key, which performs crucial functions in Org mode and
+CDLaTeX.
+
+It seems that =C-;= is unused in both modes, so we will just map the
+key to that. There is no reason to load =yasnippet= until we expand
+or a create a snippet, defer loading using =:commands=.
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+      :ensure t
+      :commands (yas-expand yas-new-snippet yas-visit-snippet-file)
+      :config
+      (progn
+        (yas-global-mode)
+        (define-key yas-minor-mode-map (kbd "<tab>") nil)
+        (define-key yas-minor-mode-map (kbd "TAB") nil)
+        (define-key yas-minor-mode-map (kbd "C-;") 'yas-expand)))
+#+END_SRC
+
+** TODO Add different folders for different modes of snippet files
+
+** TODO Add a shortcut for visiting snippet
+
+** TODO Add a shortcut for creating a snippet.
+   
+
+* Smartparens
+=Smartparens= is almost a necessity in C-like languages; it is less
+essentially useless in Lisps because we will be using =paredit=. Also,
+smartparens is kind of useful in (La)TeX mode, so we should turn it on
+there in addition to Org mode.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package smartparens-config
+      :ensure smartparens
+      :init
+      :config
+      (progn
+        (smartparens-global-mode)
+        (add-hook 'emacs-lisp-mode-hook 'turn-off-smartparens-mode)
+        ;; Some LaTeX specific smartparens
+        ))
+#+END_SRC
+
+
+* Org Mode
+** Appearance
+Since we use Org Babel so often, it is important to highlight
+code in source blocks.
+#+BEGIN_SRC emacs-lisp
+  (setq org-src-fontify-natively t)
+#+END_SRC
+
+Fontify the whole heading to make it look nice.
+#+BEGIN_SRC emacs-lisp
+  (setq org-fontify-whole-heading-line t)
+#+END_SRC
+
+
+** Editing features
+We can also allow plain lists starting with alphabet instead
+of just numbers.
+#+BEGIN_SRC emacs-lisp
+  (setq org-list-allow-alphabetical t)
+#+END_SRC
+
+Let's be smart about invisible edits.
+#+BEGIN_SRC emacs-lisp
+  (setq org-catch-invisible-edits 'smart)
+#+END_SRC
+
+
+** Directory structure
+Set the *default directory* for Org-mode.
+#+BEGIN_SRC emacs-lisp
+  (let ((org-folder
+         (file-name-as-directory (concat user-dropbox-folder "ORG"))))
+    (setq org-directory org-folder))
+#+END_SRC
+
+
+** Custom key binds
+Set the global hotkeys which are commended in the manual.
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-c l") 'org-store-link)
+  (global-set-key (kbd "C-c a") 'org-agenda)
+  (global-set-key (kbd "C-c c") 'org-capture)
+  (global-set-key (kbd "C-c b") 'org-iswitchb)
+#+END_SRC
+  
+We need an easier key on LaTeX. In future Org versions, use
+=org-toggle-latex-fragment=.
+#+BEGIN_SRC emacs-lisp
+  (org-defkey org-mode-map (kbd "C-.") 'org-preview-latex-fragment)
+#+END_SRC
+
+
+** Support for LaTeX in Org
+*** Inside Org Mode
+Larger LaTeX fonts; it seems that 1.4 is too large, so let's leave this
+*OFF* for now.
+#+BEGIN_SRC emacs-lisp :tangle no
+  (plist-put org-format-latex-options :scale 1.4)
+  (plist-put org-format-latex-options :html-scale 1.4)
+#+END_SRC
+
+Autoload CDLaTeX mode.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
+#+END_SRC
+
+*** Exporting to LaTeX
+First, set up the right margins and use AMSLaTeX.
+**** Colors in exported code blocks.
+Perhaps =minted= is the better choice, but there are apparently "repercussions"
+that I don't want to deal with, as outlined in the documentation
+of =org-latex-listings=.
+#+BEGIN_SRC emacs-lisp
+  (setq org-latex-listings 'minted)
+  (require 'ox-latex)
+  (add-to-list 'org-latex-packages-alist '("" "minted"))
+  (setq org-latex-pdf-process
+        '("pdflatex -interaction nonstopmode -output-directory -shell-escape %o %f"
+         "pdflatex -interaction nonstopmode -output-directory -shell-escape %o %f"
+         "pdflatex -interaction nonstopmode -output-directory -shell-escape %o %f"))
+#+END_SRC
+
+**** TODO Insert the appropriate packages
+     - geometry
+     - enumitem
+     - mathtools
+     - microtype?
+**** TODO choose a set of fonts?
+**** TODO Need to configure how the title looks
+
+
+* Emacs-Lisp
+Use CL lisp indent; it seems preferable in these =use-package=
+macros.
+#+BEGIN_SRC emacs-lisp
+  (setq lisp-indent-function 'common-lisp-indent-function)
+#+END_SRC
+
+
+#+BEGIN_SRC c
+  int main(int argc, char** argv) {
+      return 0;
+  }
+#+END_SRC
+
+
+* LaTeX
+
+
+* Clojure
+
+
+* Epilog
+Some Org mode related settings to to faciliate editting of this file.
+
+#+PROPERTY: header-args:emacs-lisp :tangle yes
+
+
