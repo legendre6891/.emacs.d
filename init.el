@@ -365,3 +365,4 @@
       (plist-put org-format-latex-options :html-scale 1.4)))
 ;; =================================================
 
+(put 'downcase-region 'disabled nil)
