@@ -65,7 +65,7 @@ The following function takes in a symbol and a
 prompt; if the symbol isn't defined at this point (after the custom
 file's loaded), then prompt the user for its value. Afterwards, put in the
 custom file so it needn't be asked again.
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
 (defun ensure-in-custom (SYM PROMPT)
   (interactive)
   (if (not (boundp SYM))
@@ -78,8 +78,8 @@ custom file so it needn't be asked again.
         )))
 #+END_SRC
 Now make sure that our full name and email address are always defined.
-#+BEGIN_SRC emacs-lisp
-(ensure-in-custom 'user-full-name "Enter your full name: ")
+#+BEGIN_SRC emacs-lisp :tangle yes
+(ensure-in-custom 'full-name "Enter your full name: ")
 (ensure-in-custom 'email-address "Enter your email address: ")
 #+END_SRC
 
@@ -369,12 +369,10 @@ the =TAB= key, which performs crucial functions in Org mode and
 CDLaTeX.
 
 It seems that =C-;= is unused in both modes, so we will just map the
-key to that. There is no reason to load =yasnippet= until we expand
-or a create a snippet, defer loading using =:commands=.
+key to that.
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
       :ensure t
-      :commands (yas-expand yas-new-snippet yas-visit-snippet-file)
       :config
       (progn
         (yas-global-mode)
@@ -476,7 +474,15 @@ Autoload CDLaTeX mode.
 #+END_SRC
 
 *** Exporting to LaTeX
-First, set up the right margins and use AMSLaTeX.
+**** Margins and Microtype
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'org-latex-packages-alist '("final" "microtype"))
+  (add-to-list 'org-latex-packages-alist '("margin=1in" "geometry"))
+#+END_SRC
+**** TODO Theorems
+
+
+
 **** Colors in exported code blocks.
 Perhaps =minted= is the better choice, but there are apparently "repercussions"
 that I don't want to deal with, as outlined in the documentation
@@ -486,9 +492,7 @@ of =org-latex-listings=.
   (require 'ox-latex)
   (add-to-list 'org-latex-packages-alist '("" "minted"))
   (setq org-latex-pdf-process
-        '("pdflatex -interaction nonstopmode -output-directory -shell-escape %o %f"
-         "pdflatex -interaction nonstopmode -output-directory -shell-escape %o %f"
-         "pdflatex -interaction nonstopmode -output-directory -shell-escape %o %f"))
+        '("latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f' -gg -pdf -bibtex-cond -f %f"))
 #+END_SRC
 
 **** TODO Insert the appropriate packages
@@ -526,4 +530,6 @@ Some Org mode related settings to to faciliate editting of this file.
 
 #+PROPERTY: header-args:emacs-lisp :tangle yes
 
+#+LATEX_HEADER: \usepackage{tgtermes}
+#+LATEX_HEADER: \usepackage{inconsolata}
 
