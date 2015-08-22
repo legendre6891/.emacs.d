@@ -13,3 +13,4 @@ org/*.html
 org/*.tex
 org/*.pdf
 url/
+*.el~
