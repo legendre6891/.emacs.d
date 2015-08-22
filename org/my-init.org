@@ -296,11 +296,18 @@ as safe.
 ** Fonts
 *** Activating a font
 #+BEGIN_SRC emacs-lisp
-(set-face-attribute 'default nil
-                    :family "Menlo"
-                    :height 140
-                    :weight 'normal
-                    :width 'normal)
+  (defun my-set-face (font)
+    (set-face-attribute 'default nil
+                        :family font
+                        :height 140
+                        :weight 'normal
+                        :width 'normal))
+
+  (if (eq system-type 'darwin)
+      (my-set-face "Menlo"))
+
+  (if (eq system-type 'windows-nt)
+      (my-set-face "Consolas"))
 #+END_SRC
 
 *** TODO cycle between fonts
