@@ -1,6 +1,7 @@
 #+TITLE: Emacs Configuration
 #+AUTHOR: Kevin Li
 #+DATE: August 2015
+#+DATE: August 23, 2015
 
 * Prelude
 This file is tangled and loaded via =init.el=, which
@@ -316,7 +317,6 @@ Write a function (a la Spacemacs) that allows me to switch between fonts.
 
 *** TODO Check whether the font exists
 
-
 ** Smart Mode Line
 I'm actually not convined of the utility of this just yet,
 but let's throw it in because it does look somewhat nicer than the
@@ -412,6 +412,21 @@ there in addition to Org mode.
         ;; Some LaTeX specific smartparens
         ))
 #+END_SRC
+
+
+* Paredit
+Enable =paredit=; I still prefer it over =smartparens= because it
+actually comes with a good set of keybindings, and old habits die
+hard.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'emacs-lisp-mode-hook       'enable-paredit-mode)
+  (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
+  (add-hook 'ielm-mode-hook             'enable-paredit-mode)
+  (add-hook 'lisp-mode-hook             'enable-paredit-mode)
+  (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
+  (add-hook 'scheme-mode-hook           'enable-paredit-mode)
+#+END_SRC
+
 
 
 * Org Mode
@@ -524,6 +539,7 @@ macros.
       return 0;
   }
 #+END_SRC
+See the section [[Paredit]].
 
 
 * LaTeX
