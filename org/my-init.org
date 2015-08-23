@@ -124,6 +124,27 @@ A no-frills package to set some sensible defaults.
 (defvaralias 'cperl-indent-level 'tab-width)
 #+END_SRC
 
+*** Global Keybindings
+Set =<f2>= and =<f3>= to =C-g= if the minibuffer is focused,
+otherwise, execute an extended command =M-x=, for which
+we use =smex=. 
+#+BEGIN_SRC emacs-lisp
+  (defun quit-or-smex ()
+    (interactive)
+    (if (window-minibuffer-p (frame-selected-window))
+        (keyboard-escape-quit)
+        (smex)))
+  (global-set-key (kbd "<f3>") 'quit-or-smex)
+  (global-set-key (kbd "<f4>") 'quit-or-smex)
+#+END_SRC
+*** Popwin
+Don't let temporary buffers annoy you!
+#+BEGIN_SRC emacs-lisp
+  (use-package popwin
+      :ensure t
+      :config
+      (popwin-mode 1))
+#+END_SRC
 *** Miscellaneous
 Always show column numbers
 #+BEGIN_SRC emacs-lisp
