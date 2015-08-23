@@ -535,7 +535,10 @@ of =org-latex-listings=.
   (require 'ox-latex)
   (add-to-list 'org-latex-packages-alist '("" "minted"))
   (setq org-latex-pdf-process
-        '("latexmk -pdflatex='pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f' -gg -pdf -bibtex-cond -f %f"))
+      '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+      "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+      "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+      ))
 #+END_SRC
 
 **** TODO Insert the appropriate packages
