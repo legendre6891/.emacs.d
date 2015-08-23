@@ -1,6 +1,5 @@
 #+TITLE: Emacs Configuration
 #+AUTHOR: Kevin Li
-#+DATE: August 2015
 #+DATE: August 23, 2015
 
 * Prelude
@@ -557,12 +556,6 @@ macros.
   (setq lisp-indent-function 'common-lisp-indent-function)
 #+END_SRC
 
-
-#+BEGIN_SRC c
-  int main(int argc, char** argv) {
-      return 0;
-  }
-#+END_SRC
 See the section [[Paredit]].
 
 
