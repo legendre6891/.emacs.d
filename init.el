@@ -1,11 +1,13 @@
-
-;; Added by Package.el.  This must come before configurations of
-;; installed packages.  Don't delete this line.  If you don't want it,
-;; just comment it out by adding a semicolon to the start of the line.
-;; You may delete these explanatory comments.
-(package-initialize)
-
+(package-initialize) ;; for org mode
 (require 'org)
+
+;; Check version of org before loading our file.
+(let ((version org-version))
+  (when (version< org-version "8.3.1")
+    (message-box "This emacs configuration requires
+ org version >= 8.3.1. Please run \"emacs -Q\" and 
+ install the latest version of Org mode.")))
+
 (org-babel-load-file
  (expand-file-name
   "my-init.org"
