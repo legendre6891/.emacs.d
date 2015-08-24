@@ -102,6 +102,19 @@ is. Later, we may define some shortcuts using these constants.
 #+END_SRC
 
 
+** Custom Elisp
+*** Editing Related
+*** Elisp Programming Related
+A macro that makes a single form
+into an anonymous function that calls the form
+#+BEGIN_SRC emacs-lisp
+  (defmacro ↑ (form)
+      `(lambda () (interactive) ,form))
+  (defmacro → (λ)
+      `(lambda (x) (apply #',λ x)))
+#+END_SRC
+
+
 ** General Settings
 These settings should always be present.
 *** Better Defaults
@@ -123,7 +136,7 @@ A no-frills package to set some sensible defaults.
 (defvaralias 'cperl-indent-level 'tab-width)
 #+END_SRC
 
-*** Global Keybindings
+*** F-keys
 Set =<f2>= and =<f3>= to =C-g= if the minibuffer is focused,
 otherwise, execute an extended command =M-x=, for which
 we use =smex=. 
@@ -136,6 +149,16 @@ we use =smex=.
   (global-set-key (kbd "<f3>") 'quit-or-smex)
   (global-set-key (kbd "<f4>") 'quit-or-smex)
 #+END_SRC
+
+Set =<f8>= to editing this very file.
+#+BEGIN_SRC emacs-lisp
+  (setq init-org-file
+        (concat
+         (file-name-as-directory (expand-file-name "org" user-emacs-directory))
+         "my-init.org"))
+  (global-set-key (kbd "<f8>") (↑ (find-file init-org-file)))
+#+END_SRC
+
 *** Popwin
 Don't let temporary buffers annoy you!
 #+BEGIN_SRC emacs-lisp
@@ -308,8 +331,8 @@ Install but defer.
 *** Activate theme
 The =aurora-theme= is the current favorite.
 The extra =t= flag is so we don't get asked about treating themes
-as safe.
-#+BEGIN_SRC emacs-lisp
+as safe. For now, don't active because keeping the default theme is best.
+#+BEGIN_SRC emacs-lisp :tangle no
 (load-theme 'aurora t)
 #+END_SRC
 
@@ -317,18 +340,18 @@ as safe.
 ** Fonts
 *** Activating a font
 #+BEGIN_SRC emacs-lisp
-  (defun my-set-face (font)
+  (defun my-set-face (font height)
     (set-face-attribute 'default nil
                         :family font
-                        :height 140
+                        :height (* height 10)
                         :weight 'normal
                         :width 'normal))
 
   (if (eq system-type 'darwin)
-      (my-set-face "Menlo"))
+      (my-set-face "Menlo" 14))
 
   (if (eq system-type 'windows-nt)
-      (my-set-face "Consolas"))
+      (my-set-face "Consolas" 12))
 #+END_SRC
 
 *** TODO cycle between fonts
@@ -336,6 +359,7 @@ Write a function (a la Spacemacs) that allows me to switch between fonts.
 **** With ido support?
 
 *** TODO Check whether the font exists
+
 
 ** Smart Mode Line
 I'm actually not convined of the utility of this just yet,
@@ -472,7 +496,13 @@ of just numbers.
 
 Let's be smart about invisible edits.
 #+BEGIN_SRC emacs-lisp
-  (setq org-catch-invisible-edits 'smart)
+  (setq org-catch-invisible-edits 'show-and-error)
+#+END_SRC
+
+We always want to turn on =auto-fill-mode= in Org files, so that lines
+automagically wrap at 80 columns.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'org-mode-hook 'auto-fill-mode)
 #+END_SRC
 
 
@@ -549,6 +579,21 @@ of =org-latex-listings=.
 **** TODO Need to configure how the title looks
 
 
+** HTML Export settings
+The footer is somewhat useless; don't show it at all.
+#+BEGIN_SRC emacs-lisp
+  (setq org-html-validation-link nil)
+#+END_SRC
+
+** Easy templates
+Since =emacs-lisp= code blocks are so prevalent,
+make a new template key for them, using =E=.
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'org-structure-template-alist
+               '("E" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+#+END_SRC
+
+
 * Emacs-Lisp
 Use CL lisp indent; it seems preferable in these =use-package=
 macros.
@@ -556,10 +601,236 @@ macros.
   (setq lisp-indent-function 'common-lisp-indent-function)
 #+END_SRC
 
-See the section [[Paredit]].
+See the section [[Paredit]] that turns on =paredit-mode=
+for elisp files.
 
 
 * LaTeX
+Emacs is the best text editor for editing plain TeX and LaTeX files; I
+am slowly in the process of migrating from TeX/LaTeX to Org, but that
+process will require sometime as RefTeX does not yet work gracefully
+with LaTeX. Without further ado ...
+
+** AucTeX
+AucTeX is an improved mode for editing LaTeX files; we will not use
+most of its features since the minor mode CDLaTeX subsumes some
+of them.
+
+*** Installation
+First make sure that =auctex= is installed
+#+BEGIN_SRC emacs-lisp
+  (use-package tex-site
+      :ensure auctex)
+#+END_SRC
+
+*** Parsing
+Enable parse on load and save (useful for detecting plain TeX
+versus LaTeX).
+#+BEGIN_SRC emacs-lisp
+(setq TeX-parse-self t)
+(setq TeX-auto-save t)
+#+END_SRC
+
+*** Producing DVI vs PDF
+We can configure AucTeX to automatically produce PDFs, but
+I actually prefer DVI files, so let's leave the following setting
+off for now.
+#+BEGIN_SRC emacs-lisp
+  (setq TeX-PDF-mode t)
+#+END_SRC
+
+*** Viewers 
+For Mac OS, =Skim= is the best PDF viewer (even though it is not that
+good). For Windows, it is clearly SumatraPDF. On Linux, evince and
+xdvi are quite good. I stole the code below from somewhere (on
+TeX.SX). It works, and I don't want to mess with it.
+#+BEGIN_SRC emacs-lisp
+  (if (eq system-type 'darwin)
+      (setq
+       ;; Set the list of viewers for Mac OS X.
+       TeX-view-program-list
+       '(("Preview.app" "open -a Preview.app %o")
+         ("Skim" "open -a Skim.app %o")
+         ("displayline" "displayline %n %o %b")
+         ("open" "open %o"))
+       ;; Select the viewers for each file type.
+       TeX-view-program-selection
+       '((output-dvi "open")
+         (output-pdf "Skim")
+         (output-html "open"))))
+
+  (if (eq system-type 'windows-nt)
+      (progn 
+        (setq TeX-output-view-style
+              '("^pdf$" "." "SumatraPDF.exe -reuse-instance %o"))
+        (setq TeX-view-program-list
+              '(("SumatraPDF" "SumatraPDF.exe -reuse-instance %o")))
+        (setq TeX-view-program-selection '((output-pdf "SumatraPDF")
+                                           (output-dvi "Yap")))))
+
+  (if (eq system-type 'gnu/linux)
+      (setq TeX-view-program-selection '((output-pdf "evince")
+                                         (output-dvi "xdvi"))))
+#+END_SRC
+
+*** Custom Keys
+Compiling shouldn't have to be =C-c C-c <RET>=, and viewing
+shouldn't have to be =C-c C-v=. Rebind these keys to hotkeys that are
+normally of no use anyway.
+#+BEGIN_SRC emacs-lisp
+  (defun latex-compile ()
+    (interactive)
+    (save-buffer)
+    (TeX-command "LaTeX" 'TeX-master-file))
+
+  (eval-after-load 'latex
+    '(define-key LaTeX-mode-map (kbd "C-t") 'latex-compile))
+
+  (eval-after-load 'latex
+    '(define-key LaTeX-mode-map (kbd "C-v") 'TeX-view))
+#+END_SRC
+
+*** Minor modes for editing LaTeX
+Hard-wrap and disable =electric-indent-mode= which messes
+up AucTeX's internal indentation code. This actually depends
+on AucTeX since it defines =LaTeX-mode-hook=.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
+  (add-hook 'LaTeX-mode-hook (↑ (electric-indent-mode -1)))
+#+END_SRC
+
+
+** RefTeX
+*** Installation
+#+BEGIN_SRC emacs-lisp
+  (use-package reftex ; TeX/BibTeX cross-reference management
+      :defer t
+      :init
+      (progn
+        (add-hook 'LaTeX-mode-hook #'reftex-mode)
+        (setq reftex-plug-into-AuCTeX t)))
+
+(setq reftex-label-alist nil)
+#+END_SRC
+
+
+** CDLaTeX
+CDLaTeX is the last piece of the triumphrate of
+LaTeX facilities for LaTeX.
+
+*** Installation
+#+BEGIN_SRC emacs-lisp
+  (use-package cdlatex
+      :ensure t)
+#+END_SRC
+
+Now we can always turn it on, both for LaTeX and for TeX.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'TeX-mode-hook 'turn-on-cdlatex)
+  (add-hook 'LaTeX-mode-hook 'turn-on-cdlatex)
+#+END_SRC
+
+
+*** Automatic Parentheses
+Thankfully, [[Smartparens][=smartparens=]] can be ued in LaTeX mode no problem;
+therefore, we don't need to have CDLaTeX do the work
+#+BEGIN_SRC emacs-lisp
+  (setq cdlatex-paired-parens "")
+  (define-key cdlatex-mode-map "$" nil)
+  (define-key cdlatex-mode-map "(" nil)
+  (define-key cdlatex-mode-map "{" nil)
+  (define-key cdlatex-mode-map "[" nil)
+  (define-key cdlatex-mode-map "|" nil)
+  (define-key cdlatex-mode-map "<" nil)
+#+END_SRC
+
+*** Templates
+Pressing =<tab>= in CDLaTeX, among other things, active a poor man's
+version of =yasnippet=. It is preferable to =yasnippet= because it
+integrates better with the rest of CDLaTeX.
+
+**** Math Shortcuts
+#+BEGIN_SRC emacs-lisp
+  (defun simple-math-template (key docstring expansion)
+    `(,key ,docstring ,expansion cdlatex-position-cursor nil nil t))
+
+  (setq my-math-templates 
+        (mapcar (→ simple-math-template)
+                '(
+                  ("bi" "Insert \\binom{}{}" "\\binom{?}{}")
+                  ("ggr(" "Insert \biggl( \biggr)" "\\biggl(? \\biggr")
+                  ("ggr|" "Insert \biggl| \biggr|" "\\biggl|? \\biggr|")
+                  ("ggr{" "Insert \biggl\{ \biggr\}" "\\biggl\\{? \\biggr\\")
+                  ("ggr[" "Insert \biggl[ \biggr]" "\\biggl[? \\biggr")
+                  ("ce" "Insert ceilings" "\\lceil? \\rceil")
+                  ("fl" "Insert floors" "\\lfloor? \\rfloor")
+                  ("ggrce" "Insert ceilings" "\\biggl\\lceil? \\biggr\\rceil")
+                  ("ggrfl" "Insert floor" "\\biggl\\lfloor? \\biggr\\rfloor")
+                  ("int" "Insert integrals without limits" "\\int_{?}^{}")
+                  ("sum" "Insert sums without limits" "\\sum_{?}^{}")
+                  ("prod" "Insert products without limits" "\\prod_{?}^{}")
+                  ("prodl" "Insert products" "\\prod\\limits_{?}^{}"))))
+
+  (setq cdlatex-command-alist my-math-templates)
+#+END_SRC
+
+
+**** Environment support
+To support inserting environments, we need to setup both AucTeX,
+RefTeX, and CDLaTeX in tandem. For example, to setup the axiom
+environment, we need to do the following (this code block is not
+tangled)
+#+BEGIN_SRC emacs-lisp :tangle no
+  (add-to-list
+   'reftex-label-alist
+   '("axiom" ?a "ax:" "~\\ref{%s}" t ("axiom" "ax.")))
+
+  (LaTeX-add-environments
+   '("axiom" LaTeX-env-label))
+
+  (add-to-list
+   'cdlatex-command-alist
+   '("axm" "Insert axiom env" "" cdlatex-environment ("axiom") t nil))
+
+  (add-to-list
+   'cdlatex-env-alist
+   '("axiom" "\\begin{axiom}\nAUTOLABEL\n?\n\\end{axiom}\n" nil))
+#+END_SRC
+
+Now add the environments.
+#+BEGIN_SRC emacs-lisp
+  (defun my-setup-latex-environment (env ref-char ref-key shortcut doc)
+    (add-to-list 'reftex-label-alist
+                 (list env
+                       ref-char
+                       (concat ref-key ":")
+                       "~\\ref{%s}"
+                       t
+                       `(,env ,(concat (substring env 0 2) "."))))
+
+    (LaTeX-add-environments
+     `(,env LaTeX-env-label))
+
+    (add-to-list 'cdlatex-command-alist
+                 `(,shortcut ,doc "" cdlatex-environment ,(list env) t nil))
+
+    (add-to-list 'cdlatex-env-alist
+                 (list env
+                       (format "\\begin{%s}\nAUTOLABEL\n?\n\\end{%s}" env env)
+                       nil))
+    )
+
+  (with-eval-after-load "latex"
+    (mapcar (→ my-setup-latex-environment)
+            '(("axiom" ?a "ax" "axm" "Insert an axiom.")
+              ("theorem" ?t "thr" "thr" "Insert a theorem.")
+              ("lemma" ?l "lem" "lem" "Insert a lemma.")
+              ("claim" ?c "clm" "clm" "Insert a claim.")
+              ("proposition" ?p "prop" "prop" "Insert a proposition.")
+              ("wts" ?w "ax" "wts" "Insert a 'want to show'.")
+              ("definition" ?d "def" "def" "Insert a definition."))))
+#+END_SRC
+
 
 
 * Clojure
