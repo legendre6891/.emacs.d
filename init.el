@@ -42,3 +42,4 @@
 (require 'org-ref)
 
 
+(put 'downcase-region 'disabled nil)
