@@ -8,13 +8,11 @@
  org version >= 8.3.1. Please run \"emacs -Q\" and 
  install the latest version of Org mode.")))
 
+
 (org-babel-load-file
  (expand-file-name
   "my-init.org"
   (concat user-emacs-directory "org")))
-
-(put 'downcase-region 'disabled nil)
-
 
 
 (add-to-list 'load-path "~/.emacs.d/org-ref/")
@@ -41,5 +39,3 @@
 
 (require 'org-ref)
 
-
-(put 'downcase-region 'disabled nil)

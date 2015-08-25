@@ -540,9 +540,15 @@ Larger LaTeX fonts; it seems that 1.4 is too large, so let's leave this
   (plist-put org-format-latex-options :html-scale 1.4)
 #+END_SRC
 
-Autoload CDLaTeX mode.
+Autoload CDLaTeX mode and RefTeX.
 #+BEGIN_SRC emacs-lisp
   (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
+  (add-hook 'org-mode-hook (↑ (reftex-mode t)))
+#+END_SRC
+
+Turn on LaTeX syntax highlighting.
+#+BEGIN_SRC emacs-lisp
+  (setq org-highlight-latex-and-related '(latex script))
 #+END_SRC
 
 *** Exporting to LaTeX
@@ -583,6 +589,26 @@ of =org-latex-listings=.
 The footer is somewhat useless; don't show it at all.
 #+BEGIN_SRC emacs-lisp
   (setq org-html-validation-link nil)
+#+END_SRC
+
+Turn off TOC and and headline numbering in HTML.
+#+BEGIN_SRC emacs-lisp
+  (defun my-org-change-html-options (plist backend)
+    (when (eq backend 'html)
+      (plist-put plist :with-toc nil)
+      (plist-put plist :section-numbers nil)
+      ))
+
+  (add-to-list 'org-export-filter-options-functions #'my-org-change-html-options)
+#+END_SRC
+
+We want to use the [[https://cmcenroe.me/writ/][Writ CSS]] style, so we need to wrap everything
+around an article tag.
+#+BEGIN_SRC emacs-lisp
+  (setq org-html-divs
+        '((preamble "div" "preamble")
+          (content "article" "")
+          (postamble "div" "postamble")))
 #+END_SRC
 
 ** Easy templates
