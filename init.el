@@ -18,10 +18,6 @@
 (add-to-list 'load-path "~/.emacs.d/org-ref/")
 (use-package dash
     :ensure t)
-(use-package helm
-    :ensure t)
-
-(use-package helm-config)
 
 (use-package helm-bibtex
     :ensure t)

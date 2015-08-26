@@ -281,6 +281,49 @@ Recentf supports Ido mode by keeping track of recently organized files.
 
 
 
+** Helm
+
+*** Installation
+Can't believe I'm using =helm= now; it's a great program in
+moderation. But it's a good package and there's no reason
+to ignore it.
+#+BEGIN_SRC emacs-lisp
+  (use-package helm
+      :ensure t
+      :init
+      (progn
+        (require 'helm-config)))
+#+END_SRC
+
+*** Key bindings
+I like =helm-kill-ring= and =helm-mark-ring= and =helm-mini=.
+For the kill-ring, use the bind =M-y=, but to preserve
+default behavior, only activate it when we didn't just use 
+=C-y=.
+#+BEGIN_SRC emacs-lisp
+  (defun my-show-kill-ring ()
+    (interactive)
+    (if (not (eq last-command 'yank))
+        (helm-show-kill-ring)
+        (progn
+          (setq this-command 'yank)
+          (call-interactively 'yank-pop))))
+
+  (global-set-key (kbd "M-y") 'my-show-kill-ring)
+
+  (global-set-key (kbd "C-h SPC") 'helm-mark-ring)
+  (global-set-key (kbd "C-h C-SPC") 'helm-mark-ring)
+
+  (global-set-key (kbd "C-x b") 'helm-mini)
+  (setq helm-buffers-fuzzy-matching t)
+  (setq helm-recentf-fuzzy-match t)
+#+END_SRC
+
+
+
+
+
+
 ** Mac OS X specific settings
 We need let Emacs know about the the =LaTeX= path
 for =LaTeX= to work.
