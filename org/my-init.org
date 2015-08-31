@@ -320,10 +320,6 @@ default behavior, only activate it when we didn't just use
 #+END_SRC
 
 
-
-
-
-
 ** Mac OS X specific settings
 We need let Emacs know about the the =LaTeX= path
 for =LaTeX= to work.
@@ -742,22 +738,6 @@ TeX.SX). It works, and I don't want to mess with it.
                                          (output-dvi "xdvi"))))
 #+END_SRC
 
-*** Custom Keys
-Compiling shouldn't have to be =C-c C-c <RET>=, and viewing
-shouldn't have to be =C-c C-v=. Rebind these keys to hotkeys that are
-normally of no use anyway.
-#+BEGIN_SRC emacs-lisp
-  (defun latex-compile ()
-    (interactive)
-    (save-buffer)
-    (TeX-command "LaTeX" 'TeX-master-file))
-
-  (eval-after-load 'latex
-    '(define-key LaTeX-mode-map (kbd "C-t") 'latex-compile))
-
-  (eval-after-load 'latex
-    '(define-key LaTeX-mode-map (kbd "C-v") 'TeX-view))
-#+END_SRC
 
 *** Minor modes for editing LaTeX
 Hard-wrap and disable =electric-indent-mode= which messes
@@ -900,6 +880,28 @@ Now add the environments.
               ("definition" ?d "def" "def" "Insert a definition."))))
 #+END_SRC
 
+
+
+** Shortcuts
+Compiling shouldn't have to be =C-c C-c <RET>=, and viewing
+shouldn't have to be =C-c C-v=. Rebind these keys to hotkeys that are
+normally of no use anyway.
+#+BEGIN_SRC emacs-lisp
+  (defun latex-compile ()
+    (interactive)
+    (save-buffer)
+    (TeX-command "LaTeX" 'TeX-master-file))
+
+  (eval-after-load 'latex
+    '(define-key LaTeX-mode-map (kbd "C-t") 'latex-compile))
+
+  (eval-after-load 'latex
+    '(define-key LaTeX-mode-map (kbd "C-v") 'TeX-view))
+#+END_SRC
+
+Next define easy shortcuts for inserting underscores
+and the like.
+*** TODO Make M-u insert an underscore, M-i insert caret, and M-o insert both
 
 
 * Clojure
