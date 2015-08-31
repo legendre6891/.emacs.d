@@ -49,12 +49,15 @@ in the case that the rest of the things somehow break.
 ** The Custom File
 Don't litter =init.el= with customizations with =Customize=.
 Create an empty file for it, in case it is not present.
+Since emacs will refuse to load a completely empty file, we bootstrap
+the custom file with a useless form [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Calling-Functions.html][=ignore=]].
 #+BEGIN_SRC emacs-lisp
-(setq custom-file "~/.emacs.d/emacs-custom.el")
-(if (not (file-exists-p custom-file))
-    (write-region "" nil custom-file))
+  (setq custom-file "~/.emacs.d/emacs-custom.el")
+  (if (not (file-exists-p custom-file))
+      (write-region "(ignore \"Custom file loaded\")" nil custom-file))
+    
 
-(load custom-file)
+  (load custom-file)
 #+END_SRC
 
 The =custom-file= is not kept under version control, so it is
@@ -498,16 +501,21 @@ there in addition to Org mode.
 
 
 * Paredit
+
 Enable =paredit=; I still prefer it over =smartparens= because it
 actually comes with a good set of keybindings, and old habits die
 hard.
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'emacs-lisp-mode-hook       'enable-paredit-mode)
-  (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
-  (add-hook 'ielm-mode-hook             'enable-paredit-mode)
-  (add-hook 'lisp-mode-hook             'enable-paredit-mode)
-  (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
-  (add-hook 'scheme-mode-hook           'enable-paredit-mode)
+  (use-package paredit
+      :ensure t
+      :config
+      (progn
+        (add-hook 'emacs-lisp-mode-hook       'enable-paredit-mode)
+        (add-hook 'eval-expression-minibuffer-setup-hook #'enable-paredit-mode)
+        (add-hook 'ielm-mode-hook             'enable-paredit-mode)
+        (add-hook 'lisp-mode-hook             'enable-paredit-mode)
+        (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
+        (add-hook 'scheme-mode-hook           'enable-paredit-mode)))
 #+END_SRC
 
 
