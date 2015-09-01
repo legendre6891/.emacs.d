@@ -139,29 +139,6 @@ A no-frills package to set some sensible defaults.
 (defvaralias 'cperl-indent-level 'tab-width)
 #+END_SRC
 
-*** F-keys
-Set =<f2>= and =<f3>= to =C-g= if the minibuffer is focused,
-otherwise, execute an extended command =M-x=, for which
-we use =smex=. 
-#+BEGIN_SRC emacs-lisp
-  (defun quit-or-smex ()
-    (interactive)
-    (if (window-minibuffer-p (frame-selected-window))
-        (keyboard-escape-quit)
-        (smex)))
-  (global-set-key (kbd "<f3>") 'quit-or-smex)
-  (global-set-key (kbd "<f4>") 'quit-or-smex)
-#+END_SRC
-
-Set =<f8>= to editing this very file.
-#+BEGIN_SRC emacs-lisp
-  (setq init-org-file
-        (concat
-         (file-name-as-directory (expand-file-name "org" user-emacs-directory))
-         "my-init.org"))
-  (global-set-key (kbd "<f8>") (↑ (find-file init-org-file)))
-#+END_SRC
-
 *** Popwin
 Don't let temporary buffers annoy you!
 #+BEGIN_SRC emacs-lisp
@@ -191,6 +168,48 @@ Don't garbage collect so much.
 (setq gc-cons-threshold (* 1024 1024 50))
 #+END_SRC
 
+
+** Global Keybindings
+*** F-keys
+Set =<f2>= and =<f3>= to =C-g= if the minibuffer is focused,
+otherwise, execute an extended command =M-x=, for which
+we use =smex=. 
+#+BEGIN_SRC emacs-lisp
+  (defun quit-or-smex ()
+    (interactive)
+    (if (window-minibuffer-p (frame-selected-window))
+        (keyboard-escape-quit)
+        (smex)))
+  (global-set-key (kbd "<f3>") 'quit-or-smex)
+  (global-set-key (kbd "<f4>") 'quit-or-smex)
+#+END_SRC
+
+Set =<f8>= to editing this very file.
+#+BEGIN_SRC emacs-lisp
+  (setq init-org-file
+        (concat
+         (file-name-as-directory (expand-file-name "org" user-emacs-directory))
+         "my-init.org"))
+  (global-set-key (kbd "<f8>") (↑ (find-file init-org-file)))
+#+END_SRC
+
+
+Set =<f12>= to open the current buffer in Windows Explorer.
+Taken from here.
+#+BEGIN_SRC emacs-lisp
+  (defun my-open-in-windows-explorer ()
+    "Launch the windows explorer in the current directory and selects current file"
+    (interactive)
+    (w32-shell-execute
+     "open"
+     "explorer"
+     (concat "/e,/select," (convert-standard-filename buffer-file-name))))
+
+  (global-set-key [f12] 'my-open-in-windows-explorer)
+
+#+END_SRC
+
+**** TODO Support other operating systems.
 
 ** Ido, Recentf, and Smex
 *** General settings
@@ -598,6 +617,8 @@ Turn on LaTeX syntax highlighting.
   (setq org-highlight-latex-and-related '(latex script))
 #+END_SRC
 
+**** TODO Make the dollar sign $ type actual dollars.
+
 *** Exporting to LaTeX
 **** Margins and Microtype
 #+BEGIN_SRC emacs-lisp
@@ -657,6 +678,7 @@ around an article tag.
           (content "article" "")
           (postamble "div" "postamble")))
 #+END_SRC
+
 
 ** Easy templates
 Since =emacs-lisp= code blocks are so prevalent,
