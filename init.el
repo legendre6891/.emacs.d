@@ -15,23 +15,20 @@
   (concat user-emacs-directory "org")))
 
 
-(add-to-list 'load-path "~/.emacs.d/org-ref/")
-(use-package dash
-    :ensure t)
+;; (add-to-list 'load-path "~/.emacs.d/org-ref/")
+;; (use-package dash
+;;     :ensure t)
 
-(use-package helm-bibtex
-    :ensure t)
+;; (use-package helm-bibtex
+;;     :ensure t)
 
-(use-package ebib
-    :ensure t)
-(use-package s
-    :ensure t)
-(use-package f
-    :ensure t)
-(use-package hydra
-    :ensure t)
-(use-package key-chord
-    :ensure t)
+;; (use-package ebib
+;;     :ensure t)
+;; (use-package s
+;;     :ensure t)
+;; (use-package f
+;;     :ensure t)
+;; (use-package key-chord
+;;     :ensure t)
 
-(require 'org-ref)
-
+;; (require 'org-ref)

@@ -39,6 +39,14 @@ which is used to actually configure the packages
 (require 'use-package)
 #+END_SRC
 
+I think the [[https://github.com/Malabarba/paradox][=paradox=]] package is a lot better than the built in one,
+so let's install that.
+#+BEGIN_SRC emacs-lisp
+  (use-package paradox
+      :ensure t)
+#+END_SRC
+
+
 
 
 * General Settings
@@ -161,6 +169,9 @@ Set =<f8>= to editing this very file.
          "my-init.org"))
   (global-set-key (kbd "<f8>") (↑ (find-file init-org-file)))
 #+END_SRC
+
+See [[Yasnippet]]; there, =<f1>= is also bound.
+
 
 *** Popwin
 Don't let temporary buffers annoy you!
@@ -350,6 +361,19 @@ for =LaTeX= to work.
 #+END_SRC
 
 
+** Hydra
+Hydra mode is a new package that allow one to create custom interfaces
+like Org's export menu. It is great for mapping commands that one
+would like a hotkey for but isn't used enough to use an entire
+keybinding.
+#+BEGIN_SRC emacs-lisp
+  (use-package hydra
+      :ensure t)
+#+END_SRC
+
+The main use case I have for it right now is [[Yasnippet]].
+
+
 * Look and Feel
 Here, we install various themes.  Install =emacs24= themes and set up
 a font. I'm not sure at this point whether to simply /install/ the
@@ -455,24 +479,73 @@ I need to figure out a way to reference (and attach?) files
 to an org document.
 
 
-
 * Yasnippet
+** Introduction
 Yasnippet is generally useful, except that it takes over
 the =TAB= key, which performs crucial functions in Org mode and
 CDLaTeX.
+
 
 It seems that =C-;= is unused in both modes, so we will just map the
 key to that.
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
       :ensure t
+      :init
+      (progn
+        (setq yas-snippet-dirs
+              (list (concat user-emacs-directory
+                            (file-name-as-directory "snippets")))))
       :config
       (progn
         (yas-global-mode)
         (define-key yas-minor-mode-map (kbd "<tab>") nil)
         (define-key yas-minor-mode-map (kbd "TAB") nil)
-        (define-key yas-minor-mode-map (kbd "C-;") 'yas-expand)))
+        (define-key yas-minor-mode-map (kbd "C-;") 'yas-expand)
+        (define-key yas-keymap (kbd "C-j") 'yas-prev-field)
+        (define-key yas-keymap (kbd "C-;") 'yas-next-field-or-maybe-expand)
+        ))
 #+END_SRC
+
+
+** Yasnippet Hydra
+I believe that =yasnippet= is hugely good, but it takes some time to
+configure that the process is just slightly "too painful" that I avoid
+using it. Let's settle this with a neat =hydra= /globally/ bound to the ever so
+easy to reach =f1=.
+#+BEGIN_SRC emacs-lisp  
+  (defhydra hydra-yasnippet (:color blue :hint nil)
+      "
+                  ^YASnippets^
+    --------------------------------------------
+      Modes:    Load/Visit:    Actions:
+
+     _g_lobal  _d_irectory    _i_nsert
+     _m_inor   _f_ile         _t_ryout
+     _e_xtra   _l_ist         _n_ew
+             _a_ll            _v_isit
+    "
+      ("d" yas-load-directory)
+      ("e" yas-activate-extra-mode)
+      ("i" yas-insert-snippet)
+      ("f" yas-visit-snippet-file :color blue)
+      ("n" yas-new-snippet)
+      ("t" yas-tryout-snippet)
+      ("l" yas-describe-tables)
+      ("g" yas/global-mode)
+      ("m" yas/minor-mode)
+      ("a" yas-reload-all)
+      ("v" yas-visit-snippet-file))
+
+  (global-set-key (kbd "<f1>") 'hydra-yasnippet/body)
+#+END_SRC
+
+While in snippet mode, saving a snippet should just load and quit.
+#+BEGIN_SRC emacs-lisp
+  (define-key snippet-mode-map (kbd "C-x C-s")
+    #'yas-load-snippet-buffer-and-close)
+#+END_SRC
+
 
 ** TODO Add different folders for different modes of snippet files
 
@@ -633,6 +706,13 @@ of =org-latex-listings=.
 
 
 ** HTML Export settings
+Highlight code blocks in HTML.
+#+BEGIN_SRC emacs-lisp
+  (use-package htmlize
+      :ensure t)
+#+END_SRC
+
+
 The footer is somewhat useless; don't show it at all.
 #+BEGIN_SRC emacs-lisp
   (setq org-html-validation-link nil)
@@ -755,7 +835,6 @@ on AucTeX since it defines =LaTeX-mode-hook=.
   (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
   (add-hook 'LaTeX-mode-hook (↑ (electric-indent-mode -1)))
 #+END_SRC
-
 
 ** RefTeX
 *** Installation
@@ -910,12 +989,19 @@ normally of no use anyway.
 Next define easy shortcuts for inserting underscores
 and the like.
 *** TODO Make M-u insert an underscore, M-i insert caret, and M-o insert both
+    
 
 
 * Clojure
 
 
 * Epilog
+Packages to investigate
+- [[https://github.com/mrkkrp/zzz-to-char][=zzz-char=]]
+
+
+
+
 Some Org mode related settings to to faciliate editting of this file.
 
 #+PROPERTY: header-args:emacs-lisp :tangle yes
