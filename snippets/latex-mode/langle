@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: angles
+# key: <
+# binding: C-,
+# --
+\langle $0 \rangle

@@ -867,7 +867,7 @@ TeX.SX). It works, and I don't want to mess with it.
                                            (output-dvi "Yap")))))
 
   (if (eq system-type 'gnu/linux)
-      (setq TeX-view-program-selection '((output-pdf "evince")
+      (setq TeX-view-program-selection '((output-pdf "Evince")
                                          (output-dvi "xdvi"))))
 #+END_SRC
 
@@ -880,6 +880,7 @@ on AucTeX since it defines =LaTeX-mode-hook=.
   (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
   (add-hook 'LaTeX-mode-hook (↑ (electric-indent-mode -1)))
 #+END_SRC
+
 
 ** RefTeX
 *** Installation
@@ -925,6 +926,7 @@ therefore, we don't need to have CDLaTeX do the work
   (define-key cdlatex-mode-map "<" nil)
 #+END_SRC
 
+
 *** Templates
 Pressing =<tab>= in CDLaTeX, among other things, active a poor man's
 version of =yasnippet=. It is preferable to =yasnippet= because it
@@ -953,6 +955,11 @@ integrates better with the rest of CDLaTeX.
                   ("prodl" "Insert products" "\\prod\\limits_{?}^{}"))))
 
   (setq cdlatex-command-alist my-math-templates)
+
+  (setq cdlatex-math-modify-alist
+        '((?t "\\text" nil t nil nil)
+          (?s "\\mathscr" nil t nil nil)
+          ))
 #+END_SRC
 
 
