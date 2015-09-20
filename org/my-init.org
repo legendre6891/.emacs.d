@@ -47,8 +47,6 @@ so let's install that.
 #+END_SRC
 
 
-
-
 * General Settings
 These following settings should always be on, and depends
 only on an up-to-date Emacs installation. They try to
@@ -172,7 +170,6 @@ Set =<f8>= to editing this very file.
 
 See [[Yasnippet]]; there, =<f1>= is also bound.
 
-
 *** Popwin
 Don't let temporary buffers annoy you!
 #+BEGIN_SRC emacs-lisp
@@ -199,7 +196,7 @@ Easier navigation with mark ring.
 
 Don't garbage collect so much.
 #+BEGIN_SRC emacs-lisp
-(setq gc-cons-threshold (* 1024 1024 50))
+(setq gc-cons-threshold 1000000000)
 #+END_SRC
 
 
@@ -244,6 +241,7 @@ Taken from here.
 #+END_SRC
 
 **** TODO Support other operating systems.
+
 
 ** Ido, Recentf, and Smex
 *** General settings
@@ -460,6 +458,11 @@ as safe. For now, don't active because keeping the default theme is best.
 
   (if (eq system-type 'windows-nt)
       (my-set-face "Consolas" 12))
+
+  (if (eq system-type 'gnu/linux)
+      (my-set-face "Source Code Pro Medium" 12))
+
+    
 #+END_SRC
 
 *** TODO cycle between fonts
@@ -467,6 +470,13 @@ Write a function (a la Spacemacs) that allows me to switch between fonts.
 **** With ido support?
 
 *** TODO Check whether the font exists
+
+
+** Frame size and position
+Make the initial frame always size 80 by 40.
+#+BEGIN_SRC emacs-lisp
+(when window-system (set-frame-size (selected-frame) 80 40))
+#+END_SRC
 
 
 ** Smart Mode Line
@@ -499,6 +509,7 @@ find it useful enough to enable it everywhere.
     :init
     (global-nlinum-mode t))
 #+END_SRC
+
 
 
 
@@ -867,7 +878,7 @@ TeX.SX). It works, and I don't want to mess with it.
                                            (output-dvi "Yap")))))
 
   (if (eq system-type 'gnu/linux)
-      (setq TeX-view-program-selection '((output-pdf "evince")
+      (setq TeX-view-program-selection '((output-pdf "Evince")
                                          (output-dvi "xdvi"))))
 #+END_SRC
 
@@ -926,6 +937,7 @@ therefore, we don't need to have CDLaTeX do the work
   (define-key cdlatex-mode-map "<" nil)
 #+END_SRC
 
+
 *** Templates
 Pressing =<tab>= in CDLaTeX, among other things, active a poor man's
 version of =yasnippet=. It is preferable to =yasnippet= because it
@@ -954,6 +966,11 @@ integrates better with the rest of CDLaTeX.
                   ("prodl" "Insert products" "\\prod\\limits_{?}^{}"))))
 
   (setq cdlatex-command-alist my-math-templates)
+
+  (setq cdlatex-math-modify-alist
+        '((?t "\\text" nil t nil nil)
+          (?s "\\mathscr" nil t nil nil)
+          ))
 #+END_SRC
 
 

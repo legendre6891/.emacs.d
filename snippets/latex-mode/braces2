@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: braces2
+# key: braces2
+# binding: C-.
+# --
+\\{ $0 \\}
