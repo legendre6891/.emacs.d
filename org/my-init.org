@@ -881,6 +881,7 @@ on AucTeX since it defines =LaTeX-mode-hook=.
   (add-hook 'LaTeX-mode-hook (↑ (electric-indent-mode -1)))
 #+END_SRC
 
+
 ** RefTeX
 *** Installation
 #+BEGIN_SRC emacs-lisp
@@ -1024,11 +1025,23 @@ normally of no use anyway.
     (save-buffer)
     (TeX-command "LaTeX" 'TeX-master-file))
 
+  (defun my-tex-compile ()
+    (interactive)
+    (save-buffer)
+    (TeX-command "TeX" 'TeX-master-file))
+
+
   (eval-after-load 'latex
     '(define-key LaTeX-mode-map (kbd "C-t") 'latex-compile))
 
   (eval-after-load 'latex
     '(define-key LaTeX-mode-map (kbd "C-v") 'TeX-view))
+
+  (eval-after-load 'plain-tex
+    '(define-key plain-TeX-mode-map (kbd "C-t") 'my-tex-compile))
+
+  (eval-after-load 'plain-tex
+    '(define-key plain-TeX-mode-map (kbd "C-v") 'TeX-view))
 #+END_SRC
 
 Next define easy shortcuts for inserting underscores
