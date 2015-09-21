@@ -1,7 +1,7 @@
 ;;; See https://www.reddit.com/r/emacs/comments/3kqt6e/2_easy_little_known_steps_to_speed_up_emacs_start/
 
 ;;; The first thing to make emacs load faster
-(setq gc-cons-threshold 1000000000)
+(setq gc-cons-threshold (* 1024 1024 50))
 
 (let ((file-name-handler-alist nil))
 
