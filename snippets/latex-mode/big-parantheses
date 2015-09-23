@@ -1,0 +1,6 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: big-parantheses
+# key: b(
+# binding: C-9
+# --
+\biggl( $0 \biggr)

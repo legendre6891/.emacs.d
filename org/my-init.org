@@ -196,7 +196,7 @@ Easier navigation with mark ring.
 
 Don't garbage collect so much.
 #+BEGIN_SRC emacs-lisp
-(setq gc-cons-threshold 1000000000)
+(setq gc-cons-threshold (* 1024 1024 50))
 #+END_SRC
 
 
@@ -508,6 +508,32 @@ find it useful enough to enable it everywhere.
     :ensure t
     :init
     (global-nlinum-mode t))
+#+END_SRC
+
+
+
+
+* Expand Region and Avy Mode
+Expand region is occasionally useful for editing Lisp and I suppose
+sometimes for LaTeX if I set it up correctly. The =M-SPC= shortcut
+usually doesn't work (on Windows/Linux), but thankfully I know how
+disable it in Linux. 
+#+BEGIN_SRC emacs-lisp
+  (use-package expand-region
+      :ensure t
+      :bind
+      (("C-=" . er/expand-region)))
+#+END_SRC
+** TODO Windows Alt Space shortcut
+
+
+Avy mode helps is a quicker way to move around; they work like Vim's
+=f=, =F=, =t=, =T= operators.
+#+BEGIN_SRC emacs-lisp
+  (use-package avy
+      :ensure t
+      :bind
+      (("C-'" . avy-goto-char-2)))
 #+END_SRC
 
 
