@@ -81,6 +81,9 @@
 \newcommand{\p}{\mathfrak{p}}
 \renewcommand{\b}{\mathfrak{b}}
 \DeclareMathOperator{\E}{\mathbf{E}}
+\DeclareMathOperator{\Var}{\mathbf{Var}}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\MSE}{MSE}
 \DeclareMathOperator{\im}{im}
 \DeclareMathOperator{\id}{id}
 \DeclareMathOperator{\Ch}{Ch}
@@ -89,6 +92,12 @@
 \DeclareMathOperator*{\minimize}{minimize}
 
 
+
+
+\DeclareMathOperator{\Binomial}{\mathsf{Binomial}}
+\DeclareMathOperator{\Pois}{\mathsf{Pois}}
+\DeclareMathOperator{\Normal}{\mathcal{N}}
+\DeclareMathOperator{\IID}{\mathbin{\overset{\textsc{IID}}{\sim}}}
 
 
 
@@ -103,6 +112,8 @@
 
 \newcommand{\Mod}[1]{/\mathfrak{#1}}
 \newcommand{\on}{\big|}
+\newcommand{\FRAC}[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+\newcommand{\MLE}{\text{MLE}}
 
 \begin{document}
 $0
