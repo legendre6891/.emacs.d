@@ -645,19 +645,20 @@ smartparens is kind of useful in (La)TeX mode, so we should turn it on
 there in addition to Org mode.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package smartparens-config
-      :ensure smartparens
+  (use-package smartparens
+  :ensure t
       :init
-      :config
-      (progn
-        (smartparens-global-mode)
-        (add-hook 'emacs-lisp-mode-hook 'turn-off-smartparens-mode)
-        ;; Some LaTeX specific smartparens
-        )
-      :bind
-      (("C-M-a" . sp-beginning-of-sexp)
-       ("C-M-e" . sp-end-of-sexp))
+    (smartparens-global-mode 1)
+    (show-smartparens-global-mode 1)
+    :bind
+    (("C-M-a" . sp-beginning-of-sexp)
+     ("C-M-e" . sp-end-of-sexp))
+    :config
+    (progn
+      (use-package smartparens-config)
+      (add-hook 'emacs-lisp-mode-hook 'turn-off-smartparens-mode)
       )
+    )
 #+END_SRC
 
 
