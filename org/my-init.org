@@ -648,7 +648,11 @@ there in addition to Org mode.
         (smartparens-global-mode)
         (add-hook 'emacs-lisp-mode-hook 'turn-off-smartparens-mode)
         ;; Some LaTeX specific smartparens
-        ))
+        )
+      :bind
+      (("C-M-a" . sp-beginning-of-sexp)
+       ("C-M-e" . sp-end-of-sexp))
+      )
 #+END_SRC
 
 
@@ -908,7 +912,6 @@ TeX.SX). It works, and I don't want to mess with it.
                                          (output-dvi "xdvi"))))
 #+END_SRC
 
-
 *** Minor modes for editing LaTeX
 Hard-wrap and disable =electric-indent-mode= which messes
 up AucTeX's internal indentation code. This actually depends
@@ -1059,6 +1062,7 @@ Now add the environments.
 
 
 ** Shortcuts
+*** Compiling
 Compiling shouldn't have to be =C-c C-c <RET>=, and viewing
 shouldn't have to be =C-c C-v=. Rebind these keys to hotkeys that are
 normally of no use anyway.
@@ -1087,14 +1091,21 @@ normally of no use anyway.
     '(define-key plain-TeX-mode-map (kbd "C-v") 'TeX-view))
 #+END_SRC
 
+*** Moving
+I don't use the commands that move between environments often enough
+to justify  entire keybindings, so disable them.
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'latex
+    (define-key LaTeX-mode-map (kbd "C-M-a") nil)
+    (define-key LaTeX-mode-map (kbd "C-M-e") nil))
+#+END_SRC
+
+*** TODO Make M-u insert an underscore, M-i insert caret, and M-o insert both
 Next define easy shortcuts for inserting underscores
 and the like.
-*** TODO Make M-u insert an underscore, M-i insert caret, and M-o insert both
-    
 
 
 * Clojure
-
 
 * Epilog
 Packages to investigate
