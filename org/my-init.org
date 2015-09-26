@@ -460,7 +460,7 @@ as safe. For now, don't active because keeping the default theme is best.
       (my-set-face "Consolas" 12))
 
   (if (eq system-type 'gnu/linux)
-      (my-set-face "Source Code Pro Medium" 12))
+      (my-set-face "Source Code Pro Medium" 10))
 
     
 #+END_SRC
@@ -564,7 +564,6 @@ Yasnippet is generally useful, except that it takes over
 the =TAB= key, which performs crucial functions in Org mode and
 CDLaTeX.
 
-
 It seems that =C-;= is unused in both modes, so we will just map the
 key to that.
 #+BEGIN_SRC emacs-lisp
@@ -585,6 +584,12 @@ key to that.
         (define-key yas-keymap (kbd "C-;") 'yas-next-field-or-maybe-expand)
         ))
 #+END_SRC
+
+Use ido prompting method.
+#+BEGIN_SRC emacs-lisp
+  (setq yas-prompt-functions '(yas-ido-prompt yas-completing-prompt))
+#+END_SRC
+
 
 
 ** Yasnippet Hydra
@@ -903,9 +908,49 @@ TeX.SX). It works, and I don't want to mess with it.
         (setq TeX-view-program-selection '((output-pdf "SumatraPDF")
                                            (output-dvi "Yap")))))
 
-  (if (eq system-type 'gnu/linux)
-      (setq TeX-view-program-selection '((output-pdf "Evince")
-                                         (output-dvi "xdvi"))))
+  (when (eq system-type 'gnu/linux)
+    (setq TeX-view-program-list '(("MUPDF" "mupdf -r 153 %o")
+                                  ("ZATHURA" zathura-forward-search)
+                                  ("LLPP" "llpp %o")
+                                  ("XDVI" "xdvi %o")))
+    (setq TeX-view-program-selection '((output-pdf "ZATHURA")
+                                       (output-pdf "Evince")
+                                       (output-dvi "xdvi"))))
+
+
+  ;; See http://tex.stackexchange.com/questions/207889/how-to-set-up-forward-inverse-searches-with-auctex-and-zathura
+  (setq zathura-procs ())
+  (defun zathura-forward-search ()
+    ;; Open the compiled pdf in Zathura with synctex. This is complicated since
+    ;; 1) Zathura refuses to acknowledge Synctex directive if the pdf is not
+    ;; already opened
+    ;; 2) This means we have to bookkeep open Zathura processes ourselves: first
+    ;; open a new pdf from the beginning, if it is not already open. Then call
+    ;; Zathura again with the synctex directive.
+    (interactive)
+    (let* ((zathura-launch-buf (get-buffer-create "*Zathura Output*"))
+           (pdfname (TeX-master-file "pdf"))
+           (zatentry (assoc pdfname zathura-procs))
+           (zatproc (if (and zatentry (process-live-p (cdr zatentry)))
+                        (cdr zatentry)
+                      (progn
+                        (let ((proc (progn (message "Launching Zathura")
+                                           (start-process "zathura-launch"
+                                                          zathura-launch-buf "zathura"
+                                                           "-x" "emacsclient +%{line} %{input}" pdfname))))
+                          (when zatentry
+                            (setq zathura-procs (delq zatentry zathura-procs)))
+                          (add-to-list 'zathura-procs (cons pdfname proc))
+                          (set-process-query-on-exit-flag proc nil)
+                          proc))))
+           (pid (process-id zatproc))
+           (synctex (format "%s:0:%s"
+                            (TeX-current-line)
+                            (TeX-current-file-name-master-relative)))
+           )
+      (start-process "zathura-synctex" zathura-launch-buf "zathura" "--synctex-forward" synctex pdfname)
+      (start-process "raise-zathura-wmctrl" zathura-launch-buf "wmctrl" "-a" pdfname)
+      ))
 #+END_SRC
 
 
@@ -916,6 +961,7 @@ on AucTeX since it defines =LaTeX-mode-hook=.
 #+BEGIN_SRC emacs-lisp
   (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
   (add-hook 'LaTeX-mode-hook (↑ (electric-indent-mode -1)))
+  (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
 #+END_SRC
 
 
