@@ -90,8 +90,7 @@
 \DeclareMathOperator*{\argmax}{arg\,max}
 \DeclareMathOperator*{\maximize}{maximize}
 \DeclareMathOperator*{\minimize}{minimize}
-
-
+\DeclareMathOperator{\suchthat}{subject\ to}
 
 
 \DeclareMathOperator{\Binomial}{\mathsf{Binomial}}

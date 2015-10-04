@@ -171,8 +171,9 @@ Set =<f8>= to editing this very file.
 See [[Yasnippet]]; there, =<f1>= is also bound.
 
 *** Popwin
-Don't let temporary buffers annoy you!
-#+BEGIN_SRC emacs-lisp
+Don't let temporary buffers annoy you! /Disabled because =popwin=
+makes looking up functions when programming painful./
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package popwin
       :ensure t
       :config
@@ -236,12 +237,25 @@ Taken from here.
      "explorer"
      (concat "/e,/select," (convert-standard-filename buffer-file-name))))
 
-  (global-set-key [f12] 'my-open-in-windows-explorer)
+  (defun browse-file-directory ()
+    "Open the current file's directory however the OS would."
+    (interactive)
+    (if default-directory
+        (browse-url-of-file (expand-file-name default-directory))
+      (error "No `default-directory' to open")))
+
+  (if (eq system-type 'gnu/linux)
+      (global-set-key [f12] #'browse-file-directory))
+
+  (if (eq system-type 'windows-nt)
+      (global-set-key [f12] 'my-open-in-windows-explorer))
 
 #+END_SRC
 
 **** TODO Support other operating systems.
-
+     
+*** Pause-key
+See section on [[Restart Emacs]].
 
 ** Ido, Recentf, and Smex
 *** General settings
@@ -411,7 +425,34 @@ keybinding.
       :ensure t)
 #+END_SRC
 
-The main use case I have for it right now is [[Yasnippet]].
+*** Yasnippet Hydra
+See [[Yasnippet]].
+
+*** GUI Hydra
+I want a hydra to control various
+GUI elements (e.g. linum-mode, theme, font).
+
+#+BEGIN_SRC emacs-lisp
+  (defhydra my-hydra-gui (:color blue)
+    ("l" global-nlinum-mode "Toggle line numbers.")
+    ("f" menu-set-font "Set font.")
+    ("m" menu-bar-mode "Toggle menu bar.")
+    ("t" (load-theme 'ample-flat) "Load theme")
+    ("d" (disable-theme 'ample-flat) "Disable theme")
+    )
+
+  (global-set-key (kbd "<f2>") #'my-hydra-gui/body)
+#+END_SRC
+
+
+** Restart Emacs
+It's nice to have a shortcut to restart emacs on.
+#+BEGIN_SRC emacs-lisp
+  (use-package restart-emacs
+      :ensure t
+      :init
+      (global-set-key (kbd "<pause>") #'restart-emacs))
+#+END_SRC
 
 
 * Look and Feel
@@ -999,6 +1040,7 @@ Now we can always turn it on, both for LaTeX and for TeX.
   (add-hook 'LaTeX-mode-hook 'turn-on-cdlatex)
 #+END_SRC
 
+*** 
 
 *** Automatic Parentheses
 Thankfully, [[Smartparens][=smartparens=]] can be ued in LaTeX mode no problem;
@@ -1020,6 +1062,8 @@ version of =yasnippet=. It is preferable to =yasnippet= because it
 integrates better with the rest of CDLaTeX.
 
 **** Math Shortcuts
+
+
 #+BEGIN_SRC emacs-lisp
   (defun simple-math-template (key docstring expansion)
     `(,key ,docstring ,expansion cdlatex-position-cursor nil nil t))
@@ -1047,6 +1091,19 @@ integrates better with the rest of CDLaTeX.
         '((?t "\\text" nil t nil nil)
           (?s "\\mathscr" nil t nil nil)
           ))
+#+END_SRC
+
+Custom symbols.
+#+BEGIN_SRC emacs-lisp
+  (defmacro my-define-keys
+      (mode-map kbd greek-letter)
+    `(define-key ,mode-map (kbd ,kbd) (↑ (insert ,greek-letter))))
+
+
+  (with-eval-after-load 'latex
+    (define-key LaTeX-mode-map (kbd "s-b") (↑ (insert "\\beta")))
+    (my-define-keys LaTeX-mode-map "C-o" "\\circ")
+    )
 #+END_SRC
 
 
@@ -1104,6 +1161,9 @@ Now add the environments.
               ("proposition" ?p "prop" "prop" "Insert a proposition.")
               ("wts" ?w "ax" "wts" "Insert a 'want to show'.")
               ("definition" ?d "def" "def" "Insert a definition."))))
+
+  (add-to-list 'cdlatex-command-alist
+               '("pr" "Insert proof env" "" LaTeX-environment-menu ("proof") t nil))
 #+END_SRC
 
 
@@ -1153,6 +1213,46 @@ and the like.
 
 
 * Clojure
+
+
+* Julia
+** TODO Write some configurations --- broken at the moment
+#+BEGIN_SRC emacs-lisp
+  (use-package julia-mode
+      :ensure t)
+
+  (use-package julia-shell-mode
+      :ensure julia-shell)
+
+  (defun my-julia-mode-hooks ()
+    (require 'julia-shell-mode))
+  (add-hook 'julia-mode-hook 'my-julia-mode-hooks)
+  (define-key julia-mode-map (kbd "C-c C-c") 'julia-shell-run-region-or-line)
+  (define-key julia-mode-map (kbd "C-c C-s") 'julia-shell-save-and-go)
+#+END_SRC
+
+
+* Undo Tree
+Undo tree gives a nice visualization of the undo-state. It makes
+navigating the undo states much more intuitive.
+#+BEGIN_SRC emacs-lisp
+  (use-package undo-tree
+      :ensure t
+      :config
+      (progn
+        (global-undo-tree-mode)
+        (with-eval-after-load 'undo-tree
+          (define-key undo-tree-visualizer-mode-map (kbd "M-u") #'undo-tree-visualizer-quit)
+          (define-key undo-tree-visualizer-mode-map (kbd "j") #'undo-tree-visualize-redo)
+          (define-key undo-tree-visualizer-mode-map (kbd "k") #'undo-tree-visualize-undo)
+          (define-key undo-tree-visualizer-mode-map (kbd "h") #'undo-tree-visualize-switch-branch-left)
+          (define-key undo-tree-visualizer-mode-map (kbd "l") #'undo-tree-visualize-switch-branch-right)
+          )
+        )
+      :bind
+      ("M-u" . undo-tree-visualize))
+#+END_SRC
+
 
 * Epilog
 Packages to investigate
