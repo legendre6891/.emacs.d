@@ -479,8 +479,8 @@ Install but defer.
 The =aurora-theme= is the current favorite.
 The extra =t= flag is so we don't get asked about treating themes
 as safe. For now, don't active because keeping the default theme is best.
-#+BEGIN_SRC emacs-lisp :tangle no
-(load-theme 'aurora t)
+#+BEGIN_SRC emacs-lisp
+(load-theme 'ample-flat t)
 #+END_SRC
 
 
@@ -501,7 +501,7 @@ as safe. For now, don't active because keeping the default theme is best.
       (my-set-face "Consolas" 12))
 
   (if (eq system-type 'gnu/linux)
-      (my-set-face "Source Code Pro Medium" 10))
+      (my-set-face "PragmataPro" 12))
 
     
 #+END_SRC
