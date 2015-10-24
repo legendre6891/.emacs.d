@@ -1,0 +1,161 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: latex-compact
+# key: latex-compact
+# --
+\documentclass[twocolumn, 9pt, leqno]{extarticle}
+
+\usepackage[bmargin=0.5in, hmargin=0.2in, tmargin=0.25in, footskip=0.3in]{geometry}
+\usepackage{mathtools}
+\usepackage[bf,sf,compact]{titlesec}
+\setcounter{secnumdepth}{-2}
+\usepackage{lastpage}
+
+\usepackage{amsthm}
+
+\makeatletter
+\def\thm@space@setup{\thm@preskip=0pt
+  \thm@postskip=0pt}
+\makeatother
+\newtheoremstyle{newstyle}
+{0pt} %Aboveskip
+{0pt} %Below skip
+{\mdseries} %Body font e.g.\mdseries,\bfseries,\scshape,\itshape
+{} %Indent
+{\bfseries} %Head font e.g.\bfseries,\scshape,\itshape
+{.} %Punctuation afer theorem header
+{3pt} %Space after theorem header
+{} %Heading
+
+
+\makeatletter
+\renewenvironment{proof}[1][\proofname]{\par
+  \pushQED{\qed}%
+  \normalfont \topsep0\p@\relax
+  \trivlist
+\item[\hskip\labelsep\itshape
+  #1\@addpunct{.}]\ignorespaces
+}{%
+  \popQED\endtrivlist\@endpefalse
+}
+\makeatother
+
+
+\usepackage{enumitem}
+
+% \usepackage[charter]{mathdesign}
+\usepackage{tgtermes}
+\usepackage{mtpro2}
+
+\usepackage{fancyhdr}
+\cfoot{Page \thepage\ of \pageref{LastPage}}
+\pagestyle{fancy}
+
+
+\usepackage[final]{microtype}
+
+\usepackage[dvipsnames]{xcolor}
+\usepackage{hyperref}
+\usepackage{cleveref}
+
+\newcommand\myshade{85}
+\colorlet{mylinkcolor}{violet}
+\colorlet{mycitecolor}{YellowOrange}
+\colorlet{myurlcolor}{Aquamarine}
+
+\hypersetup{
+  linkcolor  = mylinkcolor!\myshade!black,
+  citecolor  = mycitecolor!\myshade!black,
+  urlcolor   = myurlcolor!\myshade!black,
+  colorlinks = true,
+}
+
+\usepackage{tikz}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.12}
+
+
+\theoremstyle{newstyle}
+\newtheorem{theorem}{Theorem}
+\newtheorem*{theorem*}{Theorem}
+\newtheorem*{claim*}{Claim}
+\newtheorem*{sublemma}{Sublemma}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{prop}[theorem]{Proposition}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem*{corollary}{Corollary}
+\newtheorem{claim}[theorem]{Claim}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+\newtheorem{conjecture}{Conjecture}
+\newtheorem{example}{Example}
+
+
+\newtheorem*{answer}{Final Answer}
+
+\theoremstyle{newstyle}
+\newtheorem*{remark}{Remark}
+\newtheorem*{note}{Note}
+\newtheorem{case}{Case}
+
+\theoremstyle{definition}
+\newtheorem*{wts}{Want To Show}
+
+
+\newcommand{\Q}{\mathbf{Q}}
+\renewcommand{\P}{\mathbf{P}}
+\newcommand{\R}{\mathbf{R}}
+\newcommand{\Z}{\mathbf{Z}}
+\newcommand{\N}{\mathbf{N}}
+\renewcommand{\a}{\mathfrak{a}}
+\newcommand{\p}{\mathfrak{p}}
+\renewcommand{\b}{\mathfrak{b}}
+\DeclareMathOperator{\E}{\mathbf{E}}
+\DeclareMathOperator{\Var}{\mathbf{Var}}
+\DeclareMathOperator{\Bias}{Bias}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Ch}{Ch}
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\maximize}{maximize}
+\DeclareMathOperator*{\minimize}{minimize}
+\DeclareMathOperator{\suchthat}{subject\ to}
+
+
+\DeclareMathOperator{\Binomial}{\mathsf{Binomial}}
+\DeclareMathOperator{\Pois}{\mathsf{Pois}}
+\DeclareMathOperator{\GammaP}{\mathsf{Gamma}}
+\DeclareMathOperator{\Pareto}{\mathsf{Pareto}}
+\DeclareMathOperator{\Normal}{\mathcal{N}}
+\DeclareMathOperator{\IID}{\mathbin{\overset{\textsc{IID}}{\sim}}}
+
+
+
+\newcommand\problemfont[1]{{\fontfamily{lmss}\fontseries{bx}\selectfont#1}}
+\newcommand{\newproblem}{\par\noindent\rule{\columnwidth}{0.4pt}\par}
+\newcommand{\problemheader}[1]{\noindent\label{#1}\problemfont{#1}\;}
+\let\header=\problemheader
+\newcommand{\problem}[1]{\newproblem\problemheader{#1}}
+\newcommand{\squash}{\vglue-5pt}
+\renewcommand{\phi}{\varphi}
+
+
+\newcommand{\Mod}[1]{/\mathfrak{#1}}
+\newcommand{\on}{\big|}
+\newcommand{\FRAC}[2]{\frac{\displaystyle #1}{\displaystyle #2}}
+\newcommand{\MLE}{\text{MLE}}
+
+
+\AtBeginDocument{%
+  \abovedisplayskip=1pt plus 0pt minus 1pt
+  \belowdisplayskip=1pt plus 0pt minus 1pt
+  \abovedisplayshortskip=0pt plus 0pt minus 3pt
+  \belowdisplayshortskip=1pt plus 1pt minus 3pt
+\addtolength{\jot}{-3pt}
+}
+
+
+\begin{document}
+$0
+\end{document}

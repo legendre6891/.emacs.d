@@ -1,0 +1,109 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: standard-template
+# key: standard
+# --
+\input eplain
+\magnification=\magstep2
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%  Letter paper instead of A4  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\ifpdf
+\pdfpagewidth=8.5 true in
+\pdfpageheight=11 true in
+\else
+\special{papersize=8.5in, 11in}
+\fi
+
+\topmargin0.5in
+\bottommargin0.75in
+\leftmargin0.3in
+\rightmargin0.3in
+
+\parindent=0pt
+\parskip=4pt
+
+
+%=====================
+% Font Controls
+%=====================
+\font\headlinerm=cmr20
+\font\headlinett=cmtt20
+
+\font\sectionbf=cmbx15
+\font\subsectionbf=cmbx12
+
+\font\keywordbf=cmbx10
+
+
+%===============================
+% Set up a nice looking headline
+%===============================
+\def\title{{\headlinett\string\title}}
+\def\date{{\headlinett\string\date}}
+\headline={\headlinerm Kevin Li \hss \title}
+\footline={\hss \tenrm \folio \hss \ifnum\pageno=1 \llap{\date}\else\fi }
+
+\def\makeheadline{\vbox to 5pt{\vskip-22.5pt
+\line{\vbox to8.5pt{}\the\headline}\vss}\nointerlineskip}
+
+
+%================
+% Nicer Proclaims and other headers
+%================
+\def\proclaim#1.{\medbreak \noindent {\bf #1.\enspace}}
+\def\proof{\medbreak \noindent {\it Proof.\enspace}}
+
+\def\section#1.{\bigbreak \noindent{\sectionbf #1}\par}
+\def\subsection#1.{\medbreak \noindent{\subsectionbf #1}\par}
+
+\def\source{\smallbreak \noindent {\it Source.}\enspace}
+\def\implementation{\smallbreak \noindent {\it Implementation.}\enspace}
+
+
+%========================
+% Pseduocode improvements
+%========================
+\def\For{{\keywordbf for}}
+\def\While{{\keywordbf while}}
+\def\If{{\keywordbf if}}
+\def\Then{{\keywordbf then}}
+\def\Else{{\keywordbf else}}
+\def\End{{\keywordbf end}}
+\def\Break{{\keywordbf break}}
+
+
+%======
+% Lists
+%======
+\def\List{\parindent12pt\unorderedlist}
+\def\EndList{\endunorderedlist\parindent0pt}
+
+\let\Olist=\orderedlist
+\let\Endolist=\endorderedlist
+
+
+%===========
+% More fonts
+%===========
+\input amssym
+
+
+%=================
+% Custom Operators
+%=================
+\def\argmax{\mathop{\rm arg\,max}}
+\def\R{\bf R}
+\def\E{\mathop{\bf E}\nolimits}
+\let\text=\hbox
+\def\frac#1#2{{#1\over#2}}
+\def\implies{\mathrel{\Longrightarrow}}
+
+
+$0
+
+\bye
+
+
+% arara: tex
+% arara: dvips
+% arara: ps2pdf

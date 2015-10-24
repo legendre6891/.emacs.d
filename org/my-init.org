@@ -113,6 +113,12 @@ is. Later, we may define some shortcuts using these constants.
 
 ** Custom Elisp
 *** Editing Related
+Load some general use functions.
+#+BEGIN_SRC emacs-lisp
+  (use-package my-functions
+    :load-path "lisp/")
+#+END_SRC
+
 *** Elisp Programming Related
 A macro that makes a single form
 into an anonymous function that calls the form
@@ -698,8 +704,7 @@ there in addition to Org mode.
     (progn
       (use-package smartparens-config)
       (add-hook 'emacs-lisp-mode-hook 'turn-off-smartparens-mode)
-      )
-    )
+    ))
 #+END_SRC
 
 
@@ -923,6 +928,15 @@ I actually prefer DVI files, so let's leave the following setting
 off for now.
 #+BEGIN_SRC emacs-lisp
   (setq TeX-PDF-mode t)
+#+END_SRC
+
+*** Arara
+Arara is a snazzy tool! See
+[[http://emacs.stackexchange.com/questions/9715/arara-integration-in-emacs][this Emacs.SE answer]] for how to set it up.
+#+BEGIN_SRC emacs-lisp
+(eval-after-load "tex"
+  '(add-to-list 'TeX-command-list
+        '("Arara" "arara %s" TeX-run-TeX nil t :help "Run Arara.")))
 #+END_SRC
 
 *** Viewers 
@@ -1231,6 +1245,22 @@ and the like.
   (define-key julia-mode-map (kbd "C-c C-s") 'julia-shell-save-and-go)
 #+END_SRC
 
+
+* J mode
+I have a soft spot for the J programming language---guess it appeals
+to my inner mathematician + hacker meld because it is so terse?
+Anyhow, here is support for the J lang.
+#+BEGIN_SRC emacs-lisp
+  (use-package j-mode
+      :ensure t
+      :init
+      (custom-set-faces
+       '(j-verb-face ((t (:foreground "Red"))))
+       '(j-adverb-face ((t (:foreground "DarkGreen"))))
+       '(j-conjunction-face ((t (:foreground "Blue"))))
+       '(j-other-face ((t (:foreground "Black")))))
+      )
+#+END_SRC
 
 * Undo Tree
 Undo tree gives a nice visualization of the undo-state. It makes

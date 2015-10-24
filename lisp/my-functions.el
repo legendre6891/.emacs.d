@@ -13,6 +13,7 @@
 
 (global-set-key (kbd "C-c C-r") 'rename-file-and-buffer)
 
+(provide 'my-functions)
 
 
 
