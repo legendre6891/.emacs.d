@@ -485,7 +485,7 @@ Install but defer.
 The =aurora-theme= is the current favorite.
 The extra =t= flag is so we don't get asked about treating themes
 as safe. For now, don't active because keeping the default theme is best.
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
 (load-theme 'ample-flat t)
 #+END_SRC
 
@@ -580,9 +580,9 @@ Avy mode helps is a quicker way to move around; they work like Vim's
   (use-package avy
       :ensure t
       :bind
-      (("C-'" . avy-goto-char-2)))
+      (("C-'" . avy-goto-char-2))
+      (("M-SPC" . avy-goto-char-2)))
 #+END_SRC
-
 
 
 
@@ -1054,7 +1054,6 @@ Now we can always turn it on, both for LaTeX and for TeX.
   (add-hook 'LaTeX-mode-hook 'turn-on-cdlatex)
 #+END_SRC
 
-*** 
 
 *** Automatic Parentheses
 Thankfully, [[Smartparens][=smartparens=]] can be ued in LaTeX mode no problem;
@@ -1076,8 +1075,6 @@ version of =yasnippet=. It is preferable to =yasnippet= because it
 integrates better with the rest of CDLaTeX.
 
 **** Math Shortcuts
-
-
 #+BEGIN_SRC emacs-lisp
   (defun simple-math-template (key docstring expansion)
     `(,key ,docstring ,expansion cdlatex-position-cursor nil nil t))
@@ -1105,19 +1102,6 @@ integrates better with the rest of CDLaTeX.
         '((?t "\\text" nil t nil nil)
           (?s "\\mathscr" nil t nil nil)
           ))
-#+END_SRC
-
-Custom symbols.
-#+BEGIN_SRC emacs-lisp
-  (defmacro my-define-keys
-      (mode-map kbd greek-letter)
-    `(define-key ,mode-map (kbd ,kbd) (↑ (insert ,greek-letter))))
-
-
-  (with-eval-after-load 'latex
-    (define-key LaTeX-mode-map (kbd "s-b") (↑ (insert "\\beta")))
-    (my-define-keys LaTeX-mode-map "C-o" "\\circ")
-    )
 #+END_SRC
 
 
@@ -1221,6 +1205,34 @@ to justify  entire keybindings, so disable them.
     (define-key LaTeX-mode-map (kbd "C-M-e") nil))
 #+END_SRC
 
+*** Custom symbols
+#+BEGIN_SRC emacs-lisp
+  (defun insert-then-position (str)
+    (interactive)
+    (insert str)
+    (cdlatex-position-cursor))
+
+  (defmacro my-define-latex-keys
+      (mode-map kbd combo)
+    `(define-key ,mode-map (kbd ,kbd) (↑ (insert-then-position ,combo))))
+
+
+  (with-eval-after-load 'latex
+    (my-define-latex-keys LaTeX-mode-map "C-o" "\\circ")
+    )
+
+  (with-eval-after-load 'plain-tex
+    (my-define-latex-keys plain-TeX-mode-map "C-1" "{? \\over }")
+    (my-define-latex-keys plain-TeX-mode-map "s-f" "{? \\over }")
+    (my-define-latex-keys plain-TeX-mode-map "C-4" "$$\n?\n$$")
+    (my-define-latex-keys plain-TeX-mode-map "C-2" "\\sqrt{?}")
+    (my-define-latex-keys plain-TeX-mode-map "C-." "\\{ ? \\}")
+    (my-define-latex-keys plain-TeX-mode-map "C-," "\\langle ? \\rangle")
+    (my-define-latex-keys plain-TeX-mode-map "C-o" "\\circ")
+  )
+#+END_SRC
+
+
 *** TODO Make M-u insert an underscore, M-i insert caret, and M-o insert both
 Next define easy shortcuts for inserting underscores
 and the like.
@@ -1261,6 +1273,7 @@ Anyhow, here is support for the J lang.
        '(j-other-face ((t (:foreground "Black")))))
       )
 #+END_SRC
+
 
 * Undo Tree
 Undo tree gives a nice visualization of the undo-state. It makes

@@ -41,7 +41,7 @@
 \def\title{{\headlinett\string\title}}
 \def\date{{\headlinett\string\date}}
 \headline={\headlinerm Kevin Li \hss \title}
-\footline={\hss \tenrm \folio \hss \ifnum\pageno=1 \llap{\date}\else\fi }
+\footline={\hss \tenrm \folio \hss \ifnum\pageno=1 \llap{\date}\else\fi}
 
 \def\makeheadline{\vbox to 5pt{\vskip-22.5pt
 \line{\vbox to8.5pt{}\the\headline}\vss}\nointerlineskip}
