@@ -1,6 +1,6 @@
 #+TITLE: Emacs Configuration
 #+AUTHOR: Kevin Li
-#+DATE: August 23, 2015
+#+DATE: October 28, 2015
 
 * Prelude
 This file is tangled and loaded via =init.el=, which
@@ -251,10 +251,10 @@ Taken from here.
       (error "No `default-directory' to open")))
 
   (if (eq system-type 'gnu/linux)
-      (global-set-key [f12] #'browse-file-directory))
+      (global-set-key [f10] #'browse-file-directory))
 
   (if (eq system-type 'windows-nt)
-      (global-set-key [f12] 'my-open-in-windows-explorer))
+      (global-set-key [f10] 'my-open-in-windows-explorer))
 
 #+END_SRC
 
@@ -920,6 +920,7 @@ versus LaTeX).
 #+BEGIN_SRC emacs-lisp
 (setq TeX-parse-self t)
 (setq TeX-auto-save t)
+(setq-default TeX-master nil)
 #+END_SRC
 
 *** Producing DVI vs PDF
@@ -1019,8 +1020,10 @@ up AucTeX's internal indentation code. This actually depends
 on AucTeX since it defines =LaTeX-mode-hook=.
 #+BEGIN_SRC emacs-lisp
   (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
+  (add-hook 'plain-TeX-mode-hook 'auto-fill-mode)
   (add-hook 'LaTeX-mode-hook (↑ (electric-indent-mode -1)))
   (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
+  (add-hook 'plain-TeX-mode-hook 'TeX-source-correlate-mode)
 #+END_SRC
 
 
@@ -1223,9 +1226,17 @@ to justify  entire keybindings, so disable them.
 
   (with-eval-after-load 'plain-tex
     (my-define-latex-keys plain-TeX-mode-map "C-1" "{? \\over }")
+    (my-define-latex-keys plain-TeX-mode-map "M-p" "\\proclaim ")
+    (my-define-latex-keys plain-TeX-mode-map "M-i" "\\int_{?}^{}")
+    (my-define-latex-keys plain-TeX-mode-map "M-s" "\\sum_{?}^{}")
+    (my-define-latex-keys plain-TeX-mode-map "M-h" "\\hbox{?}")
+    (my-define-latex-keys plain-TeX-mode-map "M-t" "\\hbox{?}")
+    (my-define-latex-keys plain-TeX-mode-map "M-q" "\\quad")
+    (my-define-latex-keys plain-TeX-mode-map "M-Q" "\\qquad")
     (my-define-latex-keys plain-TeX-mode-map "s-f" "{? \\over }")
     (my-define-latex-keys plain-TeX-mode-map "C-4" "$$\n?\n$$")
     (my-define-latex-keys plain-TeX-mode-map "C-2" "\\sqrt{?}")
+    (my-define-latex-keys plain-TeX-mode-map "C-3" "\\hbox{?}")
     (my-define-latex-keys plain-TeX-mode-map "C-." "\\{ ? \\}")
     (my-define-latex-keys plain-TeX-mode-map "C-," "\\langle ? \\rangle")
     (my-define-latex-keys plain-TeX-mode-map "C-o" "\\circ")

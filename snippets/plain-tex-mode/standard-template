@@ -38,10 +38,20 @@
 %===============================
 % Set up a nice looking headline
 %===============================
-\def\title{{\headlinett\string\title}}
-\def\date{{\headlinett\string\date}}
-\headline={\headlinerm Kevin Li \hss \title}
-\footline={\hss \tenrm \folio \hss \ifnum\pageno=1 \llap{\date}\else\fi}
+\def\lfoot{{\headlinett\string\lfoot}}
+\def\cfoot{{\headlinett\string\cfoot}}
+\def\rfoot{{\headlinett\string\rfoot}}
+\def\lhead{{\headlinett\string\lhead}}
+\def\chead{{\headlinett\string\chead}}
+\def\rhead{{\headlinett\string\rhead}}
+
+
+\headline={\headlinerm \rlap{\lhead} \hss \chead \hss \llap{\rhead}}
+\footline={\tenrm \rlap{\lfoot} \hss \cfoot \hss \ifnum\pageno=1 \llap{\rfoot}\else\fi}
+
+\def\cfoot{\folio}
+\def\lfoot{\ifnum\folio=1 Kevin Li \else\fi}
+
 
 \def\makeheadline{\vbox to 5pt{\vskip-22.5pt
 \line{\vbox to8.5pt{}\the\headline}\vss}\nointerlineskip}
@@ -92,12 +102,12 @@
 % Custom Operators
 %=================
 \def\argmax{\mathop{\rm arg\,max}}
-\def\R{\bf R}
+\def\R{{\bf R}}
 \def\E{\mathop{\bf E}\nolimits}
+\def\P{\mathop{\bf P}\nolimits}
 \let\text=\hbox
 \def\frac#1#2{{#1\over#2}}
-\def\implies{\mathrel{\Longrightarrow}}
-
+\def\implies{\;\mathrel{\Longrightarrow}\;}
 
 $0
 
