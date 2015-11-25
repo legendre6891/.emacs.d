@@ -263,6 +263,13 @@ Taken from here.
 *** Pause-key
 See section on [[Restart Emacs]].
 
+*** Undo key
+Control-Z is otherwise useless because I always use Emacs with
+a GUI. Rebind it to undo.
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "C-z") #'undo)
+#+END_SRC
+
 ** Ido, Recentf, and Smex
 *** General settings
 Ido is one of the reasons why Emacs is great! It takes a little bit of
@@ -468,16 +475,24 @@ themes or actually activate them.
 ** Themes
 Install but defer.
 #+BEGIN_SRC emacs-lisp
-(use-package color-theme-sanityinc-tomorrow
+  (use-package color-theme-sanityinc-tomorrow
+      :defer t
+      :ensure t)
+  (use-package ample-theme
+      :defer t
+      :ensure t)
+  (use-package smyx-theme
+      :defer t
+      :ensure t)
+  (use-package aurora-theme
+      :defer t
+      :ensure t)
+
+  (use-package pastelmac-theme
     :defer t
     :ensure t)
-(use-package ample-theme
-    :defer t
-    :ensure t)
-(use-package smyx-theme
-    :defer t
-    :ensure t)
-(use-package aurora-theme
+
+  (use-package hc-zenburn-theme
     :defer t
     :ensure t)
 #+END_SRC
@@ -974,8 +989,8 @@ TeX.SX). It works, and I don't want to mess with it.
                                   ("ZATHURA" zathura-forward-search)
                                   ("LLPP" "llpp %o")
                                   ("XDVI" "xdvi %o")))
-    (setq TeX-view-program-selection '((output-pdf "ZATHURA")
-                                       (output-pdf "Evince")
+    (setq TeX-view-program-selection '((output-pdf "Evince")
+                                       (output-pdf "ZATHURA")
                                        (output-dvi "xdvi"))))
 
 
@@ -1227,6 +1242,7 @@ to justify  entire keybindings, so disable them.
   (with-eval-after-load 'plain-tex
     (my-define-latex-keys plain-TeX-mode-map "C-1" "{? \\over }")
     (my-define-latex-keys plain-TeX-mode-map "M-p" "\\proclaim ")
+    (my-define-latex-keys plain-TeX-mode-map "M-P" "\\proclaimit ")
     (my-define-latex-keys plain-TeX-mode-map "M-i" "\\int_{?}^{}")
     (my-define-latex-keys plain-TeX-mode-map "M-s" "\\sum_{?}^{}")
     (my-define-latex-keys plain-TeX-mode-map "M-h" "\\hbox{?}")
@@ -1286,7 +1302,8 @@ Anyhow, here is support for the J lang.
 #+END_SRC
 
 
-* Undo Tree
+* Undo
+Tree
 Undo tree gives a nice visualization of the undo-state. It makes
 navigating the undo states much more intuitive.
 #+BEGIN_SRC emacs-lisp
