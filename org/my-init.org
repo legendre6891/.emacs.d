@@ -487,12 +487,13 @@ Install but defer.
   (use-package aurora-theme
       :defer t
       :ensure t)
-
   (use-package pastelmac-theme
     :defer t
     :ensure t)
-
   (use-package hc-zenburn-theme
+    :defer t
+    :ensure t)
+  (use-package badwolf-theme
     :defer t
     :ensure t)
 #+END_SRC
@@ -944,6 +945,8 @@ I actually prefer DVI files, so let's leave the following setting
 off for now.
 #+BEGIN_SRC emacs-lisp
   (setq TeX-PDF-mode t)
+  (setq TeX-PDF-via-dvips-ps2pdf t)
+  (setq TeX-source-correlate-mode t)
 #+END_SRC
 
 *** Arara
@@ -1037,8 +1040,6 @@ on AucTeX since it defines =LaTeX-mode-hook=.
   (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
   (add-hook 'plain-TeX-mode-hook 'auto-fill-mode)
   (add-hook 'LaTeX-mode-hook (↑ (electric-indent-mode -1)))
-  (add-hook 'LaTeX-mode-hook 'TeX-source-correlate-mode)
-  (add-hook 'plain-TeX-mode-hook 'TeX-source-correlate-mode)
 #+END_SRC
 
 
@@ -1241,21 +1242,22 @@ to justify  entire keybindings, so disable them.
 
   (with-eval-after-load 'plain-tex
     (my-define-latex-keys plain-TeX-mode-map "C-1" "{? \\over }")
-    (my-define-latex-keys plain-TeX-mode-map "M-p" "\\proclaim ")
-    (my-define-latex-keys plain-TeX-mode-map "M-P" "\\proclaimit ")
+    (my-define-latex-keys plain-TeX-mode-map "M-p" "\\proclaim ?")
+    (my-define-latex-keys plain-TeX-mode-map "M-P" "\\proclaimit ?")
     (my-define-latex-keys plain-TeX-mode-map "M-i" "\\int_{?}^{}")
     (my-define-latex-keys plain-TeX-mode-map "M-s" "\\sum_{?}^{}")
     (my-define-latex-keys plain-TeX-mode-map "M-h" "\\hbox{?}")
     (my-define-latex-keys plain-TeX-mode-map "M-t" "\\hbox{?}")
-    (my-define-latex-keys plain-TeX-mode-map "M-q" "\\quad")
-    (my-define-latex-keys plain-TeX-mode-map "M-Q" "\\qquad")
+    (my-define-latex-keys plain-TeX-mode-map "M-q" "\\quad?")
+    (my-define-latex-keys plain-TeX-mode-map "M-Q" "\\qquad?")
     (my-define-latex-keys plain-TeX-mode-map "s-f" "{? \\over }")
     (my-define-latex-keys plain-TeX-mode-map "C-4" "$$\n?\n$$")
     (my-define-latex-keys plain-TeX-mode-map "C-2" "\\sqrt{?}")
     (my-define-latex-keys plain-TeX-mode-map "C-3" "\\hbox{?}")
+    (my-define-latex-keys plain-TeX-mode-map "C-9" "\\biggl( ? \\biggr)")
     (my-define-latex-keys plain-TeX-mode-map "C-." "\\{ ? \\}")
     (my-define-latex-keys plain-TeX-mode-map "C-," "\\langle ? \\rangle")
-    (my-define-latex-keys plain-TeX-mode-map "C-o" "\\circ")
+    (my-define-latex-keys plain-TeX-mode-map "C-o" "\\circ?")
   )
 #+END_SRC
 
@@ -1322,6 +1324,21 @@ navigating the undo states much more intuitive.
         )
       :bind
       ("M-u" . undo-tree-visualize))
+#+END_SRC
+
+
+* Asymptote Mode
+#+BEGIN_SRC emacs-lisp
+  (use-package asy-mode
+    :load-path "lisp/")
+#+END_SRC
+
+
+* It's Magit!
+=Magit= is a gerat Git client; it alone makes emacs worth using.
+#+BEGIN_SRC emacs-lisp
+  (use-package magit
+      :ensure t)
 #+END_SRC
 
 
