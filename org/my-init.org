@@ -1338,7 +1338,8 @@ navigating the undo states much more intuitive.
 =Magit= is a gerat Git client; it alone makes emacs worth using.
 #+BEGIN_SRC emacs-lisp
   (use-package magit
-      :ensure t)
+      :ensure t
+      :bind ("C-x g" . magit-status))
 #+END_SRC
 
 
