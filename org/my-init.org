@@ -1255,6 +1255,7 @@ to justify  entire keybindings, so disable them.
     (my-define-latex-keys plain-TeX-mode-map "C-2" "\\sqrt{?}")
     (my-define-latex-keys plain-TeX-mode-map "C-3" "\\hbox{?}")
     (my-define-latex-keys plain-TeX-mode-map "C-9" "\\biggl( ? \\biggr)")
+    (my-define-latex-keys plain-TeX-mode-map "C-0" "\\biggl[ ? \\biggr]")
     (my-define-latex-keys plain-TeX-mode-map "C-." "\\{ ? \\}")
     (my-define-latex-keys plain-TeX-mode-map "C-," "\\langle ? \\rangle")
     (my-define-latex-keys plain-TeX-mode-map "C-o" "\\circ?")
