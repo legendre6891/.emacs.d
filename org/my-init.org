@@ -565,8 +565,9 @@ default mode line.
 ** Line Numbers
 Line numbers are surprisingly clunky in Emacs, which above all
 is a text editor. The =nlinum= package seems to be the best, and I
-find it useful enough to enable it everywhere.
-#+BEGIN_SRC emacs-lisp
+find it useful enough to enable it everywhere. (UPDATE: This is no
+longer the case! I have now disabled it.)
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package nlinum
     :ensure t
     :init
