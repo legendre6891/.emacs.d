@@ -713,6 +713,11 @@ there in addition to Org mode.
       :init
     (smartparens-global-mode 1)
     (show-smartparens-global-mode 1)
+    (setq
+     sp-highlight-pair-overlay nil
+     sp-highlight-wrap-overlay nil
+     sp-highlight-wrap-tag-overlay nil)
+
     :bind
     (("C-M-a" . sp-beginning-of-sexp)
      ("C-M-e" . sp-end-of-sexp))
