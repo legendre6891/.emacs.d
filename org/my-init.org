@@ -878,7 +878,7 @@ The footer is somewhat useless; don't show it at all.
 #+END_SRC
 
 Turn off TOC and and headline numbering in HTML.
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (defun my-org-change-html-options (plist backend)
     (when (eq backend 'html)
       (plist-put plist :with-toc nil)
@@ -1276,6 +1276,15 @@ and the like.
 
 * Clojure
 
+
+* Racket
+=Geiser= mode is good enough to use for Racket (Scheme).
+#+BEGIN_SRC emacs-lisp
+  (use-package geiser
+      :ensure t
+      :init
+    (setq geiser-active-implementations '(racket)))
+#+END_SRC
 
 * Julia
 ** TODO Write some configurations --- broken at the moment
