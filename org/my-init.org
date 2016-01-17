@@ -270,6 +270,7 @@ a GUI. Rebind it to undo.
   (global-set-key (kbd "C-z") #'undo)
 #+END_SRC
 
+
 ** Ido, Recentf, and Smex
 *** General settings
 Ido is one of the reasons why Emacs is great! It takes a little bit of
@@ -417,6 +418,11 @@ for =LaTeX= to work.
 
         (when window-system (set-exec-path-from-shell-PATH))
 
+        (setq mac-option-key-is-meta nil)
+        (setq mac-command-key-is-meta t)
+        (setq mac-command-modifier 'meta)
+        (setq mac-option-modifier nil)
+
         (getenv "PATH")
         (setenv "PATH" (concat "/usr/texbin" ":" (getenv "PATH")))
 
@@ -426,7 +432,6 @@ for =LaTeX= to work.
         (setenv "PATH" (concat (getenv "PATH") ":/usr/bin"))
         (setq exec-path (append exec-path '("/usr/bin")))))
 #+END_SRC
-
 
 ** Hydra
 Hydra mode is a new package that allow one to create custom interfaces
@@ -726,6 +731,7 @@ there in addition to Org mode.
     (progn
       (use-package smartparens-config)
       (add-hook 'emacs-lisp-mode-hook 'turn-off-smartparens-mode)
+      (add-hook 'geiser-repl-mode-hook 'turn-off-smartparens-mode)
     ))
 #+END_SRC
 
@@ -745,6 +751,7 @@ hard.
         (add-hook 'ielm-mode-hook             'enable-paredit-mode)
         (add-hook 'lisp-mode-hook             'enable-paredit-mode)
         (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
+        (add-hook 'geiser-repl-mode-hook 'enable-paredit-mode)
         (add-hook 'scheme-mode-hook           'enable-paredit-mode)))
 #+END_SRC
 
