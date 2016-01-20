@@ -206,6 +206,17 @@ Don't garbage collect so much.
 (setq gc-cons-threshold (* 1024 1024 50))
 #+END_SRC
 
+Sane defaults for erasing region.
+#+BEGIN_SRC emacs-lisp
+(delete-selection-mode t)
+#+END_SRC
+
+Erase regions in a sane way.
+#+BEGIN_SRC emacs-lisp
+(global-set-key "\C-w" 'backward-kill-word)
+(global-set-key "\C-x\C-k" 'kill-region)
+(global-set-key "\C-c\C-k" 'kill-region)
+#+END_SRC
 
 ** Global Keybindings
 *** F-keys
@@ -432,6 +443,7 @@ for =LaTeX= to work.
         (setenv "PATH" (concat (getenv "PATH") ":/usr/bin"))
         (setq exec-path (append exec-path '("/usr/bin")))))
 #+END_SRC
+
 
 ** Hydra
 Hydra mode is a new package that allow one to create custom interfaces
@@ -1303,6 +1315,7 @@ and the like.
       :init
     (setq geiser-active-implementations '(racket)))
 #+END_SRC
+
 
 * Julia
 ** TODO Write some configurations --- broken at the moment
