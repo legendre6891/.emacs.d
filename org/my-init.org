@@ -463,6 +463,17 @@ GUI elements (e.g. linum-mode, theme, font).
 #+END_SRC
 
 
+** Smart Tab
+Trying this out as a replacement for SuperTab.
+#+BEGIN_SRC emacs-lisp
+  (use-package smart-tab
+    :load-path "lisp/"
+    :config
+    (progn
+      (global-smart-tab-mode)))
+#+END_SRC
+
+
 ** Restart Emacs
 It's nice to have a shortcut to restart emacs on.
 #+BEGIN_SRC emacs-lisp
