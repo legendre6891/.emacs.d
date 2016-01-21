@@ -146,7 +146,7 @@ A no-frills package to set some sensible defaults.
 
 *** Tab Settings
 #+BEGIN_SRC emacs-lisp
-(setq-default tab-width 4)
+(setq-default tab-width 8)
 (defvaralias 'c-basic-offset 'tab-width)
 (defvaralias 'cperl-indent-level 'tab-width)
 #+END_SRC
