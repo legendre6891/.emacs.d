@@ -605,6 +605,18 @@ longer the case! I have now disabled it.)
 
 
 
+** Smooth scroll
+Appparently this package is pretty good!
+#+BEGIN_SRC emacs-lisp
+  (use-package smooth-scroll
+:load-path "lisp/"
+    :config
+    (smooth-scroll-mode 1)
+    (setq smooth-scroll/vscroll-step-size 5)
+    )
+#+END_SRC
+
+
 * Expand Region and Avy Mode
 Expand region is occasionally useful for editing Lisp and I suppose
 sometimes for LaTeX if I set it up correctly. The =M-SPC= shortcut
