@@ -138,6 +138,12 @@ A no-frills package to set some sensible defaults.
   (use-package better-defaults
       :ensure t)
 #+END_SRC
+
+*** Disable trailing newline
+#+BEGIN_SRC emacs-lisp
+(setq-default mode-require-final-newline nil)
+#+END_SRC
+
 *** Visuals
 #+BEGIN_SRC emacs-lisp
 (setq ring-bell-function 'ignore)
