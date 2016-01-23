@@ -1,0 +1,5 @@
+# -*- mode: snippet; require-final-newline: nil -*-
+# name: void-pointer
+# key: vp
+# --
+void* 

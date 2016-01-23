@@ -219,10 +219,64 @@ Sane defaults for erasing region.
 
 Erase regions in a sane way.
 #+BEGIN_SRC emacs-lisp
-(global-set-key "\C-w" 'backward-kill-word)
-(global-set-key "\C-x\C-k" 'kill-region)
-(global-set-key "\C-c\C-k" 'kill-region)
+  (defun kill-word-or-region ()
+    (interactive)
+    (if (not (use-region-p))
+        (call-interactively 'backward-kill-word)
+        (call-interactively 'kill-region)))
+
+  (global-set-key "\C-w" 'kill-word-or-region)
+  (global-set-key "\C-x\C-k" 'kill-region)
+  (global-set-key "\C-c\C-k" 'kill-region)
 #+END_SRC
+
+If no line is selected, then just copy the line. See [[http://ergoemacs.org/emacs/emacs_copy_cut_current_line.html][Xah Lee's code]]
+for the following implementation.
+#+BEGIN_SRC emacs-lisp
+  (defun xah-copy-line-or-region ()
+    "Copy current line, or text selection.
+  When called repeatedly, append copy subsequent lines.
+  When `universal-argument' is called first, copy whole buffer
+  (respects `narrow-to-region').
+
+  URL `http://ergoemacs.org/emacs/emacs_copy_cut_current_line.html'
+  Version 2015-12-30"
+    (interactive)
+    (let (ξp1 ξp2)
+      (if current-prefix-arg
+          (setq ξp1 (point-min) ξp2 (point-max))
+          (if (use-region-p)
+              (setq ξp1 (region-beginning) ξp2 (region-end))
+              (setq ξp1 (line-beginning-position) ξp2 (line-end-position))))
+      (if (eq last-command this-command)
+          (progn
+            ;; (push-mark (point) "NOMSG" "ACTIVATE")
+            (kill-append "\n" nil)
+            (forward-line 1)
+            (end-of-line)
+            (kill-append (buffer-substring-no-properties (line-beginning-position) (line-end-position)) nil)
+            (message "Line copy appended"))
+          (progn
+            (kill-ring-save ξp1 ξp2)
+            (if current-prefix-arg
+                (message "Buffer text copied")
+                (message "Text copied"))))))
+
+
+  (global-set-key (kbd "M-w") 'xah-copy-line-or-region) ;copy
+#+END_SRC
+
+*** Commenting
+Evil nerd commenter doesn't require =evil-mode=, but it is a good
+package.
+#+BEGIN_SRC emacs-lisp
+  (use-package evil-nerd-commenter
+    :ensure t
+    :init
+    (progn
+      (evilnc-default-hotkeys)))
+#+END_SRC
+
 
 ** Global Keybindings
 *** F-keys
@@ -482,8 +536,8 @@ GUI elements (e.g. linum-mode, theme, font).
 
 
 ** Smart Tab
-Trying this out as a replacement for SuperTab.
-#+BEGIN_SRC emacs-lisp
+Trying this out as a replacement for SuperTab. UPDATE: Not yet.
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package smart-tab
     :load-path "lisp/"
     :config
@@ -535,7 +589,7 @@ Install but defer.
 The =aurora-theme= is the current favorite.
 The extra =t= flag is so we don't get asked about treating themes
 as safe. For now, don't active because keeping the default theme is best.
-#+BEGIN_SRC emacs-lisp :tangle yes
+#+BEGIN_SRC emacs-lisp :tangle no
 (load-theme 'solarized-dark t)
 #+END_SRC
 
@@ -551,7 +605,8 @@ as safe. For now, don't active because keeping the default theme is best.
                         :width 'normal))
 
   (if (eq system-type 'darwin)
-      (my-set-face "Menlo" 14))
+      (my-set-face "PragmataPro" 12))
+;      (my-set-face "Menlo" 14))
 
   (if (eq system-type 'windows-nt)
       (my-set-face "Consolas" 12))
@@ -670,12 +725,26 @@ to an org document.
 
 * Yasnippet
 ** Introduction
-Yasnippet is generally useful, except that it takes over
-the =TAB= key, which performs crucial functions in Org mode and
-CDLaTeX.
+Yasnippet is very useful once setup correctly for each mode.
+The problem is that the =TAB= key is too useful in Org-mode and
+CDLaTeX mode. Hence, we need a couple functions to effectively
+enable and disable keys on the fly.
+#+BEGIN_SRC emacs-lisp
+  (defun disable-yasnippet-key (key)
+    (define-key yas-minor-mode-map key nil))
 
-It seems that =C-;= is unused in both modes, so we will just map the
-key to that.
+  (defun disable-yasnippet-tab-key ()
+  (interactive)
+    (define-key yas-minor-mode-map [(tab)]        nil)
+    (define-key yas-minor-mode-map (kbd "TAB")    nil)
+    (define-key yas-minor-mode-map (kbd "<tab>")  nil))
+
+  (defun setup-yasnippet-next-key (key)
+    (define-key yas-minor-mode-map key 'yas-expand)
+    (define-key yas-keymap (kbd "C-;") 'yas-next-field-or-maybe-expand))
+#+END_SRC
+
+** Install and Disable Tab Key
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
       :ensure t
@@ -687,19 +756,13 @@ key to that.
       :config
       (progn
         (yas-global-mode)
-        (define-key yas-minor-mode-map (kbd "<tab>") nil)
-        (define-key yas-minor-mode-map (kbd "TAB") nil)
-        (define-key yas-minor-mode-map (kbd "C-;") 'yas-expand)
-        (define-key yas-keymap (kbd "C-j") 'yas-prev-field)
-        (define-key yas-keymap (kbd "C-;") 'yas-next-field-or-maybe-expand)
-        ))
+        (disable-yasnippet-tab-key)))
 #+END_SRC
 
 Use ido prompting method.
 #+BEGIN_SRC emacs-lisp
   (setq yas-prompt-functions '(yas-ido-prompt yas-completing-prompt))
 #+END_SRC
-
 
 
 ** Yasnippet Hydra
@@ -747,6 +810,119 @@ While in snippet mode, saving a snippet should just load and quit.
 
 ** TODO Add a shortcut for creating a snippet.
    
+
+* Company Mode goodness
+** Introduction and Installation
+Decided to settle down once and forall on configuring company mode.
+The question is what to do with the tab key, though it seems that
+integrating with =hippie-expand= is a good choice.
+
+See [[https://github.com/cqql/dotfiles/blob/master/src/.emacs.d/init.org][cqql's emacs init.org]] for more details here.
+#+BEGIN_SRC emacs-lisp
+    (use-package company
+        :ensure t
+      :bind ("C-M-SPC" . company-complete)
+      :init
+      (progn
+        (setf company-idle-delay 0
+              company-minimum-prefix-length 2
+              company-show-numbers t
+              company-selection-wrap-around t
+              company-backends (list
+                                #'company-irony
+                                #'company-company
+                                #'company-capf
+                                (list #'company-dabbrev-code
+                                      #'company-keywords)
+                                #'company-files))
+        (eval-after-load 'company
+          '(progn
+            (define-key company-active-map (kbd "TAB") 'company-select-next)
+            (define-key company-active-map [tab] 'company-select-next)))
+        )
+      :config
+      (global-company-mode t))
+
+    (use-package company-dabbrev
+      :init
+      (setf company-dabbrev-ignore-case 'keep-prefix
+            company-dabbrev-ignore-invisible t
+            company-dabbrev-downcase nil))
+
+  (use-package company-irony
+  :ensure t)
+#+END_SRC
+
+
+** Better Hippie Expand
+See [[https://www.reddit.com/r/emacs/comments/30h2gr/what_keybindings_do_you_use_for_completion/cpu1ui6][this reddit post]] for more details.
+*** Fix spelling in comments
+#+BEGIN_SRC emacs-lisp
+  (use-package helm-flyspell
+      :ensure t)
+
+  (use-package popup
+      :ensure t)
+
+  ;;;; Make flyspell-correct-word-before-point look better (not a mouse menu)
+
+  ;;;; See this link http://www.emacswiki.org/emacs/FlySpell#toc11
+  (defun flyspell-emacs-popup-textual (event poss word)
+    "A textual flyspell popup menu."
+    (require 'popup)
+    (let* ((corrects (if flyspell-sort-corrections
+                         (sort (car (cdr (cdr poss))) 'string<)
+                         (car (cdr (cdr poss)))))
+           (cor-menu (if (consp corrects)
+                         (mapcar (lambda (correct)
+                                   (list correct correct))
+                                 corrects)
+                         '()))
+           (affix (car (cdr (cdr (cdr poss)))))
+           show-affix-info
+           (base-menu  (let ((save (if (and (consp affix) show-affix-info)
+                                       (list
+                                        (list (concat "Save affix: " (car affix))
+                                              'save)
+                                        '("Accept (session)" session)
+                                        '("Accept (buffer)" buffer))
+                                       '(("Save word" save)
+                                         ("Accept (session)" session)
+                                         ("Accept (buffer)" buffer)))))
+                         (if (consp cor-menu)
+                             (append cor-menu (cons "" save))
+                             save)))
+           (menu (mapcar
+                  (lambda (arg) (if (consp arg) (car arg) arg))
+                  base-menu)))
+      (cadr (assoc (popup-menu* menu :scroll-bar t) base-menu))))
+
+
+  ;; (eval-after-load "flyspell"
+  ;;   '(progn
+  ;;     (fset 'flyspell-emacs-popup 'flyspell-emacs-popup-textual)))
+
+
+
+  (defun try-flyspell (arg)
+    (if (nth 4 (syntax-ppss))
+        (begin (call-interactively 'flyspell-correct-word-before-point)
+               t)
+        nil))
+#+END_SRC
+
+*** Better Hippie Expand
+See the same reddit post as above.
+#+BEGIN_SRC emacs-lisp
+  (setq hippie-expand-try-functions-list
+        '(try-flyspell
+          yas-hippie-try-expand 
+          try-expand-dabbrev-visible 
+          (lambda (arg) (call-interactively 'company-complete))
+          ))
+#+END_SRC
+
+
 
 * Smartparens
 =Smartparens= is almost a necessity in C-like languages; it is less
@@ -1322,6 +1498,18 @@ Next define easy shortcuts for inserting underscores
 and the like.
 
 
+** Yasnippets
+Enable =yasnippets= through =C-;=, which isn't used anywhere.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'plain-TeX-mode-hook 'disable-yasnippet-tab-key)
+  (add-hook 'LaTeX-mode-hook 'disable-yasnippet-tab-key)
+
+  (add-hook 'plain-TeX-mode-hook (↑ (setup-yasnippet-next-key (kbd "C-;"))))
+  (add-hook 'LaTeX-mode-hook (↑ (setup-yasnippet-next-key (kbd "C-;"))))
+
+#+END_SRC
+
+
 * Clojure
 
 
@@ -1366,6 +1554,44 @@ Anyhow, here is support for the J lang.
        '(j-conjunction-face ((t (:foreground "Blue"))))
        '(j-other-face ((t (:foreground "Black")))))
       )
+#+END_SRC
+
+
+* CC modes
+This section sets up =Emacs= to handle editing C and C++ files.
+
+** Yasnippet Backtick
+Since the backtick is never used in CC modes, we can use it to expand
+snippets!
+#+BEGIN_SRC emacs-lisp
+  (defun my-c-mode-common-hook ()
+    (define-key yas-minor-mode-map (kbd "`") 'yas-expand)
+    (define-key yas-keymap (kbd "`") 'yas-next-field-or-maybe-expand))
+
+  (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
+
+#+END_SRC
+
+
+** Irony Mode
+*** Installation
+#+BEGIN_SRC emacs-lisp
+(use-package irony
+:ensure t)
+
+(add-hook 'c++-mode-hook 'irony-mode)
+(add-hook 'c-mode-hook 'irony-mode)
+(add-hook 'objc-mode-hook 'irony-mode)
+
+;; replace the `completion-at-point' and `complete-symbol' bindings in
+;; irony-mode's buffers by irony-mode's function
+(defun my-irony-mode-hook ()
+  (define-key irony-mode-map [remap completion-at-point]
+    'irony-completion-at-point-async)
+  (define-key irony-mode-map [remap complete-symbol]
+    'irony-completion-at-point-async))
+(add-hook 'irony-mode-hook 'my-irony-mode-hook)
+(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
 #+END_SRC
 
 
