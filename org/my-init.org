@@ -608,7 +608,7 @@ as safe. For now, don't active because keeping the default theme is best.
                         :width 'normal))
 
   (if (eq system-type 'darwin)
-      (my-set-face "PragmataPro" 12))
+      (my-set-face "PragmataPro" 14))
 ;      (my-set-face "Menlo" 14))
 
   (if (eq system-type 'windows-nt)
