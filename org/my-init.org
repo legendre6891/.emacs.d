@@ -943,7 +943,6 @@ See the same reddit post as above.
 #+END_SRC
 
 
-
 * Smartparens
 =Smartparens= is almost a necessity in C-like languages; it is less
 essentially useless in Lisps because we will be using =paredit=. Also,
