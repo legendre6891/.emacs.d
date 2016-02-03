@@ -1151,6 +1151,15 @@ make a new template key for them, using =E=.
 #+END_SRC
 
 
+* Pandoc Mode
+Pandoc is probably the most versatile document converter at the
+moment. Let's use it until we are more comfortable wtih Org=mode.
+#+BEGIN_SRC emacs-lisp
+  (use-package pandoc-mode
+      :ensure t)
+#+END_SRC
+
+
 * Emacs-Lisp
 Use CL lisp indent; it seems preferable in these =use-package=
 macros.
