@@ -1666,6 +1666,7 @@ navigating the undo states much more intuitive.
 * Epilog
 Packages to investigate
 - [[https://github.com/mrkkrp/zzz-to-char][=zzz-char=]]
+- =char-menu=
 
 
 
