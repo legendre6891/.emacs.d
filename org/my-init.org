@@ -497,13 +497,15 @@ for =LaTeX= to work.
         (getenv "PATH")
         (setenv "PATH" (concat "/usr/texbin" ":" (getenv "PATH")))
 
+        (setenv "PATH" (concat "/Library/TeX/texbin" ":" (getenv "PATH")))
+
         (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
         (setq exec-path (append exec-path '("/usr/local/bin")))
 
         (setenv "PATH" (concat (getenv "PATH") ":/usr/bin"))
+
         (setq exec-path (append exec-path '("/usr/bin")))))
 #+END_SRC
-
 
 ** Hydra
 Hydra mode is a new package that allow one to create custom interfaces
