@@ -918,16 +918,16 @@ See [[https://www.reddit.com/r/emacs/comments/30h2gr/what_keybindings_do_you_use
       (cadr (assoc (popup-menu* menu :scroll-bar t) base-menu))))
 
 
-  ;; (eval-after-load "flyspell"
-  ;;   '(progn
-  ;;     (fset 'flyspell-emacs-popup 'flyspell-emacs-popup-textual)))
+  (eval-after-load "flyspell"
+    '(progn
+      (fset 'flyspell-emacs-popup 'flyspell-emacs-popup-textual)))
 
 
 
   (defun try-flyspell (arg)
     (if (nth 4 (syntax-ppss))
-        (begin (call-interactively 'flyspell-correct-word-before-point)
-               t)
+        (progn
+          (call-interactively 'flyspell-correct-word-before-point))
         nil))
 #+END_SRC
 
