@@ -935,7 +935,7 @@ See [[https://www.reddit.com/r/emacs/comments/30h2gr/what_keybindings_do_you_use
 See the same reddit post as above.
 #+BEGIN_SRC emacs-lisp
   (setq hippie-expand-try-functions-list
-        '(try-flyspell
+        '(;try-flyspell
           yas-hippie-try-expand 
           try-expand-dabbrev-visible 
           (lambda (arg) (call-interactively 'company-complete))
