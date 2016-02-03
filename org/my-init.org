@@ -531,6 +531,7 @@ GUI elements (e.g. linum-mode, theme, font).
     ("m" menu-bar-mode "Toggle menu bar.")
     ("t" (load-theme 'ample-flat) "Load theme")
     ("d" (disable-theme 'ample-flat) "Disable theme")
+    ("c" (call-interactively 'centered-window-mode) "Center the frame")
     )
 
   (global-set-key (kbd "<f2>") #'my-hydra-gui/body)
@@ -679,6 +680,23 @@ Appparently this package is pretty good!
     )
 #+END_SRC
 
+
+** Centered Windows Mode
+When only one window is active, center the text. This should be
+toggle-able with F2, as are the other appearance related settings.
+#+BEGIN_SRC emacs-lisp
+  (use-package centered-window-mode
+      :ensure t)
+#+END_SRC
+
+
+** Writeroom-Mode
+Sometimes, I just need to focus!
+#+BEGIN_SRC emacs-lisp
+(use-package writeroom-mode             ; Distraction-free editing
+  :ensure t
+  :bind (("C-c t r" . writeroom-mode)))
+#+END_SRC
 
 * Expand Region and Avy Mode
 Expand region is occasionally useful for editing Lisp and I suppose
