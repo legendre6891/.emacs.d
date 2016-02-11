@@ -1,6 +1,6 @@
 #+TITLE: Emacs Configuration
 #+AUTHOR: Kevin Li
-#+DATE: October 28, 2015
+#+DATE: February 5, 2015
 
 * Prelude
 This file is tangled and loaded via =init.el=, which
@@ -180,7 +180,7 @@ Set =<f8>= to editing this very file.
   (global-set-key (kbd "<f8>") (↑ (find-file init-org-file)))
 #+END_SRC
 
-See [[Yasnippet]]; there, =<f1>= is also bound.
+See [[Yasnippet]]; there, =<f1>= and =<f2>= is also bound.
 
 *** Popwin
 Don't let temporary buffers annoy you! /Disabled because =popwin=
@@ -494,18 +494,21 @@ for =LaTeX= to work.
         (setq mac-command-modifier 'meta)
         (setq mac-option-modifier nil)
 
-        (getenv "PATH")
+
         (setenv "PATH" (concat "/usr/texbin" ":" (getenv "PATH")))
 
         (setenv "PATH" (concat "/Library/TeX/texbin" ":" (getenv "PATH")))
 
         (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+
         (setq exec-path (append exec-path '("/usr/local/bin")))
+        (setq exec-path (append exec-path '("/Library/TeX/texbin")))
 
         (setenv "PATH" (concat (getenv "PATH") ":/usr/bin"))
 
         (setq exec-path (append exec-path '("/usr/bin")))))
 #+END_SRC
+
 
 ** Hydra
 Hydra mode is a new package that allow one to create custom interfaces
@@ -591,9 +594,9 @@ Install but defer.
 *** Activate theme
 The =aurora-theme= is the current favorite.
 The extra =t= flag is so we don't get asked about treating themes
-as safe. For now, don't active because keeping the default theme is best.
-#+BEGIN_SRC emacs-lisp :tangle no
-(load-theme 'solarized-dark t)
+as safe.
+#+BEGIN_SRC emacs-lisp :tangle yes
+(load-theme 'badwolf t)
 #+END_SRC
 
 
@@ -697,6 +700,7 @@ Sometimes, I just need to focus!
   :ensure t
   :bind (("C-c t r" . writeroom-mode)))
 #+END_SRC
+
 
 * Expand Region and Avy Mode
 Expand region is occasionally useful for editing Lisp and I suppose
@@ -1203,7 +1207,7 @@ I actually prefer DVI files, so let's leave the following setting
 off for now.
 #+BEGIN_SRC emacs-lisp
   (setq TeX-PDF-mode t)
-  (setq TeX-PDF-via-dvips-ps2pdf t)
+  (setq TeX-PDF-via-dvips-ps2pdf nil)
   (setq TeX-source-correlate-mode t)
 #+END_SRC
 
@@ -1295,9 +1299,21 @@ Hard-wrap and disable =electric-indent-mode= which messes
 up AucTeX's internal indentation code. This actually depends
 on AucTeX since it defines =LaTeX-mode-hook=.
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'LaTeX-mode-hook 'auto-fill-mode)
-  (add-hook 'plain-TeX-mode-hook 'auto-fill-mode)
-  (add-hook 'LaTeX-mode-hook (↑ (electric-indent-mode -1)))
+  (with-eval-after-load "tex"
+    (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
+    (add-hook 'plain-TeX-mode-hook 'auto-fill-mode)
+    (add-hook 'LaTeX-mode-hook (↑ (electric-indent-mode -1))))
+#+END_SRC
+
+*** Electric Math mode
+This seems helpful. See the [[http://ftp.gnu.org/gnu/auctex/11.89-extra/auctex.pdf][AucTeX manual]] for more details.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'plain-TeX-mode-hook
+             (lambda () (set (make-variable-buffer-local ’TeX-electric-math)
+                             (cons "$" "$"))))
+  (add-hook 'LaTeX-mode-hook
+             (lambda () (set (make-variable-buffer-local ’TeX-electric-math)
+                             (cons "\\(" "\\)"))))
 #+END_SRC
 
 
@@ -1312,6 +1328,27 @@ on AucTeX since it defines =LaTeX-mode-hook=.
         (setq reftex-plug-into-AuCTeX t)))
 
 (setq reftex-label-alist nil)
+#+END_SRC
+
+*** Cleverref
+See [[http://tex.stackexchange.com/questions/119253/cleveref-auctex-and-reftex-set-up/119273#119273][this TeX.SX question]] for details.
+#+BEGIN_SRC emacs-lisp
+(eval-after-load
+    "latex"
+  '(TeX-add-style-hook
+    "cleveref"
+    (lambda ()
+      (if (boundp 'reftex-ref-style-alist)
+      (add-to-list
+       'reftex-ref-style-alist
+       '("Cleveref" "cleveref"
+         (("\\cref" ?c) ("\\Cref" 13) ("\\cpageref" ?d) ("\\Cpageref" ?D)))))
+      (reftex-ref-style-activate "Cleveref")
+      (TeX-add-symbols
+       '("cref" TeX-arg-ref)
+       '("Cref" TeX-arg-ref)
+       '("cpageref" TeX-arg-ref)
+       '("Cpageref" TeX-arg-ref)))))
 #+END_SRC
 
 
@@ -1432,6 +1469,7 @@ Now add the environments.
             '(("axiom" ?a "ax" "axm" "Insert an axiom.")
               ("theorem" ?t "thr" "thr" "Insert a theorem.")
               ("lemma" ?l "lem" "lem" "Insert a lemma.")
+              ("example" ?x "ex" "exa" "Insert an example.")
               ("claim" ?c "clm" "clm" "Insert a claim.")
               ("proposition" ?p "prop" "prop" "Insert a proposition.")
               ("wts" ?w "ax" "wts" "Insert a 'want to show'.")
@@ -1442,6 +1480,27 @@ Now add the environments.
 #+END_SRC
 
 
+
+** Pretty Symbols
+Pretty symbols help when there is a lot of Greek letters. This doesn't
+quite work well yet (can't turn off the triangles),
+so let's not tangle it for now.
+#+BEGIN_SRC emacs-lisp :tangle no
+  (use-package magic-latex-buffer
+      :ensure t
+      :init
+      (progn
+        (setq magic-latex-enable-block-highlight nil
+              magic-latex-enable-suscript        nil
+              magic-latex-enable-pretty-symbols  t
+              magic-latex-enable-block-align     nil
+              magic-latex-enable-inline-image    nil
+              magic-latex-enable-minibuffer-echo nil)))
+
+  (with-eval-after-load 'latex
+    (define-key LaTeX-mode-map (kbd "<f3>") 'magic-latex-buffer)
+    )
+#+END_SRC
 
 ** Shortcuts
 *** Compiling
@@ -1496,6 +1555,20 @@ to justify  entire keybindings, so disable them.
 
   (with-eval-after-load 'latex
     (my-define-latex-keys LaTeX-mode-map "C-o" "\\circ")
+    (my-define-latex-keys LaTeX-mode-map "C-1" "\\frac{?}{}")
+    (my-define-latex-keys LaTeX-mode-map "M-i" "\\int_{?}^{}")
+    (my-define-latex-keys LaTeX-mode-map "M-s" "\\sum_{?}^{}")
+    (my-define-latex-keys LaTeX-mode-map "M-h" "\\text{?}")
+    (my-define-latex-keys LaTeX-mode-map "M-t" "\\text{?}")
+    (my-define-latex-keys LaTeX-mode-map "M-q" "\\quad?")
+    (my-define-latex-keys LaTeX-mode-map "M-Q" "\\qquad?")
+    (my-define-latex-keys LaTeX-mode-map "C-M-q" "\\qquad?")
+    (my-define-latex-keys LaTeX-mode-map "s-f" "{? \\over }")
+    (my-define-latex-keys LaTeX-mode-map "C-2" "\\sqrt{?}")
+    (my-define-latex-keys LaTeX-mode-map "C-9" "\\biggl( ? \\biggr)")
+    (my-define-latex-keys LaTeX-mode-map "C-0" "\\biggl[ ? \\biggr]")
+    (my-define-latex-keys LaTeX-mode-map "C-." "\\{ ? \\}")
+    (my-define-latex-keys LaTeX-mode-map "C-," "\\langle ? \\rangle")
     )
 
   (with-eval-after-load 'plain-tex
@@ -1508,6 +1581,7 @@ to justify  entire keybindings, so disable them.
     (my-define-latex-keys plain-TeX-mode-map "M-t" "\\hbox{?}")
     (my-define-latex-keys plain-TeX-mode-map "M-q" "\\quad?")
     (my-define-latex-keys plain-TeX-mode-map "M-Q" "\\qquad?")
+    (my-define-latex-keys plain-TeX-mode-map "C-M-q" "\\qquad?")
     (my-define-latex-keys plain-TeX-mode-map "s-f" "{? \\over }")
     (my-define-latex-keys plain-TeX-mode-map "C-4" "$$\n?\n$$")
     (my-define-latex-keys plain-TeX-mode-map "C-2" "\\sqrt{?}")
@@ -1535,6 +1609,27 @@ Enable =yasnippets= through =C-;=, which isn't used anywhere.
   (add-hook 'plain-TeX-mode-hook (↑ (setup-yasnippet-next-key (kbd "C-;"))))
   (add-hook 'LaTeX-mode-hook (↑ (setup-yasnippet-next-key (kbd "C-;"))))
 
+#+END_SRC
+
+
+* Emacs Speaks Statistics
+As opposed to using RStudio, let's use ESS because it's getting lots
+of great reviews!
+#+BEGIN_SRC emacs-lisp
+  (use-package ess
+      :ensure t
+      :init
+      (progn (setq ess-R-smart-operators t)     ; enables smart commas too
+             (autoload 'R-mode "ess-site"       
+               "Major mode for editing R source.  See `ess-mode' for more help."
+               t))
+      :config
+      (progn
+        (eval-after-load 'ess-smart-equals
+          '(progn
+            (add-hook 'ess-mode-hook 'ess-smart-equals-mode)
+            (add-hook 'inferior-ess-mode-hook 'ess-smart-equals-mode)))
+        (use-package ess-smart-equals :ensure t)))
 #+END_SRC
 
 
@@ -1666,6 +1761,7 @@ navigating the undo states much more intuitive.
 Packages to investigate
 - [[https://github.com/mrkkrp/zzz-to-char][=zzz-char=]]
 - =char-menu=
+- =latex-unicode-math-mode=
 
 
 
