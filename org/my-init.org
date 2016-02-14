@@ -1636,6 +1636,20 @@ of great reviews!
 * Clojure
 
 
+* Haskell
+Haskell is the cool kid on the block, and it is time to get
+comfortable with it to do more scripting.
+#+BEGIN_SRC emacs-lisp
+  (use-package haskell-mode
+      :ensure t
+      :config
+      (progn
+        (add-hook 'haskell-mode-hook 'haskell-indentation-mode)
+        (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+        (add-hook 'haskell-mode-hook 'turn-on-haskell-unicode-input-method)))
+#+END_SRC
+
+
 * Racket
 =Geiser= mode is good enough to use for Racket (Scheme).
 #+BEGIN_SRC emacs-lisp
