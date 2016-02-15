@@ -107,7 +107,7 @@ is. Later, we may define some shortcuts using these constants.
 
   (setq user-dropbox-folder
         (file-name-as-directory
-         (concat user-home-folder "Dropbox")))
+         (concat user-home-folder "Dropbox (MIT)")))
 #+END_SRC
 
 
@@ -156,31 +156,6 @@ A no-frills package to set some sensible defaults.
 (defvaralias 'c-basic-offset 'tab-width)
 (defvaralias 'cperl-indent-level 'tab-width)
 #+END_SRC
-
-*** F-keys
-Set =<f2>= and =<f3>= to =C-g= if the minibuffer is focused,
-otherwise, execute an extended command =M-x=, for which
-we use =smex=. 
-#+BEGIN_SRC emacs-lisp
-  (defun quit-or-smex ()
-    (interactive)
-    (if (window-minibuffer-p (frame-selected-window))
-        (keyboard-escape-quit)
-        (smex)))
-  (global-set-key (kbd "<f3>") 'quit-or-smex)
-  (global-set-key (kbd "<f4>") 'quit-or-smex)
-#+END_SRC
-
-Set =<f8>= to editing this very file.
-#+BEGIN_SRC emacs-lisp
-  (setq init-org-file
-        (concat
-         (file-name-as-directory (expand-file-name "org" user-emacs-directory))
-         "my-init.org"))
-  (global-set-key (kbd "<f8>") (↑ (find-file init-org-file)))
-#+END_SRC
-
-See [[Yasnippet]]; there, =<f1>= and =<f2>= is also bound.
 
 *** Popwin
 Don't let temporary buffers annoy you! /Disabled because =popwin=
@@ -302,6 +277,13 @@ Set =<f8>= to editing this very file.
   (global-set-key (kbd "<f8>") (↑ (find-file init-org-file)))
 #+END_SRC
 
+Set =<f3>= to search because =C-s= is slightly too painful.
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<f3>") 'isearch-forward-regexp)
+  (define-key isearch-mode-map (kbd "<f3>") 'isearch-repeat-forward)
+  (define-key isearch-mode-map (kbd "<f4>") 'isearch-repeat-backward)
+#+END_SRC
+
 
 Set =<f12>= to open the current buffer in Windows Explorer.
 Taken from here.
@@ -328,6 +310,21 @@ Taken from here.
       (global-set-key [f10] 'my-open-in-windows-explorer))
 
 #+END_SRC
+
+It is useful to have a master org file in which we keep all the random
+notes and stuff. For this to be useful, load the master file with a
+single =<f4>=.
+#+BEGIN_SRC emacs-lisp
+  (defun edit-master-org-file ()
+      (interactive)
+    (find-file (concat org-directory "master.org"))
+    )
+  (global-set-key (kbd "<f4>") #'edit-master-org-file)
+#+END_SRC
+
+
+See [[Yasnippet]] and Hydra; there, =<f1>= and =<f2>= is also bound.
+
 
 **** TODO Support other operating systems.
      
@@ -1045,7 +1042,11 @@ Set the global hotkeys which are commended in the manual.
   (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "C-c a") 'org-agenda)
   (global-set-key (kbd "C-c c") 'org-capture)
-  (global-set-key (kbd "C-c b") 'org-iswitchb)
+
+  (define-key org-mode-map (kbd "M-t")
+    (lambda () (interactive)
+            (setq current-prefix-arg '(4))
+            (call-interactively 'org-time-stamp-inactive)))
 #+END_SRC
   
 We need an easier key on LaTeX. In future Org versions, use
@@ -1151,6 +1152,14 @@ make a new template key for them, using =E=.
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'org-structure-template-alist
                '("E" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
+#+END_SRC
+
+
+** Org Settings
+Use =ido= for completion.
+#+BEGIN_SRC emacs-lisp
+(setq org-completion-use-ido t)
+(setq org-outline-path-complete-in-steps nil)
 #+END_SRC
 
 
