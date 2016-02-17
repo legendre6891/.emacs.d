@@ -15,3 +15,5 @@ org/*.pdf
 url/
 *.el~
 session.*
+/.DS_Store
+/.mc-lists.el
