@@ -285,7 +285,7 @@ Set =<f3>= to search because =C-s= is slightly too painful.
 #+END_SRC
 
 
-Set =<f12>= to open the current buffer in Windows Explorer.
+Set =<f10>= to open the current buffer in Windows Explorer.
 Taken from here.
 #+BEGIN_SRC emacs-lisp
   (defun my-open-in-windows-explorer ()
@@ -303,7 +303,8 @@ Taken from here.
         (browse-url-of-file (expand-file-name default-directory))
       (error "No `default-directory' to open")))
 
-  (if (eq system-type 'gnu/linux)
+  (if (or (eq system-type 'gnu/linux)
+          (eq system-type 'darwin))
       (global-set-key [f10] #'browse-file-directory))
 
   (if (eq system-type 'windows-nt)
@@ -706,9 +707,17 @@ usually doesn't work (on Windows/Linux), but thankfully I know how
 disable it in Linux. 
 #+BEGIN_SRC emacs-lisp
   (use-package expand-region
-      :ensure t
-      :bind
-      (("C-=" . er/expand-region)))
+      :ensure t)
+
+  (global-set-key (kbd "M-n")
+                  (lambda ()
+                    (interactive)
+                    (er/expand-region 1)))
+
+  (global-set-key (kbd "M-m")
+                  (lambda ()
+                    (interactive)
+                    (er/expand-region -1)))
 #+END_SRC
 ** TODO Windows Alt Space shortcut
 
@@ -723,6 +732,20 @@ Avy mode helps is a quicker way to move around; they work like Vim's
       (("M-SPC" . avy-goto-char-2)))
 #+END_SRC
 
+
+
+* Multiple Cursors
+Multiple cursors is lots of fun!
+#+BEGIN_SRC emacs-lisp
+  (use-package multiple-cursors
+      :ensure t)
+
+  (global-set-key (kbd "M-j") 'mc/mark-next-like-this)
+  (global-set-key (kbd "M-k") 'mc/mark-previous-like-this)
+  (global-set-key (kbd "M-J") 'mc/mark-all-like-this)
+  (global-set-key (kbd "M-.") 'mc/edit-lines)
+
+#+END_SRC
 
 
 * Evil Mode
@@ -1031,7 +1054,7 @@ automagically wrap at 80 columns.
 Set the *default directory* for Org-mode.
 #+BEGIN_SRC emacs-lisp
   (let ((org-folder
-         (file-name-as-directory (concat user-dropbox-folder "ORG"))))
+         (file-name-as-directory (concat user-dropbox-folder "Org"))))
     (setq org-directory org-folder))
 #+END_SRC
 
@@ -1481,7 +1504,7 @@ Now add the environments.
               ("example" ?x "ex" "exa" "Insert an example.")
               ("claim" ?c "clm" "clm" "Insert a claim.")
               ("proposition" ?p "prop" "prop" "Insert a proposition.")
-              ("wts" ?w "ax" "wts" "Insert a 'want to show'.")
+              ("wts" ?w "wts" "wts" "Insert a 'want to show'.")
               ("definition" ?d "def" "def" "Insert a definition."))))
 
   (add-to-list 'cdlatex-command-alist
@@ -1510,6 +1533,7 @@ so let's not tangle it for now.
     (define-key LaTeX-mode-map (kbd "<f3>") 'magic-latex-buffer)
     )
 #+END_SRC
+
 
 ** Shortcuts
 *** Compiling
