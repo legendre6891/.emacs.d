@@ -339,6 +339,15 @@ a GUI. Rebind it to undo.
   (global-set-key (kbd "C-z") #'undo)
 #+END_SRC
 
+*** Replace region
+Replace string is an awesome feature. Use it.
+Disabled for now; see the next section on 
+Visual Regexp.
+#+BEGIN_SRC emacs-lisp :tangle no
+  (global-set-key (kbd "M-r") #'replace-string)
+  (global-set-key (kbd "M-R") #'replace-regexp)
+#+END_SRC
+
 
 ** Ido, Recentf, and Smex
 *** General settings
@@ -559,6 +568,16 @@ It's nice to have a shortcut to restart emacs on.
       (global-set-key (kbd "<pause>") #'restart-emacs))
 #+END_SRC
 
+
+** Visual Regexp
+This is a great package that provides live feedback on regexps.
+#+BEGIN_SRC emacs-lisp
+  (use-package visual-regexp
+      :ensure t
+      :config
+      (progn
+        (global-set-key (kbd "M-r") 'vr/replace)))
+#+END_SRC
 
 * Look and Feel
 Here, we install various themes.  Install =emacs24= themes and set up
