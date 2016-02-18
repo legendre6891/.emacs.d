@@ -17,3 +17,6 @@ url/
 session.*
 /.DS_Store
 /.mc-lists.el
+/#ido.last#
+irony-server
+*irony-server*
