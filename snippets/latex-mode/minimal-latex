@@ -1,0 +1,169 @@
+# -*- mode: snippet -*-
+# name: minimal-latex
+# key:
+# --
+\documentclass[10pt, twocolumn]{scrartcl}
+
+%   _____ ___  _   _ _____      __  __  __    _  _____ _   _ 
+%  |  ___/ _ \| \ | |_   _|    / / |  \/  |  / \|_   _| | | |
+%  | |_ | | | |  \| | | |     / /  | |\/| | / _ \ | | | |_| |
+%  |  _|| |_| | |\  | | |    / /   | |  | |/ ___ \| | |  _  |
+%  |_|   \___/|_| \_| |_|   /_/    |_|  |_/_/   \_\_| |_| |_|
+\usepackage{tgtermes}
+\usepackage[subscriptcorrection]{mtpro2}
+\usepackage{amsmath, amsthm}
+\usepackage{mathtools}
+\theoremstyle{definition}
+\newtheorem{theorem}{Theorem}
+\newtheorem*{theorem*}{Theorem}
+\newtheorem*{claim*}{Claim}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{prop}[theorem]{Proposition}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{claim}[theorem]{Claim}
+\newtheorem{assumption}[theorem]{Assumption}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem*{notation}{Notation}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{example}[theorem]{Example}
+\newtheorem*{answer}{Final Answer}
+\newtheorem*{wts}{Want To Show}
+
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+\newtheorem*{note}{Note}
+
+
+%  __  __    _    ____   ____ ___ _   _ ____  
+% |  \/  |  / \  |  _ \ / ___|_ _| \ | / ___| 
+% | |\/| | / _ \ | |_) | |  _ | ||  \| \___ \ 
+% | |  | |/ ___ \|  _ <| |_| || || |\  |___) |
+% |_|  |_/_/   \_\_| \_\\____|___|_| \_|____/ 
+\usepackage[bmargin=0.5in,hmargin=0.3in,tmargin=0.3in,footskip=0.3in]{geometry}
+
+%  _   _ _____    _    ____ ___ _   _  ____ ____  
+% | | | | ____|  / \  |  _ \_ _| \ | |/ ___/ ___| 
+% | |_| |  _|   / _ \ | | | | ||  \| | |  _\___ \ 
+% |  _  | |___ / ___ \| |_| | || |\  | |_| |___) |
+% |_| |_|_____/_/   \_\____/___|_| \_|\____|____/ 
+\usepackage[compact]{titlesec}
+\titleformat*{\section}{\fontfamily{lmss}\selectfont\Large\bfseries}
+\titleformat*{\subsection}{\fontfamily{lmss}\selectfont\large\bfseries}
+\titleformat*{\subsubsection}{\fontfamily{lmss}\selectfont\bfseries}
+\titlespacing*{\section}{0pt}{0pt}{0pt}
+\titlespacing*{\subsection}{0pt}{0pt}{0pt}
+\titlespacing*{\subsubsection}{0pt}{0pt}{0pt}
+\setcounter{secnumdepth}{-2}
+
+%  _   _ _____ ___ _     ___ _____ ___ _____ ____  
+% | | | |_   _|_ _| |   |_ _|_   _|_ _| ____/ ___| 
+% | | | | | |  | || |    | |  | |  | ||  _| \___ \ 
+% | |_| | | |  | || |___ | |  | |  | || |___ ___) |
+%  \___/  |_| |___|_____|___| |_| |___|_____|____/ 
+\usepackage{cleveref}
+\usepackage{enumitem}
+
+
+% _____  _    ____  _     _____ ____  
+%|_   _|/ \  | __ )| |   | ____/ ___| 
+%  | | / _ \ |  _ \| |   |  _| \___ \ 
+%  | |/ ___ \| |_) | |___| |___ ___) |
+%  |_/_/   \_\____/|_____|_____|____/ 
+
+\usepackage[labelfont=bf,format=plain,labelsep=period,width=.85\textwidth]{caption}
+\usepackage{booktabs}
+\usepackage[section]{placeins}
+\usepackage{float}
+
+
+\newcounter{EquationCounter}
+\newcounter{FigureCounter}
+\newcounter{TableCounter}
+
+\newcommand{\Equation}{
+\def\figurename{Equation}
+\setcounter{figure}{\value{EquationCounter}}
+\stepcounter{EquationCounter}
+}
+
+\newcommand{\Figure}{
+  \def\figurename{Figure}
+\setcounter{figure}{\value{FigureCounter}}
+\stepcounter{FigureCounter}
+}
+
+\newcommand{\Table}{
+  \def\figurename{Table}
+\setcounter{figure}{\value{TableCounter}}
+\stepcounter{TableCounter}
+}
+
+
+
+%   ___  ____  _____ ____      _  _____ ___  ____  ____  
+%  / _ \|  _ \| ____|  _ \    / \|_   _/ _ \|  _ \/ ___| 
+% | | | | |_) |  _| | |_) |  / _ \ | || | | | |_) \___ \ 
+% | |_| |  __/| |___|  _ <  / ___ \| || |_| |  _ < ___) |
+%  \___/|_|   |_____|_| \_\/_/   \_\_| \___/|_| \_\____/ 
+
+\let\P\relax
+\DeclareMathOperator{\E}{\mathbf{E}}
+\DeclareMathOperator{\P}{\mathbf{P}}
+\DeclareMathOperator{\Q}{\mathbf{Q}}
+\DeclareMathOperator{\Cov}{\mathbf{Cov}}
+\DeclareMathOperator{\Var}{\mathbf{Var}}
+\DeclareMathOperator{\Unif}{\textsc{Unif}}
+\DeclareMathOperator{\Bernoulli}{\textsc{B}}
+\DeclareMathOperator{\Poisson}{\textsc{Pois}}
+\DeclareMathOperator{\Normal}{\textsc{Normal}}
+\DeclareMathOperator*{\argmin}{arg\,min}
+\DeclareMathOperator*{\argmax}{arg\,max}
+
+\newcommand{\Pto}{\xrightarrow[\phantom{n\to\infty}]{\P}}
+
+\def\R{\mathbf{R}}
+
+\makeatletter
+\newcommand*{\indep}{%
+  \mathbin{%
+    \mathpalette{\@indep}{}%
+  }%
+}
+\newcommand*{\nindep}{%
+  \mathbin{%                   % The final symbol is a binary math operator
+    \mathpalette{\@indep}{\not}% \mathpalette helps for the adaptation
+                               % of the symbol to the different math styles.
+  }%
+}
+\newcommand*{\@indep}[2]{%
+  % #1: math style
+  % #2: empty or \not
+  \sbox0{$#1\perp\m@th$}%        box 0 contains \perp symbol
+  \sbox2{$#1=$}%                 box 2 for the height of =
+  \sbox4{$#1\vcenter{}$}%        box 4 for the height of the math axis
+  \rlap{\copy0}%                 first \perp
+  \dimen@=\dimexpr\ht2-\ht4-.2pt\relax
+      % The equals symbol is centered around the math axis.
+      % The following equations are used to calculate the
+      % right shift of the second \perp:
+      % [1] ht(equals) - ht(math_axis) = line_width + 0.5 gap
+      % [2] right_shift(second_perp) = line_width + gap
+      % The line width is approximated by the default line width of 0.4pt
+  \kern\dimen@
+  {#2}%
+      % {\not} in case of \nindep;
+      % the braces convert the relational symbol \not to an ordinary
+      % math object without additional horizontal spacing.
+  \kern\dimen@
+  \copy0 %                       second \perp
+} 
+\makeatother
+
+
+                                                                    
+
+
+\begin{document}
+$0
+\end{document}
