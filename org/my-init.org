@@ -144,6 +144,11 @@ A no-frills package to set some sensible defaults.
 (setq-default mode-require-final-newline nil)
 #+END_SRC
 
+*** Auto Revert Mode
+No reason not to have files auto-revert in 2016.
+#+BEGIN_SRC emacs-lisp
+  (global-auto-revert-mode t)
+#+END_SRC
 *** Visuals
 #+BEGIN_SRC emacs-lisp
 (setq ring-bell-function 'ignore)
@@ -578,6 +583,7 @@ This is a great package that provides live feedback on regexps.
       (progn
         (global-set-key (kbd "M-r") 'vr/replace)))
 #+END_SRC
+
 
 * Look and Feel
 Here, we install various themes.  Install =emacs24= themes and set up
