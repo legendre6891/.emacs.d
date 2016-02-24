@@ -546,7 +546,7 @@ GUI elements (e.g. linum-mode, theme, font).
     ("m" menu-bar-mode "Toggle menu bar.")
     ("t" (load-theme 'ample-flat) "Load theme")
     ("d" (disable-theme 'ample-flat) "Disable theme")
-    ("c" (call-interactively 'centered-window-mode) "Center the frame")
+    ;; ("c" (call-interactively 'centered-window-mode) "Center the frame")
     )
 
   (global-set-key (kbd "<f2>") #'my-hydra-gui/body)
@@ -710,7 +710,8 @@ Appparently this package is pretty good!
 ** Centered Windows Mode
 When only one window is active, center the text. This should be
 toggle-able with F2, as are the other appearance related settings.
-#+BEGIN_SRC emacs-lisp
+This package is buggy---disable for now.
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package centered-window-mode
       :ensure t)
 #+END_SRC
