@@ -579,6 +579,7 @@ This is a great package that provides live feedback on regexps.
         (global-set-key (kbd "M-r") 'vr/replace)))
 #+END_SRC
 
+
 * Look and Feel
 Here, we install various themes.  Install =emacs24= themes and set up
 a font. I'm not sure at this point whether to simply /install/ the
@@ -1822,6 +1823,14 @@ navigating the undo states much more intuitive.
       :bind ("C-x g" . magit-status))
 #+END_SRC
 
+
+* Small Utilities
+** Tomatinho
+Seems like a good Pomodoro tracker.
+#+BEGIN_SRC emacs-lisp
+  (use-package tomatinho
+      :ensure t)
+#+END_SRC
 
 * Epilog
 Packages to investigate
