@@ -1687,6 +1687,7 @@ of great reviews!
         (eval-after-load 'ess-smart-equals
           '(progn
             (add-hook 'ess-mode-hook 'ess-smart-equals-mode)
+            (add-hook 'ess-mode-hook 'electric-pair-mode)
             (add-hook 'inferior-ess-mode-hook 'ess-smart-equals-mode)))
         (use-package ess-smart-equals :ensure t)))
 #+END_SRC
