@@ -144,6 +144,11 @@ A no-frills package to set some sensible defaults.
 (setq-default mode-require-final-newline nil)
 #+END_SRC
 
+*** Auto Revert Mode
+No reason not to have files auto-revert in 2016.
+#+BEGIN_SRC emacs-lisp
+  (global-auto-revert-mode t)
+#+END_SRC
 *** Visuals
 #+BEGIN_SRC emacs-lisp
 (setq ring-bell-function 'ignore)
@@ -541,7 +546,7 @@ GUI elements (e.g. linum-mode, theme, font).
     ("m" menu-bar-mode "Toggle menu bar.")
     ("t" (load-theme 'ample-flat) "Load theme")
     ("d" (disable-theme 'ample-flat) "Disable theme")
-    ("c" (call-interactively 'centered-window-mode) "Center the frame")
+    ;; ("c" (call-interactively 'centered-window-mode) "Center the frame")
     )
 
   (global-set-key (kbd "<f2>") #'my-hydra-gui/body)
@@ -608,13 +613,16 @@ Install but defer.
   (use-package badwolf-theme
     :defer t
     :ensure t)
+  (use-package tango-plus-theme
+    :defer t
+    :ensure t)
 #+END_SRC
 *** Activate theme
 The =aurora-theme= is the current favorite.
 The extra =t= flag is so we don't get asked about treating themes
 as safe.
 #+BEGIN_SRC emacs-lisp :tangle yes
-(load-theme 'badwolf t)
+(load-theme 'tango-plus t)
 #+END_SRC
 
 
@@ -705,7 +713,8 @@ Appparently this package is pretty good!
 ** Centered Windows Mode
 When only one window is active, center the text. This should be
 toggle-able with F2, as are the other appearance related settings.
-#+BEGIN_SRC emacs-lisp
+This package is buggy---disable for now.
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package centered-window-mode
       :ensure t)
 #+END_SRC
@@ -1681,6 +1690,7 @@ of great reviews!
         (eval-after-load 'ess-smart-equals
           '(progn
             (add-hook 'ess-mode-hook 'ess-smart-equals-mode)
+            (add-hook 'ess-mode-hook 'electric-pair-mode)
             (add-hook 'inferior-ess-mode-hook 'ess-smart-equals-mode)))
         (use-package ess-smart-equals :ensure t)))
 #+END_SRC
