@@ -613,13 +613,16 @@ Install but defer.
   (use-package badwolf-theme
     :defer t
     :ensure t)
+  (use-package tango-plus-theme
+    :defer t
+    :ensure t)
 #+END_SRC
 *** Activate theme
 The =aurora-theme= is the current favorite.
 The extra =t= flag is so we don't get asked about treating themes
 as safe.
 #+BEGIN_SRC emacs-lisp :tangle yes
-(load-theme 'ample t)
+(load-theme 'tango-plus t)
 #+END_SRC
 
 
