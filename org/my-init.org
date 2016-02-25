@@ -1,6 +1,6 @@
 #+TITLE: Emacs Configuration
 #+AUTHOR: Kevin Li
-#+DATE: February 5, 2015
+#+DATE: February 25, 2016
 
 * Prelude
 This file is tangled and loaded via =init.el=, which
@@ -550,6 +550,32 @@ GUI elements (e.g. linum-mode, theme, font).
     )
 
   (global-set-key (kbd "<f2>") #'my-hydra-gui/body)
+#+END_SRC
+
+
+*** Expand Region Hydras
+I shamelessly stole these from
+[[http://cute-jumper.github.io/emacs/2016/02/22/my-simple-setup-to-avoid-rsi-in-emacs][here]]. It eases with expand region. 
+#+BEGIN_SRC emacs-lisp
+  (defhydra hydra-mark (:body-pre (call-interactively 'set-mark-command)
+                                  :exit t)
+    "hydra for mark commands"
+    ("SPC" er/expand-region)
+    ("P" er/mark-inside-pairs)
+    ("Q" er/mark-inside-quotes)
+    ("p" er/mark-outside-pairs)
+    ("q" er/mark-outside-quotes)
+    ("d" er/mark-defun)
+    ("c" er/mark-comment)
+    ("." er/mark-text-sentence)
+    ("h" er/mark-text-paragraph)
+    ("w" er/mark-word)
+    ("u" er/mark-url)
+    ("m" er/mark-email)
+    ("s" er/mark-symbol)
+    ("j" (funcall 'set-mark-command t) :exit nil))
+
+  (bind-key* "S-SPC" #'hydra-mark/body)
 #+END_SRC
 
 
@@ -1842,12 +1868,19 @@ Seems like a good Pomodoro tracker.
       :ensure t)
 #+END_SRC
 
+** Rainbow
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-mode
+      :ensure t)
+#+END_SRC
+
+
 * Epilog
 Packages to investigate
 - [[https://github.com/mrkkrp/zzz-to-char][=zzz-char=]]
 - =char-menu=
 - =latex-unicode-math-mode=
-
+- [[https://github.com/noctuid/general.el][=general=]] for keybindings.
 
 
 
