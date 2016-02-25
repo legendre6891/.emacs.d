@@ -640,8 +640,7 @@ Install but defer.
     :defer t
     :ensure t)
   (use-package tango-plus-theme
-    :defer t
-    :ensure t)
+      :load-path "lisp/")
 #+END_SRC
 *** Activate theme
 The =aurora-theme= is the current favorite.
