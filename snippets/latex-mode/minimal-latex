@@ -12,6 +12,7 @@
 \usepackage{tgtermes}
 \usepackage[subscriptcorrection]{mtpro2}
 \usepackage{amsmath, amsthm}
+\usepackage{cleveref}
 \usepackage{mathtools}
 \theoremstyle{definition}
 \newtheorem{theorem}{Theorem}
@@ -61,9 +62,8 @@
 % | | | | | |  | || |    | |  | |  | ||  _| \___ \ 
 % | |_| | | |  | || |___ | |  | |  | || |___ ___) |
 %  \___/  |_| |___|_____|___| |_| |___|_____|____/ 
-\usepackage{cleveref}
 \usepackage{enumitem}
-
+\usepackage{microtype}
 
 % _____  _    ____  _     _____ ____  
 %|_   _|/ \  | __ )| |   | ____/ ___| 
