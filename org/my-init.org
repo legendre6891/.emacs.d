@@ -1,6 +1,6 @@
 #+TITLE: Emacs Configuration
 #+AUTHOR: Kevin Li
-#+DATE: February 5, 2015
+#+DATE: February 25, 2016
 
 * Prelude
 This file is tangled and loaded via =init.el=, which
@@ -552,6 +552,11 @@ GUI elements (e.g. linum-mode, theme, font).
   (global-set-key (kbd "<f2>") #'my-hydra-gui/body)
 #+END_SRC
 
+*** Expand Region Hydras
+See [[Expand Region]].
+*** Avy Hydra
+See section on [[Avy]].
+
 
 ** Smart Tab
 Trying this out as a replacement for SuperTab. UPDATE: Not yet.
@@ -614,8 +619,7 @@ Install but defer.
     :defer t
     :ensure t)
   (use-package tango-plus-theme
-    :defer t
-    :ensure t)
+      :load-path "lisp/")
 #+END_SRC
 *** Activate theme
 The =aurora-theme= is the current favorite.
@@ -628,7 +632,7 @@ as safe.
 
 ** Fonts
 *** Activating a font
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (defun my-set-face (font height)
     (set-face-attribute 'default nil
                         :family font
@@ -638,15 +642,12 @@ as safe.
 
   (if (eq system-type 'darwin)
       (my-set-face "PragmataPro" 14))
-;      (my-set-face "Menlo" 14))
 
   (if (eq system-type 'windows-nt)
       (my-set-face "Consolas" 12))
 
   (if (eq system-type 'gnu/linux)
       (my-set-face "PragmataPro" 12))
-
-    
 #+END_SRC
 
 *** TODO cycle between fonts
@@ -729,7 +730,7 @@ Sometimes, I just need to focus!
 #+END_SRC
 
 
-* Expand Region and Avy Mode
+* Expand Region
 Expand region is occasionally useful for editing Lisp and I suppose
 sometimes for LaTeX if I set it up correctly. The =M-SPC= shortcut
 usually doesn't work (on Windows/Linux), but thankfully I know how
@@ -748,9 +749,35 @@ disable it in Linux.
                     (interactive)
                     (er/expand-region -1)))
 #+END_SRC
-** TODO Windows Alt Space shortcut
+
+I shamelessly stole these from
+[[http://cute-jumper.github.io/emacs/2016/02/22/my-simple-setup-to-avoid-rsi-in-emacs][here]]; it helps with expand region. Fortunately, I think that the
+=M-n= shortcut is good enough, so let's disable it for now.
+#+BEGIN_SRC emacs-lisp :tangle no
+  (defhydra hydra-mark (:body-pre (call-interactively 'set-mark-command)
+                                  :exit t)
+    "hydra for mark commands"
+    ("SPC" er/expand-region)
+    ("S-SPC" er/expand-region)
+    ("P" er/mark-inside-pairs)
+    ("Q" er/mark-inside-quotes)
+    ("p" er/mark-outside-pairs)
+    ("q" er/mark-outside-quotes)
+    ("d" er/mark-defun)
+    ("c" er/mark-comment)
+    ("." er/mark-text-sentence)
+    ("h" er/mark-text-paragraph)
+    ("w" er/mark-word)
+    ("u" er/mark-url)
+    ("m" er/mark-email)
+    ("s" er/mark-symbol)
+    ("j" (funcall 'set-mark-command t) :exit nil))
+
+  (bind-key* "S-SPC" #'hydra-mark/body)
+#+END_SRC
 
 
+* Avy
 Avy mode helps is a quicker way to move around; they work like Vim's
 =f=, =F=, =t=, =T= operators.
 #+BEGIN_SRC emacs-lisp
@@ -759,6 +786,24 @@ Avy mode helps is a quicker way to move around; they work like Vim's
       :bind
       (("C-'" . avy-goto-char-2))
       (("M-SPC" . avy-goto-char-2)))
+#+END_SRC
+
+It is nice to setup a hydra from Avy for easier access. How about
+double tapping the semicolon key?
+#+BEGIN_SRC emacs-lisp
+  (defhydra hydra-avy (:color blue
+                               :body-pre (insert ";")
+                               :idle 1.0)
+    (";" (progn
+           (delete-char -1)
+           (call-interactively 'avy-goto-word-1)))
+
+    ("," (progn
+           (delete-char -1)
+           (call-interactively 'avy-goto-char-2)))
+  )
+
+  (global-set-key (kbd ";") 'hydra-avy/body)
 #+END_SRC
 
 
@@ -1834,12 +1879,27 @@ navigating the undo states much more intuitive.
 #+END_SRC
 
 
+* Small Utilities
+** Tomatinho
+Seems like a good Pomodoro tracker.
+#+BEGIN_SRC emacs-lisp
+  (use-package tomatinho
+      :ensure t)
+#+END_SRC
+
+** Rainbow
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-mode
+      :ensure t)
+#+END_SRC
+
+
 * Epilog
 Packages to investigate
 - [[https://github.com/mrkkrp/zzz-to-char][=zzz-char=]]
 - =char-menu=
 - =latex-unicode-math-mode=
-
+- [[https://github.com/noctuid/general.el][=general=]] for keybindings.
 
 
 
