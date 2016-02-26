@@ -1434,8 +1434,8 @@ Now we can always turn it on, both for LaTeX and for TeX.
 Thankfully, [[Smartparens][=smartparens=]] can be ued in LaTeX mode no problem;
 therefore, we don't need to have CDLaTeX do the work
 #+BEGIN_SRC emacs-lisp
-  (setq cdlatex-paired-parens "")
-  (define-key cdlatex-mode-map "$" nil)
+  (setq cdlatex-paired-parens "$")
+  ;; (define-key cdlatex-mode-map "$" nil)
   (define-key cdlatex-mode-map "(" nil)
   (define-key cdlatex-mode-map "{" nil)
   (define-key cdlatex-mode-map "[" nil)
