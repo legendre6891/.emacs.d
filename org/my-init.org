@@ -791,19 +791,24 @@ Avy mode helps is a quicker way to move around; they work like Vim's
 It is nice to setup a hydra from Avy for easier access. How about
 double tapping the semicolon key?
 #+BEGIN_SRC emacs-lisp
-  (defhydra hydra-avy (:color blue
-                               :body-pre (insert ";")
-                               :idle 1.0)
+  (defhydra hydra-avy-semicolon (:color blue
+                       :body-pre (insert ";")
+                       :idle 1.0)
     (";" (progn
            (delete-char -1)
-           (call-interactively 'avy-goto-word-1)))
+           (call-interactively 'avy-goto-word-1))))
 
-    ("," (progn
+
+  (defhydra hydra-avy-j (:color blue
+                       :body-pre (insert "j")
+                       :idle 1.0)
+    ("k" (progn
            (delete-char -1)
-           (call-interactively 'avy-goto-char-2)))
-  )
+           (call-interactively 'avy-goto-char-2))))
 
-  (global-set-key (kbd ";") 'hydra-avy/body)
+  (global-set-key (kbd ";") 'hydra-avy-semicolon/body)
+  (global-set-key (kbd "j") 'hydra-avy-j/body)
+
 #+END_SRC
 
 
