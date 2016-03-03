@@ -808,9 +808,7 @@ double tapping the semicolon key?
 
   (global-set-key (kbd ";") 'hydra-avy-semicolon/body)
   (global-set-key (kbd "j") 'hydra-avy-j/body)
-
 #+END_SRC
-
 
 
 * Multiple Cursors
@@ -1725,6 +1723,7 @@ Enable =yasnippets= through =C-;=, which isn't used anywhere.
 
 
 * Emacs Speaks Statistics
+** Installation
 As opposed to using RStudio, let's use ESS because it's getting lots
 of great reviews!
 #+BEGIN_SRC emacs-lisp
@@ -1745,6 +1744,16 @@ of great reviews!
         (use-package ess-smart-equals :ensure t)))
 #+END_SRC
 
+** Keybinds
+Certain keybinds are nice to have in a =.R= buffer.
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'ess
+    (progn
+      (define-key  ess-mode-map (kbd "C-t") 'ess-switch-to-inferior-or-script-buffer)
+      (define-key  inferior-ess-mode-map (kbd "C-t") 'ess-switch-to-inferior-or-script-buffer)
+      )
+    )
+#+END_SRC
 
 * Clojure
 
