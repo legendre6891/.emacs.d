@@ -3,6 +3,9 @@
 # key:
 # --
 \documentclass[10pt, twocolumn]{article}
+\usepackage[utf8]{inputenc}
+
+
 
 %   _____ ___  _   _ _____      __  __  __    _  _____ _   _ 
 %  |  ___/ _ \| \ | |_   _|    / / |  \/  |  / \|_   _| | | |
@@ -11,9 +14,17 @@
 %  |_|   \___/|_| \_| |_|   /_/    |_|  |_/_/   \_\_| |_| |_|
 \usepackage{tgtermes}
 \usepackage[subscriptcorrection]{mtpro2}
-\usepackage{amsmath, amsthm}
+\usepackage{amsmath}
+
+%  _____ _   _ _____ ___  ____  _____ __  __ ____  
+% |_   _| | | | ____/ _ \|  _ \| ____|  \/  / ___| 
+%   | | | |_| |  _|| | | | |_) |  _| | |\/| \___ \ 
+%   | | |  _  | |__| |_| |  _ <| |___| |  | |___) |
+%   |_| |_| |_|_____\___/|_| \_\_____|_|  |_|____/ 
+\usepackage{amsthm}
 \usepackage{cleveref}
 \usepackage{mathtools}
+
 \theoremstyle{definition}
 \newtheorem{theorem}{Theorem}
 \newtheorem*{theorem*}{Theorem}
@@ -63,19 +74,17 @@
 % | |_| | | |  | || |___ | |  | |  | || |___ ___) |
 %  \___/  |_| |___|_____|___| |_| |___|_____|____/ 
 \usepackage{enumitem}
-\usepackage{microtype}
+\usepackage[final]{microtype}
 
 % _____  _    ____  _     _____ ____  
 %|_   _|/ \  | __ )| |   | ____/ ___| 
 %  | | / _ \ |  _ \| |   |  _| \___ \ 
 %  | |/ ___ \| |_) | |___| |___ ___) |
 %  |_/_/   \_\____/|_____|_____|____/ 
-
-\usepackage[labelfont=bf,format=plain,labelsep=period,width=.85\textwidth]{caption}
+\usepackage[labelfont=bf,format=plain,labelsep=period,width=.85\columnwidth]{caption}
 \usepackage{booktabs}
 \usepackage[section]{placeins}
 \usepackage{float}
-
 
 \newcounter{EquationCounter}
 \newcounter{FigureCounter}
@@ -106,13 +115,15 @@
 % | | | | |_) |  _| | |_) |  / _ \ | || | | | |_) \___ \ 
 % | |_| |  __/| |___|  _ <  / ___ \| || |_| |  _ < ___) |
 %  \___/|_|   |_____|_| \_\/_/   \_\_| \___/|_| \_\____/ 
-
 \let\P\relax
 \DeclareMathOperator{\E}{\mathbf{E}}
 \DeclareMathOperator{\P}{\mathbf{P}}
+\newcommand{\Pto}{\xrightarrow[\phantom{n\to\infty}]{\P}}
 \DeclareMathOperator{\Q}{\mathbf{Q}}
 \DeclareMathOperator{\Cov}{\mathbf{Cov}}
 \DeclareMathOperator{\Var}{\mathbf{Var}}
+\newcommand\given[1][]{\:#1\vert\:}
+
 \DeclareMathOperator{\Unif}{\textsc{Unif}}
 \DeclareMathOperator{\Bernoulli}{\textsc{B}}
 \DeclareMathOperator{\Poisson}{\textsc{Pois}}
@@ -120,9 +131,8 @@
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
 
-\newcommand{\Pto}{\xrightarrow[\phantom{n\to\infty}]{\P}}
-
 \def\R{\mathbf{R}}
+\def\Z{\mathbf{Z}}
 
 \makeatletter
 \newcommand*{\indep}{%
