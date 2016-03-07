@@ -37,7 +37,11 @@
 
 (define-abbrev-table 'completion-list-mode-abbrev-table '())
 
+(define-abbrev-table 'csv-mode-abbrev-table '())
+
 (define-abbrev-table 'diff-mode-abbrev-table '())
+
+(define-abbrev-table 'display-time-world-mode-abbrev-table '())
 
 (define-abbrev-table 'doctex-mode-abbrev-table '())
 
@@ -49,6 +53,8 @@
 
 (define-abbrev-table 'emacs-lisp-mode-abbrev-table '())
 
+(define-abbrev-table 'eshell-mode-abbrev-table '())
+
 (define-abbrev-table 'ess-julia-mode-abbrev-table '())
 
 (define-abbrev-table 'fundamental-mode-abbrev-table '())
@@ -58,6 +64,7 @@
     ("bliefes" "beliefs" nil 0)
     ("calcluation" "calculation" nil 0)
     ("clearlty''" "clearly''" nil 0)
+    ("constrution" "construction" nil 0)
     ("doign" "doing" nil 0)
     ("efficienty" "efficiency" nil 0)
     ("equiilbrium" "equilibrium" nil 0)
@@ -190,7 +197,11 @@
 
 (define-abbrev-table 'special-mode-abbrev-table '())
 
+(define-abbrev-table 'speedbar-mode-abbrev-table '())
+
 (define-abbrev-table 'tabulated-list-mode-abbrev-table '())
+
+(define-abbrev-table 'term-mode-abbrev-table '())
 
 (define-abbrev-table 'tex-mode-abbrev-table '())
 
