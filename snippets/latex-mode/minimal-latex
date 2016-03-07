@@ -121,6 +121,7 @@
 \DeclareMathOperator{\Cov}{\mathbf{Cov}}
 \DeclareMathOperator{\Var}{\mathbf{Var}}
 \DeclareMathOperator{\Prob}{\mathbf{Prob}}
+\DeclareMathOperator{\CDF}{\textsc{CDF}}
 \newcommand\given[1][]{\:#1\vert\:}
 
 \DeclareMathOperator{\Unif}{\textsc{Unif}}
