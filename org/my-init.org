@@ -1959,6 +1959,22 @@ Seems like a good Pomodoro tracker.
 #+END_SRC
 
 
+** CSV-Mode
+CSV mode is pretty cool for viewing CSV files.
+#+BEGIN_SRC emacs-lisp
+  (use-package csv-mode
+      :ensure t
+      :config
+      (progn
+        (define-key csv-mode-map (kbd "M-l") #'csv-align-fields)
+        (define-key csv-mode-map (kbd "M-L") #'csv-unalign-fields)
+        (define-key csv-mode-map (kbd "TAB") #'csv-forward-field)
+        (define-key csv-mode-map (kbd "<backtab>") #'csv-backward-field)
+        )
+      )
+
+#+END_SRC
+
 * Epilog
 Packages to investigate
 - [[https://github.com/mrkkrp/zzz-to-char][=zzz-char=]]
