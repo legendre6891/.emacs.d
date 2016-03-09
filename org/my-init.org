@@ -994,7 +994,6 @@ See [[https://github.com/cqql/dotfiles/blob/master/src/.emacs.d/init.org][cqql's
               company-selection-wrap-around t
               company-backends (list
                                 #'company-irony
-                                #'company-company
                                 #'company-capf
                                 (list #'company-dabbrev-code
                                       #'company-keywords)
