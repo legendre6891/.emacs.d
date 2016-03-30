@@ -72,6 +72,7 @@
 % | |_| | | |  | || |___ | |  | |  | || |___ ___) |
 %  \___/  |_| |___|_____|___| |_| |___|_____|____/ 
 \usepackage{enumitem}
+\usepackage{graphicx}
 \usepackage[final]{microtype}
 
 % _____  _    ____  _     _____ ____  

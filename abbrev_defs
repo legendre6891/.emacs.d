@@ -61,27 +61,41 @@
 
 (define-abbrev-table 'global-abbrev-table
   '(
+    ("assignemnt" "assignment" nil 0)
     ("bliefes" "beliefs" nil 0)
     ("calcluation" "calculation" nil 0)
+    ("calculatiosn" "calculations" nil 0)
     ("clearlty''" "clearly''" nil 0)
     ("constrution" "construction" nil 0)
+    ("covriates" "covariates" nil 0)
+    ("devations" "deviations" nil 0)
     ("doign" "doing" nil 0)
     ("efficienty" "efficiency" nil 0)
     ("equiilbrium" "equilibrium" nil 0)
     ("equiilibrium" "equilibrium" nil 0)
     ("equilibirum" "equilibrium" nil 1)
+    ("estaimator" "estimator" nil 0)
     ("exhange" "exchange" nil 0)
     ("existsa" "exists" nil 0)
+    ("faciliates" "facilitates" nil 0)
     ("htat" "that" nil 2)
     ("hte" "the" nil 6)
+    ("indepednent" "independent" nil 0)
+    ("indepednet" "independent" nil 0)
+    ("indvidiual" "individual" nil 0)
     ("invesment" "investment" nil 0)
     ("outisde" "outside" nil 0)
+    ("prviate" "private" nil 0)
+    ("regerssion" "regression" nil 0)
     ("specifiy" "specify" nil 0)
     ("supose" "suppose" nil 0)
     ("taht" "that" nil 3)
+    ("tehre" "there" nil 0)
     ("thta" "that" nil 0)
     ("whenceh" "whence" nil 0)
    ))
+
+(define-abbrev-table 'haskell-cabal-mode-abbrev-table '())
 
 (define-abbrev-table 'haskell-mode-abbrev-table '())
 
@@ -180,6 +194,10 @@
 (define-abbrev-table 'process-menu-mode-abbrev-table '())
 
 (define-abbrev-table 'prog-mode-abbrev-table '())
+
+(define-abbrev-table 'ps-mode-abbrev-table '())
+
+(define-abbrev-table 'ps-run-mode-abbrev-table '())
 
 (define-abbrev-table 'reftex-select-bib-mode-abbrev-table '())
 
