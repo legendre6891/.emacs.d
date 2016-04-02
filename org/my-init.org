@@ -610,29 +610,32 @@ Install but defer.
       :defer t
       :ensure t)
   (use-package pastelmac-theme
-    :defer t
-    :ensure t)
+      :defer t
+      :ensure t)
   (use-package hc-zenburn-theme
-    :defer t
-    :ensure t)
+      :defer t
+      :ensure t)
   (use-package badwolf-theme
-    :defer t
-    :ensure t)
+      :defer t
+      :ensure t)
   (use-package tango-plus-theme
-      :load-path "lisp/")
+      :load-path "lisp/"
+      :defer t)
+  (use-package abyss-theme
+      :ensure t
+:defer t)
 #+END_SRC
 *** Activate theme
-The =aurora-theme= is the current favorite.
 The extra =t= flag is so we don't get asked about treating themes
 as safe.
 #+BEGIN_SRC emacs-lisp :tangle yes
-(load-theme 'tango-plus t)
+(load-theme 'abyss t)
 #+END_SRC
 
 
 ** Fonts
 *** Activating a font
-#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp :tangle yes
   (defun my-set-face (font height)
     (set-face-attribute 'default nil
                         :family font
@@ -1352,6 +1355,13 @@ versus LaTeX).
 (setq-default TeX-master nil)
 #+END_SRC
 
+*** Annoyance Fixes
+This really should belong in the main branch of AUCTeX.
+#+BEGIN_SRC emacs-lisp
+  (setq texmathp-tex-commands
+        '(("\\tag" arg-off)
+          ("\\tag*" arg-off)))
+#+END_SRC
 *** Producing DVI vs PDF
 We can configure AucTeX to automatically produce PDFs, but
 I actually prefer DVI files, so let's leave the following setting
@@ -1571,7 +1581,7 @@ integrates better with the rest of CDLaTeX.
 
 
 **** Environment support
-To support inserting environments, we need to setup both AucTeX,
+To support inserting environments, we need to setup both AUCTeX,
 RefTeX, and CDLaTeX in tandem. For example, to setup the axiom
 environment, we need to do the following (this code block is not
 tangled)
@@ -1628,6 +1638,9 @@ Now add the environments.
 
   (add-to-list 'cdlatex-command-alist
                '("pr" "Insert proof env" "" LaTeX-environment-menu ("proof") t nil))
+
+  (add-to-list 'cdlatex-command-alist
+               '("sp" "Insert split env" "" LaTeX-environment-menu ("split") nil t))
 #+END_SRC
 
 
