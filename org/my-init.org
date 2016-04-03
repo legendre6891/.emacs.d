@@ -501,11 +501,9 @@ for =LaTeX= to work.
 
         (when window-system (set-exec-path-from-shell-PATH))
 
-        (setq mac-option-key-is-meta nil)
+        (setq mac-option-key-is-meta t)
         (setq mac-command-key-is-meta t)
         (setq mac-command-modifier 'meta)
-        (setq mac-option-modifier nil)
-
 
         (setenv "PATH" (concat "/usr/texbin" ":" (getenv "PATH")))
 
@@ -644,7 +642,7 @@ as safe.
                         :width 'normal))
 
   (if (eq system-type 'darwin)
-      (my-set-face "PragmataPro" 14))
+      (my-set-face "PragmataPro" 19))
 
   (if (eq system-type 'windows-nt)
       (my-set-face "Consolas" 12))
@@ -2056,6 +2054,24 @@ CSV mode is pretty cool for viewing CSV files.
 
 #+END_SRC
 
+** Very Large Files
+Use this mode to view large files.
+#+BEGIN_SRC emacs-lisp
+  (use-package vlf
+      :ensure t)
+#+END_SRC
+** Sublimity
+This is nice eye-candy, but don't enable it by default.
+#+BEGIN_SRC emacs-lisp
+  (use-package sublimity
+      :ensure t
+      :init
+      (use-package sublimity-map)
+      :config
+      (progn
+        (sublimity-map-set-delay 0)
+        ))
+#+END_SRC
 
 * Epilog
 Packages to investigate

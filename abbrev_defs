@@ -90,9 +90,11 @@
     ("specifiy" "specify" nil 0)
     ("supose" "suppose" nil 0)
     ("taht" "that" nil 3)
+    ("teh" "the" nil 1)
     ("tehre" "there" nil 0)
     ("thta" "that" nil 0)
     ("whenceh" "whence" nil 0)
+    ("woorld" "world" nil 3)
    ))
 
 (define-abbrev-table 'haskell-cabal-mode-abbrev-table '())
