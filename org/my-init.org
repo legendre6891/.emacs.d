@@ -2088,4 +2088,6 @@ Some Org mode related settings to to faciliate editting of this file.
 
 #+LATEX_HEADER: \usepackage{tgtermes}
 #+LATEX_HEADER: \usepackage{inconsolata}
+#+LATEX_HEADER: \def\textlambda{$\lambda$}
+#+LATEX_HEADER: \def\textxi{$\xi$}
 
