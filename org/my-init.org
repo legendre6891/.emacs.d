@@ -627,7 +627,9 @@ Install but defer.
 The extra =t= flag is so we don't get asked about treating themes
 as safe.
 #+BEGIN_SRC emacs-lisp :tangle yes
-(load-theme 'abyss t)
+  (if (not (display-graphic-p))
+      (load-theme 'ample-flat t)
+    (load-theme 'abyss t))
 #+END_SRC
 
 
@@ -2072,6 +2074,7 @@ This is nice eye-candy, but don't enable it by default.
         (sublimity-map-set-delay 0)
         ))
 #+END_SRC
+
 
 * Epilog
 Packages to investigate
