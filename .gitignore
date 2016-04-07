@@ -20,3 +20,4 @@ session.*
 /#ido.last#
 irony-server
 *irony-server*
+/org/my-init.log
