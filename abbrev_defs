@@ -37,7 +37,11 @@
 
 (define-abbrev-table 'completion-list-mode-abbrev-table '())
 
+(define-abbrev-table 'css-mode-abbrev-table '())
+
 (define-abbrev-table 'csv-mode-abbrev-table '())
+
+(define-abbrev-table 'debugger-mode-abbrev-table '())
 
 (define-abbrev-table 'diff-mode-abbrev-table '())
 
@@ -59,6 +63,8 @@
 
 (define-abbrev-table 'fundamental-mode-abbrev-table '())
 
+(define-abbrev-table 'gfm-mode-abbrev-table '())
+
 (define-abbrev-table 'global-abbrev-table
   '(
     ("assignemnt" "assignment" nil 0)
@@ -69,6 +75,7 @@
     ("constrution" "construction" nil 0)
     ("covriates" "covariates" nil 0)
     ("devations" "deviations" nil 0)
+    ("discrminiation" "discrimination" nil 0)
     ("doign" "doing" nil 0)
     ("efficienty" "efficiency" nil 0)
     ("equiilbrium" "equilibrium" nil 0)
@@ -79,18 +86,20 @@
     ("existsa" "exists" nil 0)
     ("faciliates" "facilitates" nil 0)
     ("htat" "that" nil 2)
-    ("hte" "the" nil 6)
+    ("hte" "the" nil 7)
     ("indepednent" "independent" nil 0)
     ("indepednet" "independent" nil 0)
     ("indvidiual" "individual" nil 0)
     ("invesment" "investment" nil 0)
     ("outisde" "outside" nil 0)
+    ("prescence" "presence" nil 0)
     ("prviate" "private" nil 0)
     ("regerssion" "regression" nil 0)
     ("specifiy" "specify" nil 0)
+    ("substansive" "substantive" nil 0)
     ("supose" "suppose" nil 0)
     ("taht" "that" nil 3)
-    ("teh" "the" nil 1)
+    ("teh" "the" nil 2)
     ("tehre" "there" nil 0)
     ("thta" "that" nil 0)
     ("whenceh" "whence" nil 0)
@@ -99,7 +108,17 @@
 
 (define-abbrev-table 'haskell-cabal-mode-abbrev-table '())
 
+(define-abbrev-table 'haskell-compilation-mode-abbrev-table '())
+
+(define-abbrev-table 'haskell-debug-mode-abbrev-table '())
+
+(define-abbrev-table 'haskell-error-mode-abbrev-table '())
+
+(define-abbrev-table 'haskell-interactive-mode-abbrev-table '())
+
 (define-abbrev-table 'haskell-mode-abbrev-table '())
+
+(define-abbrev-table 'haskell-presentation-mode-abbrev-table '())
 
 (define-abbrev-table 'helm-grep-mode-abbrev-table '())
 
@@ -108,6 +127,10 @@
 (define-abbrev-table 'helm-moccur-mode-abbrev-table '())
 
 (define-abbrev-table 'help-mode-abbrev-table '())
+
+(define-abbrev-table 'html-mode-abbrev-table '())
+
+(define-abbrev-table 'ibuffer-mode-abbrev-table '())
 
 (define-abbrev-table 'idl-mode-abbrev-table '())
 
@@ -161,6 +184,8 @@
 
 (define-abbrev-table 'magit-status-mode-abbrev-table '())
 
+(define-abbrev-table 'markdown-mode-abbrev-table '())
+
 (define-abbrev-table 'message-mode-abbrev-table '())
 
 (define-abbrev-table 'messages-buffer-mode-abbrev-table '())
@@ -207,7 +232,15 @@
 
 (define-abbrev-table 'reftex-toc-mode-abbrev-table '())
 
+(define-abbrev-table 'rst-mode-abbrev-table
+  '(
+   ))
+
+(define-abbrev-table 'rst-toc-mode-abbrev-table '())
+
 (define-abbrev-table 'select-tags-table-mode-abbrev-table '())
+
+(define-abbrev-table 'sgml-mode-abbrev-table '())
 
 (define-abbrev-table 'shell-mode-abbrev-table '())
 
