@@ -618,6 +618,7 @@ Install but defer.
       :ensure t)
   (use-package tango-plus-theme
       :load-path "lisp/"
+      :ensure t
       :defer t)
   (use-package abyss-theme
       :ensure t
