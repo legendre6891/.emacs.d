@@ -1268,6 +1268,11 @@ Turn on LaTeX syntax highlighting.
   (setq org-highlight-latex-and-related '(latex script))
 #+END_SRC
 
+Make smart-parens do their thing.
+#+BEGIN_SRC emacs-lisp
+  (sp-local-pair 'org-mode "$" "$")
+#+END_SRC
+
 **** TODO Make the dollar sign $ type actual dollars.
 
 *** Exporting to LaTeX
