@@ -2008,6 +2008,12 @@ navigating the undo states much more intuitive.
 * Hakyll Posts
 See [[http://abizern.org/2014/01/05/hakyll-new-post-with-emacs/][this page]] for setting up Hakyll with emacs.
 #+BEGIN_SRC emacs-lisp
+  (use-package markdown-mode
+      :ensure t)
+
+  (use-package markdown-mode+
+      :ensure t)
+
   (defun hakyll-site-location ()
     "Return the location of the Hakyll files."
     (file-name-as-directory (concat user-dropbox-folder "thoughts-equidistributed")))
