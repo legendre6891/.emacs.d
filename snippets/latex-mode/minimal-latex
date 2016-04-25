@@ -11,6 +11,7 @@
 %  |  _|| |_| | |\  | | |    / /   | |  | |/ ___ \| | |  _  |
 %  |_|   \___/|_| \_| |_|   /_/    |_|  |_/_/   \_\_| |_| |_|
 \usepackage{tgtermes}
+\usepackage{inconsolata}
 \usepackage[subscriptcorrection]{mtpro2}
 \usepackage{amsmath}
 
@@ -72,6 +73,7 @@
 % | |_| | | |  | || |___ | |  | |  | || |___ ___) |
 %  \___/  |_| |___|_____|___| |_| |___|_____|____/ 
 \usepackage{enumitem}
+\setlist[description]{font=\normalfont\scshape\bfseries}
 \usepackage{graphicx}
 \makeatletter
 \@addtoreset{equation}{section}
@@ -134,6 +136,8 @@
 \DeclareMathOperator{\Poisson}{\textsc{Pois}}
 \DeclareMathOperator{\Normal}{\textsc{Normal}}
 
+\DeclareMathOperator*{\maximize}{maximize\,}
+\DeclareMathOperator*{\minimize}{miminimize\,}
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
 

@@ -67,26 +67,32 @@
 
 (define-abbrev-table 'global-abbrev-table
   '(
+    ("alterantively" "alternatively" nil 0)
     ("assignemnt" "assignment" nil 0)
     ("bliefes" "beliefs" nil 0)
     ("calcluation" "calculation" nil 0)
     ("calculatiosn" "calculations" nil 0)
     ("clearlty''" "clearly''" nil 0)
+    ("competative" "competitive" nil 0)
     ("constrution" "construction" nil 0)
     ("covriates" "covariates" nil 0)
     ("devations" "deviations" nil 0)
     ("discrminiation" "discrimination" nil 0)
     ("doign" "doing" nil 0)
     ("efficienty" "efficiency" nil 0)
+    ("entrepeneur" "entrepreneur" nil 3)
+    ("entrepreneeur" "entrepreneur" nil 0)
+    ("equaiton" "equation" nil 0)
     ("equiilbrium" "equilibrium" nil 0)
     ("equiilibrium" "equilibrium" nil 0)
     ("equilibirum" "equilibrium" nil 1)
+    ("equivalentyl" "equivalently" nil 0)
     ("estaimator" "estimator" nil 0)
     ("exhange" "exchange" nil 0)
     ("existsa" "exists" nil 0)
     ("faciliates" "facilitates" nil 0)
     ("htat" "that" nil 2)
-    ("hte" "the" nil 7)
+    ("hte" "the" nil 8)
     ("indepednent" "independent" nil 0)
     ("indepednet" "independent" nil 0)
     ("indvidiual" "individual" nil 0)
@@ -98,10 +104,11 @@
     ("specifiy" "specify" nil 0)
     ("substansive" "substantive" nil 0)
     ("supose" "suppose" nil 0)
-    ("taht" "that" nil 3)
-    ("teh" "the" nil 2)
+    ("taht" "that" nil 5)
+    ("teh" "the" nil 3)
     ("tehre" "there" nil 0)
-    ("thta" "that" nil 0)
+    ("thta" "that" nil 1)
+    ("tighest" "tightest" nil 0)
     ("whenceh" "whence" nil 0)
     ("woorld" "world" nil 3)
    ))
@@ -232,9 +239,9 @@
 
 (define-abbrev-table 'reftex-toc-mode-abbrev-table '())
 
-(define-abbrev-table 'rst-mode-abbrev-table
-  '(
-   ))
+(define-abbrev-table 'remember-mode-abbrev-table '())
+
+(define-abbrev-table 'rst-mode-abbrev-table '())
 
 (define-abbrev-table 'rst-toc-mode-abbrev-table '())
 
