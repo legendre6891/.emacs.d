@@ -80,6 +80,9 @@
 \makeatother
 \renewcommand\theequation{\oldstylenums{\arabic{equation}}}
 \usepackage[final]{microtype}
+\usepackage[hang,flushmargin,symbol,perpage]{footmisc} 
+\setfnsymbol{wiley}
+
 
 % _____  _    ____  _     _____ ____  
 %|_   _|/ \  | __ )| |   | ____/ ___| 
@@ -137,7 +140,7 @@
 \DeclareMathOperator{\Normal}{\textsc{Normal}}
 
 \DeclareMathOperator*{\maximize}{maximize\,}
-\DeclareMathOperator*{\minimize}{miminimize\,}
+\DeclareMathOperator*{\minimize}{minimize\,}
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
 
