@@ -144,6 +144,10 @@ A no-frills package to set some sensible defaults.
 (setq-default mode-require-final-newline nil)
 #+END_SRC
 
+*** Long lines mode
+#+BEGIN_SRC emacs-lisp
+(set-default 'truncate-lines t)
+#+END_SRC
 *** Auto Revert Mode
 No reason not to have files auto-revert in 2016.
 #+BEGIN_SRC emacs-lisp
