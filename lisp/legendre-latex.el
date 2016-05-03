@@ -1,4 +1,100 @@
-(require 's)
+(use-package s
+    :ensure t)
+
+(require 'cdlatex)
+(require 'smartparens)
+
+;;; ----------------------------------------------------------------------------
+;;; 	This is Kevin Li's LaTeX configuration, meant to complement
+;;; the configuration that is provided in the main init.el file.
+;;; Maybe someday, I'll move everything into one package, but for
+;;; today I'll just focus on adding new functionality first.
+;;; ----------------------------------------------------------------------------
+
+
+;;; ----------------------------------------------------------------------------
+;;; It is useful to insert environments without resorting to tab,
+;;; so let's set that up.
+
+(defun ll/thing-at-line ()
+    (let (p1 p2 myLine)
+      (setq p1 (line-beginning-position))
+      (setq p2 (line-end-position))
+      (buffer-substring-no-properties p1 p2)))
+
+(defun ll/delete-at-line ()
+  (delete-region (line-beginning-position)
+                 (line-end-position)))
+
+(defun ll/line-is (text)
+  (and (= (current-column) (length text))
+       (string= (ll/thing-at-line) text)))
+
+(defun ll/conditional-insert-environment (text env)
+  (if (ll/line-is text)
+      (progn
+        (ll/delete-at-line)
+        (cdlatex-environment env))))
+
+(defun ll/conditional-insert-environment2 (text env1 env2)
+  (if (ll/line-is text)
+      (progn
+        (ll/delete-at-line)
+        (cdlatex-environment env1)
+        (cdlatex-environment env2))))
+
+;;; ----------------------------------------------------------------------------
+;;; Now the automatic key stuffs
+
+(with-eval-after-load 'latex
+
+  
+  (define-key LaTeX-mode-map (kbd "e")
+    (lambda ()
+      (interactive)
+      (insert "e")
+      (ll/conditional-insert-environment "/e" "equation")
+      ))
+
+  (define-key LaTeX-mode-map (kbd "p")
+    (lambda ()
+      (interactive)
+      (insert "p")
+      (ll/conditional-insert-environment2 "pp" "equation" "split")
+      ))
+
+  (define-key LaTeX-mode-map (kbd "l")
+    (lambda ()
+      (interactive)
+      (insert "l")
+      (ll/conditional-insert-environment "ll" "align")
+      ))
+
+  (define-key LaTeX-mode-map (kbd "d")
+    (lambda ()
+      (interactive)
+      (insert "d")
+      (ll/conditional-insert-environment "/d" "description")
+      ))
+
+  (define-key LaTeX-mode-map (kbd "i")
+    (lambda ()
+      (interactive)
+      (insert "i")
+      (ll/conditional-insert-environment "/i" "itemize")
+      ))
+
+  (define-key LaTeX-mode-map (kbd "n")
+    (lambda ()
+      (interactive)
+      (insert "n")
+      (ll/conditional-insert-environment "/n" "enumerate")
+      )))
+;;; ----------------------------------------------------------------------------
+
+
+
+
 
 
 (defun legendre-latex-write-message ()

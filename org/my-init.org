@@ -1576,7 +1576,8 @@ LaTeX facilities for LaTeX.
 *** Installation
 #+BEGIN_SRC emacs-lisp
   (use-package cdlatex
-      :ensure t)
+      :ensure t
+      :load-path "lisp/")
 #+END_SRC
 
 Now we can always turn it on, both for LaTeX and for TeX.
