@@ -560,6 +560,15 @@ See [[Expand Region]].
 See section on [[Avy]].
 
 
+** Key-combo
+Key-combo is like key-chord on steroids. Useful for some LaTeX addons.
+#+BEGIN_SRC emacs-lisp
+  (use-package key-combo
+      :ensure t
+      :config
+      (global-key-combo-mode t))
+#+END_SRC
+
 ** Smart Tab
 Trying this out as a replacement for SuperTab. UPDATE: Not yet.
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -624,17 +633,54 @@ Install but defer.
       :load-path "lisp/"
       :ensure t
       :defer t)
+  (use-package zenburn-theme
+      :ensure t
+      :defer t
+      :init
+      ;; get the colors from hc-zenburn
+      (setq zenburn-override-colors-alist
+            '(("zenburn-fg+1"     . "#FFFFEF")
+              ("zenburn-fg"       . "#DCDCCC")
+              ("zenburn-fg-1"     . "#70705E")
+              ("zenburn-bg-2"     . "#000000")
+              ("zenburn-bg-1"     . "#202020")
+              ("zenburn-bg-05"    . "#2D2D2D")
+              ("zenburn-bg"       . "#313131")
+              ("zenburn-bg+05"    . "#383838")
+              ("zenburn-bg+1"     . "#3E3E3E")
+              ("zenburn-bg+2"     . "#4E4E4E")
+              ("zenburn-bg+3"     . "#5E5E5E")
+              ("zenburn-red+1"    . "#E9B0B0")
+              ("zenburn-red"      . "#D9A0A0")
+              ("zenburn-red-1"    . "#C99090")
+              ("zenburn-red-2"    . "#B98080")
+              ("zenburn-red-3"    . "#A97070")
+              ("zenburn-red-4"    . "#996060")
+              ("zenburn-orange"   . "#ECBC9C")
+              ("zenburn-yellow"   . "#FDECBC")
+              ("zenburn-yellow-1" . "#EDDCAC")
+              ("zenburn-yellow-2" . "#DDCC9C")
+              ("zenburn-green-1"  . "#6C8C6C")
+              ("zenburn-green"    . "#8CAC8C")
+              ("zenburn-green+1"  . "#9CBF9C")
+              ("zenburn-green+2"  . "#ACD2AC")
+              ("zenburn-green+3"  . "#BCE5BC")
+              ("zenburn-green+4"  . "#CCF8CC")
+              ("zenburn-cyan"     . "#A0EDF0")
+              ("zenburn-blue+1"   . "#9CC7FB")
+              ("zenburn-blue"     . "#99DDE0")
+              ("zenburn-blue-1"   . "#89C5C8")
+              ("zenburn-blue-2"   . "#79ADB0")
+              ("zenburn-blue-3"   . "#699598")
+              ("zenburn-blue-4"   . "#597D80")
+              ("zenburn-blue-5"   . "#436D6D")
+              ("zenburn-magenta"  . "#E090C7")
+              ))
+      )
+
   (use-package abyss-theme
       :ensure t
-:defer t)
-#+END_SRC
-*** Activate theme
-The extra =t= flag is so we don't get asked about treating themes
-as safe.
-#+BEGIN_SRC emacs-lisp :tangle yes
-  (if (not (display-graphic-p))
-      (load-theme 'ample-flat t)
-    (load-theme 'abyss t))
+      :defer t)
 #+END_SRC
 
 
@@ -649,7 +695,7 @@ as safe.
                         :width 'normal))
 
   (if (eq system-type 'darwin)
-      (my-set-face "PragmataPro" 19))
+      (my-set-face "PragmataPro" 15))
 
   (if (eq system-type 'windows-nt)
       (my-set-face "Consolas" 12))
@@ -677,19 +723,31 @@ I'm actually not convined of the utility of this just yet,
 but let's throw it in because it does look somewhat nicer than the
 default mode line.
 #+BEGIN_SRC emacs-lisp
-(use-package smart-mode-line
-    :ensure smart-mode-line
-    :init
-    (progn
-      (setq sml/theme 'light)
-      (setq sml/name-width 40)
-      (setq sml/mode-width 'full))
-    :config
-    (progn
-      (sml/setup)))
+  (use-package smart-mode-line
+      :ensure smart-mode-line
+      :init
+      (progn
+        (setq sml/theme 'respectful)
+        (setq sml/name-width 40)
+        (setq sml/mode-width 'full)
+        )
+      :config
+      (progn
+        (add-to-list 'sml/replacer-regexp-list '("^~/Dropbox (MIT)/" ":DB:") t)
+        (sml/setup)))
+#+END_SRC
+*** TODO Investigate this more and make it more functional
+
+
+** Activate theme
+The extra =t= flag is so we don't get asked about treating themes
+as safe.
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (if (not (display-graphic-p))
+      (load-theme 'zenburn t)
+    (load-theme 'zenburn t))
 #+END_SRC
 
-*** TODO Investigate this more and make it more functional
 
 
 ** Line Numbers
@@ -830,8 +888,8 @@ I shamelessly stole these from
 
 * Avy
 Avy mode helps is a quicker way to move around; they work like Vim's
-=f=, =F=, =t=, =T= operators.
-#+BEGIN_SRC emacs-lisp
+=f=, =F=, =t=, =T= operators. /Not that useful, disabling for now./
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package avy
       :ensure t
       :bind
@@ -841,7 +899,8 @@ Avy mode helps is a quicker way to move around; they work like Vim's
 
 It is nice to setup a hydra from Avy for easier access. How about
 double tapping the semicolon key?
-#+BEGIN_SRC emacs-lisp
+/This is not a very good setup, so I am disabling it for now./
+#+BEGIN_SRC emacs-lisp :tangle no
   (defhydra hydra-avy-semicolon (:color blue
                        :body-pre (insert ";")
                        :idle 1.0)

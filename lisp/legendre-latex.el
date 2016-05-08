@@ -3,24 +3,25 @@
 
 (require 'cdlatex)
 (require 'smartparens)
+(require 'key-combo)
 
-;;; ----------------------------------------------------------------------------
+;;; ---------------------------------------------------------------------------
 ;;; 	This is Kevin Li's LaTeX configuration, meant to complement
 ;;; the configuration that is provided in the main init.el file.
 ;;; Maybe someday, I'll move everything into one package, but for
 ;;; today I'll just focus on adding new functionality first.
-;;; ----------------------------------------------------------------------------
+;;; ---------------------------------------------------------------------------
 
 
-;;; ----------------------------------------------------------------------------
+;;; ---------------------------------------------------------------------------
 ;;; It is useful to insert environments without resorting to tab,
 ;;; so let's set that up.
-
+;;; ---------------------------------------------------------------------------
 (defun ll/thing-at-line ()
-    (let (p1 p2 myLine)
-      (setq p1 (line-beginning-position))
-      (setq p2 (line-end-position))
-      (buffer-substring-no-properties p1 p2)))
+  (let (p1 p2 myLine)
+    (setq p1 (line-beginning-position))
+    (setq p2 (line-end-position))
+    (buffer-substring-no-properties p1 p2)))
 
 (defun ll/delete-at-line ()
   (delete-region (line-beginning-position)
@@ -47,8 +48,6 @@
 ;;; Now the automatic key stuffs
 
 (with-eval-after-load 'latex
-
-  
   (define-key LaTeX-mode-map (kbd "e")
     (lambda ()
       (interactive)
@@ -89,12 +88,12 @@
       (interactive)
       (insert "n")
       (ll/conditional-insert-environment "/n" "enumerate")
-      )))
+      ))
+
+  (key-combo-define LaTeX-mode-map "="  '("= " "eq " "equal "))
+
+  )
 ;;; ----------------------------------------------------------------------------
-
-
-
-
 
 
 (defun legendre-latex-write-message ()
@@ -164,16 +163,16 @@
            (buffer-lines (s-lines buffer-string))
            (resulting-text
             (s-join "\n"
-             (mapcar 'legendre-latex-add-alignment buffer-lines)))
+                    (mapcar 'legendre-latex-add-alignment buffer-lines)))
            )
       (kill-region beg end)
       (insert resulting-text))
-  ))
+    ))
 
 
 (defun legendre-latex-test (astring)
   (s-join "\n"
-   (mapcar 'legendre-latex-add-alignment (s-lines astring))))
+          (mapcar 'legendre-latex-add-alignment (s-lines astring))))
 
 
 (provide 'legendre-latex-keys)

@@ -190,7 +190,7 @@
 % | |__| |_| \__ \ || (_) | | | | | | | |_| | |___|  _|\__ \
 %  \____\__,_|___/\__\___/|_| |_| |_| |____/|_____|_|  |___/
 %
-\def\Rule{\medskip\noindent \hrule width\columnwidth\smallskip}                                                           
+\def\Rule{\medskip\noindent \hrule width\columnwidth\smallskip}
 
 
 \begin{document}
