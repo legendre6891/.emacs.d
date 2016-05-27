@@ -39,21 +39,11 @@
     ("`va" "\\value" nil 0)
    ))
 
-(define-abbrev-table 'TeX-error-overview-mode-abbrev-table '())
-
-(define-abbrev-table 'TeX-output-mode-abbrev-table '())
-
 (define-abbrev-table 'asy-mode-abbrev-table '())
 
 (define-abbrev-table 'awk-mode-abbrev-table
   '(
    ))
-
-(define-abbrev-table 'bibtex-mode-abbrev-table '())
-
-(define-abbrev-table 'bookmark-bmenu-mode-abbrev-table '())
-
-(define-abbrev-table 'bookmark-edit-annotation-mode-abbrev-table '())
 
 (define-abbrev-table 'c++-mode-abbrev-table
   '(
@@ -65,25 +55,11 @@
 
 (define-abbrev-table 'calendar-mode-abbrev-table '())
 
-(define-abbrev-table 'change-log-mode-abbrev-table '())
-
 (define-abbrev-table 'comint-mode-abbrev-table '())
 
 (define-abbrev-table 'completion-list-mode-abbrev-table '())
 
-(define-abbrev-table 'css-mode-abbrev-table '())
-
 (define-abbrev-table 'csv-mode-abbrev-table '())
-
-(define-abbrev-table 'debugger-mode-abbrev-table '())
-
-(define-abbrev-table 'diff-mode-abbrev-table '())
-
-(define-abbrev-table 'display-time-world-mode-abbrev-table '())
-
-(define-abbrev-table 'doctex-mode-abbrev-table '())
-
-(define-abbrev-table 'edebug-eval-mode-abbrev-table '())
 
 (define-abbrev-table 'edit-abbrevs-mode-abbrev-table '())
 
@@ -91,101 +67,23 @@
 
 (define-abbrev-table 'emacs-lisp-mode-abbrev-table '())
 
-(define-abbrev-table 'eshell-mode-abbrev-table '())
-
 (define-abbrev-table 'ess-julia-mode-abbrev-table '())
 
 (define-abbrev-table 'fundamental-mode-abbrev-table '())
 
 (define-abbrev-table 'gfm-mode-abbrev-table '())
 
-(define-abbrev-table 'global-abbrev-table
-  '(
-    ("alterantively" "alternatively" nil 0)
-    ("assignemnt" "assignment" nil 0)
-    ("bleief" "belief" nil 0)
-    ("bliefes" "beliefs" nil 0)
-    ("calcluation" "calculation" nil 0)
-    ("calculatiosn" "calculations" nil 0)
-    ("clearlty''" "clearly''" nil 0)
-    ("competative" "competitive" nil 0)
-    ("compoosition" "composition" nil 0)
-    ("constrution" "construction" nil 0)
-    ("covriates" "covariates" nil 0)
-    ("devations" "deviations" nil 0)
-    ("discriminiation" "discrimination" nil 0)
-    ("discrminiaiton" "discrimination" nil 0)
-    ("discrminiation" "discrimination" nil 3)
-    ("doign" "doing" nil 0)
-    ("efficienty" "efficiency" nil 0)
-    ("enrollmemnt" "enrollment" nil 0)
-    ("entrepeneur" "entrepreneur" nil 3)
-    ("entrepreneeur" "entrepreneur" nil 0)
-    ("equaiton" "equation" nil 0)
-    ("equiilbrium" "equilibrium" nil 0)
-    ("equiilibrium" "equilibrium" nil 0)
-    ("equilibirum" "equilibrium" nil 1)
-    ("equivalentyl" "equivalently" nil 0)
-    ("estaimator" "estimator" nil 0)
-    ("exhange" "exchange" nil 0)
-    ("existsa" "exists" nil 0)
-    ("faciliates" "facilitates" nil 0)
-    ("htat" "that" nil 2)
-    ("hte" "the" nil 17)
-    ("indepednent" "independent" nil 0)
-    ("indepednet" "independent" nil 0)
-    ("indvidiual" "individual" nil 0)
-    ("invesment" "investment" nil 0)
-    ("michicagn" "michigan" nil 0)
-    ("outisde" "outside" nil 0)
-    ("prescence" "presence" nil 0)
-    ("prviate" "private" nil 0)
-    ("regerssion" "regression" nil 0)
-    ("repots" "reports" nil 0)
-    ("specifiy" "specify" nil 0)
-    ("substansive" "substantive" nil 0)
-    ("supose" "suppose" nil 0)
-    ("taht" "that" nil 5)
-    ("teh" "the" nil 4)
-    ("tehre" "there" nil 0)
-    ("thta" "that" nil 1)
-    ("tighest" "tightest" nil 0)
-    ("tranposing" "transposing" nil 0)
-    ("whenceh" "whence" nil 0)
-    ("woorld" "world" nil 3)
-   ))
+(define-abbrev-table 'global-abbrev-table '())
 
 (define-abbrev-table 'haskell-cabal-mode-abbrev-table '())
 
-(define-abbrev-table 'haskell-compilation-mode-abbrev-table '())
-
-(define-abbrev-table 'haskell-debug-mode-abbrev-table '())
-
-(define-abbrev-table 'haskell-error-mode-abbrev-table '())
-
-(define-abbrev-table 'haskell-interactive-mode-abbrev-table '())
-
 (define-abbrev-table 'haskell-mode-abbrev-table '())
-
-(define-abbrev-table 'haskell-presentation-mode-abbrev-table '())
-
-(define-abbrev-table 'helm-grep-mode-abbrev-table '())
 
 (define-abbrev-table 'helm-major-mode-abbrev-table '())
 
-(define-abbrev-table 'helm-moccur-mode-abbrev-table '())
-
 (define-abbrev-table 'help-mode-abbrev-table '())
 
-(define-abbrev-table 'html-mode-abbrev-table '())
-
-(define-abbrev-table 'ibuffer-mode-abbrev-table '())
-
 (define-abbrev-table 'idl-mode-abbrev-table '())
-
-(define-abbrev-table 'image-dired-display-image-mode-abbrev-table '())
-
-(define-abbrev-table 'image-dired-thumbnail-mode-abbrev-table '())
 
 (define-abbrev-table 'inferior-j-mode-abbrev-table '())
 
@@ -197,41 +95,9 @@
 
 (define-abbrev-table 'julia-mode-abbrev-table '())
 
-(define-abbrev-table 'latex-mode-abbrev-table '())
-
 (define-abbrev-table 'lisp-mode-abbrev-table '())
 
 (define-abbrev-table 'literate-haskell-mode-abbrev-table '())
-
-(define-abbrev-table 'log-edit-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-cherry-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-diff-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-log-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-log-select-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-merge-preview-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-popup-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-process-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-reflog-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-refs-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-revision-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-stash-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-stashes-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-status-mode-abbrev-table '())
 
 (define-abbrev-table 'markdown-mode-abbrev-table '())
 
@@ -265,51 +131,19 @@
   '(
    ))
 
-(define-abbrev-table 'plain-tex-mode-abbrev-table '())
-
 (define-abbrev-table 'process-menu-mode-abbrev-table '())
 
 (define-abbrev-table 'prog-mode-abbrev-table '())
 
-(define-abbrev-table 'ps-mode-abbrev-table '())
-
-(define-abbrev-table 'ps-run-mode-abbrev-table '())
-
-(define-abbrev-table 'reftex-select-bib-mode-abbrev-table '())
-
-(define-abbrev-table 'reftex-select-label-mode-abbrev-table '())
-
-(define-abbrev-table 'reftex-toc-mode-abbrev-table '())
-
-(define-abbrev-table 'remember-mode-abbrev-table '())
-
-(define-abbrev-table 'rst-mode-abbrev-table '())
-
-(define-abbrev-table 'rst-toc-mode-abbrev-table '())
-
 (define-abbrev-table 'select-tags-table-mode-abbrev-table '())
 
-(define-abbrev-table 'sgml-mode-abbrev-table '())
-
 (define-abbrev-table 'shell-mode-abbrev-table '())
-
-(define-abbrev-table 'slitex-mode-abbrev-table '())
 
 (define-abbrev-table 'snippet-mode-abbrev-table '())
 
 (define-abbrev-table 'special-mode-abbrev-table '())
 
-(define-abbrev-table 'speedbar-mode-abbrev-table '())
-
-(define-abbrev-table 'spu-package-menu-mode-abbrev-table '())
-
 (define-abbrev-table 'tabulated-list-mode-abbrev-table '())
-
-(define-abbrev-table 'term-mode-abbrev-table '())
-
-(define-abbrev-table 'tex-mode-abbrev-table '())
-
-(define-abbrev-table 'tex-shell-abbrev-table '())
 
 (define-abbrev-table 'text-mode-abbrev-table '())
 

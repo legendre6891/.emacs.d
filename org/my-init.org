@@ -1900,6 +1900,13 @@ Enable =yasnippets= through =C-;=, which isn't used anywhere.
 #+END_SRC
 
 
+** My Own Package!
+Load my own package after everything has loaded.
+#+BEGIN_SRC emacs-lisp
+  (use-package legendre-latex-key-combo
+      :load-path "lisp/")
+#+END_SRC
+
 * Emacs Speaks Statistics
 ** Installation
 As opposed to using RStudio, let's use ESS because it's getting lots
@@ -2205,6 +2212,22 @@ Upgrade packages silently and automatically.
   :defer 5 ;; defer package loading for 5 second
   :config (spu-package-upgrade-daily))
 #+END_SRC
+
+** Pretty Print
+#+BEGIN_SRC emacs-lisp
+    (unless (boundp 'x-max-tooltip-size)
+      (setq x-max-tooltip-size '(80 . 40)))
+
+  (use-package pp+
+    :ensure t)
+#+END_SRC
+** Thing-At-Point
+#+BEGIN_SRC emacs-lisp
+(use-package thingatpt+
+:ensure t
+:init (tap-redefine-std-fns))
+#+END_SRC
+
 
 * Epilog
 Packages to investigate
