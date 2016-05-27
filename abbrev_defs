@@ -45,6 +45,8 @@
   '(
    ))
 
+(define-abbrev-table 'bibtex-mode-abbrev-table '())
+
 (define-abbrev-table 'c++-mode-abbrev-table
   '(
    ))

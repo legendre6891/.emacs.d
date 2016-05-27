@@ -167,14 +167,18 @@
 ;; Load stuff
 ;;----------------------------------------------------------------------
 (setq space-list
-      '((*no-math*            . (insert " "))
-        ((*Before-Is* "<==>") . (progn *delete* (insert "\\iff ")))
-        ((*Before-Is* ">=")   . (progn *delete* (insert "\\geq ")))
-        ((*Before-Is* "<=")   . (progn *delete* (insert "\\leq ")))
-        ((*Before-Is* "==>")  . (progn *delete* (insert "\\implies ")))
-        ((*Before-Is* "<==")  . (progn *delete* (insert "\\impliedby ")))
-        ((*Before-Is* "==")   . (progn *delete* (insert "&= ")))
-        (t                    . (insert " "))))
+      '((*no-math*              . (insert " "))
+        ((*Before-Is* "<==>")   . (progn *delete* (insert "\\iff ")))
+        ((*Before-Is* ">=")     . (progn *delete* (insert "\\geq ")))
+        ((*Before-Is* "<=")     . (progn *delete* (insert "\\leq ")))
+        ((*Before-Is* "==>")    . (progn *delete* (insert "\\implies ")))
+        ((*Before-Is* "<==")    . (progn *delete* (insert "\\impliedby ")))
+        ((*Before-Is* "==")     . (progn *delete* (insert "&= ")))
+        ((*Before-Is* "+-")     . (progn *delete* (insert "\\pm ")))
+        ((*Before-Is* "|-")     . (progn *delete* (insert "\\perp ")))
+        ((*Before-Is* "dist=>") . (progn *delete* (insert "\\overset{\\text{d}}{\\Longrightarrow} ")))
+        ((*Before-Is* "N(0,1)") . (progn *delete* (insert "\\mathcal{N}(0,1)")))
+        (t                      . (insert " "))))
 
 (defun legendre/digit-list (digit)
   `((*no-math*              . (insert (format "%c" ,digit)))
@@ -182,16 +186,16 @@
     (*after-closing-brace?* . (save-excursion (backward-char 1) (insert (format "%c" ,digit))))
     (t                      . (insert (format "%c" ,digit)))))
 
-(setq zero-list (legendre/digit-list ?0))
-(setq one-list (legendre/digit-list ?1))
-(setq two-list (legendre/digit-list ?2))
+(setq zero-list  (legendre/digit-list ?0))
+(setq one-list   (legendre/digit-list ?1))
+(setq two-list   (legendre/digit-list ?2))
 (setq three-list (legendre/digit-list ?3))
-(setq four-list (legendre/digit-list ?4))
-(setq five-list (legendre/digit-list ?5))
-(setq six-list (legendre/digit-list ?6))
+(setq four-list  (legendre/digit-list ?4))
+(setq five-list  (legendre/digit-list ?5))
+(setq six-list   (legendre/digit-list ?6))
 (setq seven-list (legendre/digit-list ?7))
 (setq eight-list (legendre/digit-list ?8))
-(setq nine-list (legendre/digit-list ?9))
+(setq nine-list  (legendre/digit-list ?9))
 
 
 (setq dot-list
