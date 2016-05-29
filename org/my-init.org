@@ -1167,9 +1167,6 @@ there in addition to Org mode.
      sp-highlight-wrap-overlay nil
      sp-highlight-wrap-tag-overlay nil)
 
-    :bind
-    (("C-M-a" . sp-beginning-of-sexp)
-     ("C-M-e" . sp-end-of-sexp))
     :config
     (progn
       (use-package smartparens-config)
@@ -1645,7 +1642,9 @@ Now we can always turn it on, both for LaTeX and for TeX.
 
 *** Automatic Parentheses
 Thankfully, [[Smartparens][=smartparens=]] can be ued in LaTeX mode no problem;
-therefore, we don't need to have CDLaTeX do the work
+therefore, we don't need to have CDLaTeX do the work.
+
+Also, LaTeX-combo-keys, could also disable the caret.
 #+BEGIN_SRC emacs-lisp
   (setq cdlatex-paired-parens "$")
   ;; (define-key cdlatex-mode-map "$" nil)
@@ -1654,6 +1653,7 @@ therefore, we don't need to have CDLaTeX do the work
   (define-key cdlatex-mode-map "[" nil)
   (define-key cdlatex-mode-map "|" nil)
   (define-key cdlatex-mode-map "<" nil)
+  (define-key cdlatex-mode-map "^" nil)
 #+END_SRC
 
 
@@ -1903,6 +1903,7 @@ Load my own package after everything has loaded.
   (use-package legendre-latex-key-combo
       :load-path "lisp/")
 #+END_SRC
+
 
 
 * Emacs Speaks Statistics

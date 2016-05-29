@@ -6,7 +6,7 @@
 (use-package ht
     :ensure t)
 (require 'texmathp)
-
+(require 'cdlatex)
 
 ;;-----------------------------------------------------------------------;;
 ;;                          GENERAL DESCRIPTION                          ;;
@@ -176,7 +176,9 @@
         ((*Before-Is* "==")     . (progn *delete* (insert "&= ")))
         ((*Before-Is* "+-")     . (progn *delete* (insert "\\pm ")))
         ((*Before-Is* "|-")     . (progn *delete* (insert "\\perp ")))
-        ((*Before-Is* "dist=>") . (progn *delete* (insert "\\overset{\\text{d}}{\\Longrightarrow} ")))
+        ((*Before-Is* "dist=>") . (progn *delete* (insert "\\overset{\\text{dist}}{\\Longrightarrow} ")))
+        ((*Before-Is* "ae=>")   . (progn *delete* (insert "\\overset{\\text{a.e.}}{\\Longrightarrow} ")))
+        ((*Before-Is* "P=>")    . (progn *delete* (insert "\\overset{\\P}{\\Longrightarrow} ")))
         ((*Before-Is* "N(0,1)") . (progn *delete* (insert "\\mathcal{N}(0,1)")))
         (t                      . (insert " "))))
 
@@ -185,7 +187,6 @@
     (*after-letter?*        . (insert (format "_{%c}" ,digit)))
     (*after-closing-brace?* . (save-excursion (backward-char 1) (insert (format "%c" ,digit))))
     (t                      . (insert (format "%c" ,digit)))))
-
 (setq zero-list  (legendre/digit-list ?0))
 (setq one-list   (legendre/digit-list ?1))
 (setq two-list   (legendre/digit-list ?2))
@@ -197,10 +198,19 @@
 (setq eight-list (legendre/digit-list ?8))
 (setq nine-list  (legendre/digit-list ?9))
 
-
 (setq dot-list
       '(((*Before-Is* "..") . (progn *delete* (insert "\\dots")))
         (t . (insert "."))))
+
+(setq caret-list
+      '((*no-math*         . (cdlatex-sub-superscript))
+        ((*before-is* ? ) . (insert-then-position "\\what{?}"))
+        (t                . (cdlatex-sub-superscript))))
+
+(setq tilde-list
+      '((*no-math*         . (insert "~"))
+        (*math*            . (insert-then-position "\\wtilde{?}"))))
+
 
 
 (with-eval-after-load 'latex
@@ -216,6 +226,8 @@
   (define-key LaTeX-mode-map (kbd "8") (make-smart-function eight-list))
   (define-key LaTeX-mode-map (kbd "9") (make-smart-function nine-list))
   (define-key LaTeX-mode-map (kbd ".") (make-smart-function dot-list))
+  (define-key LaTeX-mode-map (kbd "~") (make-smart-function tilde-list))
+  (define-key LaTeX-mode-map (kbd "^") (make-smart-function caret-list))
   )
 
 ;;----------------------------------------------------------------------
