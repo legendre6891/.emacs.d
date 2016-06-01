@@ -456,6 +456,8 @@ Recentf supports Ido mode by keeping track of recently organized files.
 Can't believe I'm using =helm= now; it's a great program in
 moderation. But it's a good package and there's no reason
 to ignore it.
+
+Disabled for now! Ido may still be better ...
 #+BEGIN_SRC emacs-lisp
   (use-package helm
       :ensure t
@@ -478,14 +480,29 @@ default behavior, only activate it when we didn't just use
           (setq this-command 'yank)
           (call-interactively 'yank-pop))))
 
-  (global-set-key (kbd "M-y") 'my-show-kill-ring)
+  (global-set-key (kbd "M-y")     'my-show-kill-ring)
+#+END_SRC
 
-  (global-set-key (kbd "C-h SPC") 'helm-mark-ring)
-  (global-set-key (kbd "C-h C-SPC") 'helm-mark-ring)
-
-  (global-set-key (kbd "C-x b") 'helm-mini)
+*** Further configuation
+Fuzzy match is a must.
+#+BEGIN_SRC emacs-lisp
   (setq helm-buffers-fuzzy-matching t)
   (setq helm-recentf-fuzzy-match t)
+#+END_SRC
+
+Other stuff as introduced by =tudho=. 
+#+BEGIN_SRC emacs-lisp
+  (setq
+   ;; open helm buffer inside current window, not occupy whole other window
+   helm-split-window-in-side-p           t
+   ;; move to end or beginning of source when reaching top or bottom of source.
+   helm-move-to-line-cycle-in-source     t
+   ;; search for library in `require' and `declare-function' sexp.
+   helm-ff-search-library-in-sexp        t
+   ;; scroll 8 lines other window using M-<next>/M-<prior>
+   helm-scroll-amount                    8
+
+   helm-ff-file-name-history-use-recentf t)
 #+END_SRC
 
 
@@ -561,12 +578,14 @@ See section on [[Avy]].
 
 ** Key-combo
 Key-combo is like key-chord on steroids. Useful for some LaTeX addons.
-#+BEGIN_SRC emacs-lisp
+EDIT: made my own key-combo, so let's disable this for now.
+#+BEGIN_SRC emacs-lisp  :tangle no
   (use-package key-combo
       :ensure t
       :config
       (global-key-combo-mode t))
 #+END_SRC
+
 
 ** Smart Tab
 Trying this out as a replacement for SuperTab. UPDATE: Not yet.
@@ -883,39 +902,28 @@ I shamelessly stole these from
 #+END_SRC
 
 
-* Avy
-Avy mode helps is a quicker way to move around; they work like Vim's
-=f=, =F=, =t=, =T= operators. /Not that useful, disabling for now./
-#+BEGIN_SRC emacs-lisp :tangle no
+* Avy, Swiper, and Counsel
+#+BEGIN_SRC emacs-lisp
   (use-package avy
-      :ensure t
-      :bind
-      (("C-'" . avy-goto-char-2))
-      (("M-SPC" . avy-goto-char-2)))
+    :ensure t)
+  (use-package counsel
+    :ensure t
+    :bind (("C-h f" . counsel-describe-function)
+           ("C-h v" . counsel-describe-variable))
+    :init
+    (setq ivy-re-builders-alist
+          '((t . ivy--regex-fuzzy)))
+    :config
+    (progn
+      (add-to-list 'ivy-initial-inputs-alist
+                   '(counsel-M-x . ""))
+      (add-to-list 'ivy-initial-inputs-alist
+                   '(counsel-describe-function . ""))
+      (add-to-list 'ivy-initial-inputs-alist
+                   '(counsel-describe-variable . ""))))
+
 #+END_SRC
 
-It is nice to setup a hydra from Avy for easier access. How about
-double tapping the semicolon key?
-/This is not a very good setup, so I am disabling it for now./
-#+BEGIN_SRC emacs-lisp :tangle no
-  (defhydra hydra-avy-semicolon (:color blue
-                       :body-pre (insert ";")
-                       :idle 1.0)
-    (";" (progn
-           (delete-char -1)
-           (call-interactively 'avy-goto-word-1))))
-
-
-  (defhydra hydra-avy-j (:color blue
-                       :body-pre (insert "j")
-                       :idle 1.0)
-    ("k" (progn
-           (delete-char -1)
-           (call-interactively 'avy-goto-char-2))))
-
-  (global-set-key (kbd ";") 'hydra-avy-semicolon/body)
-  (global-set-key (kbd "j") 'hydra-avy-j/body)
-#+END_SRC
 
 
 * Multiple Cursors
@@ -1040,13 +1048,18 @@ While in snippet mode, saving a snippet should just load and quit.
    
 
 * Company Mode goodness
+** This is totally disabled for "typing pleasure!"
+   Enabling company mode slowed the editor way down!
+   And frankly it's not that useful.
+
+
 ** Introduction and Installation
 Decided to settle down once and forall on configuring company mode.
 The question is what to do with the tab key, though it seems that
 integrating with =hippie-expand= is a good choice.
 
 See [[https://github.com/cqql/dotfiles/blob/master/src/.emacs.d/init.org][cqql's emacs init.org]] for more details here.
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
     (use-package company
         :ensure t
       :bind ("C-M-SPC" . company-complete)
@@ -1158,21 +1171,21 @@ there in addition to Org mode.
 
 #+BEGIN_SRC emacs-lisp
   (use-package smartparens
-  :ensure t
+      :ensure t
       :init
-    (smartparens-global-mode 1)
-    (show-smartparens-global-mode 1)
-    (setq
-     sp-highlight-pair-overlay nil
-     sp-highlight-wrap-overlay nil
-     sp-highlight-wrap-tag-overlay nil)
+      (smartparens-global-mode 1)
+      (show-smartparens-global-mode 1)
+      (setq
+       sp-highlight-pair-overlay nil
+       sp-highlight-wrap-overlay nil
+       sp-highlight-wrap-tag-overlay nil)
 
-    :config
-    (progn
-      (use-package smartparens-config)
-      (add-hook 'emacs-lisp-mode-hook 'turn-off-smartparens-mode)
-      (add-hook 'geiser-repl-mode-hook 'turn-off-smartparens-mode)
-    ))
+      :config
+      (progn
+        (use-package smartparens-config
+            :config (sp-pair "`" nil :actions :rem))
+        (add-hook 'emacs-lisp-mode-hook 'turn-off-smartparens-mode)
+        (add-hook 'geiser-repl-mode-hook 'turn-off-smartparens-mode)))
 #+END_SRC
 
 
