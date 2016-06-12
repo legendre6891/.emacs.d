@@ -39,29 +39,13 @@
     ("`va" "\\value" nil 0)
    ))
 
-(define-abbrev-table 'asy-mode-abbrev-table '())
-
-(define-abbrev-table 'awk-mode-abbrev-table
-  '(
-   ))
-
 (define-abbrev-table 'bibtex-mode-abbrev-table '())
-
-(define-abbrev-table 'c++-mode-abbrev-table
-  '(
-   ))
-
-(define-abbrev-table 'c-mode-abbrev-table
-  '(
-   ))
 
 (define-abbrev-table 'calendar-mode-abbrev-table '())
 
 (define-abbrev-table 'comint-mode-abbrev-table '())
 
 (define-abbrev-table 'completion-list-mode-abbrev-table '())
-
-(define-abbrev-table 'csv-mode-abbrev-table '())
 
 (define-abbrev-table 'edit-abbrevs-mode-abbrev-table '())
 
@@ -73,8 +57,6 @@
 
 (define-abbrev-table 'fundamental-mode-abbrev-table '())
 
-(define-abbrev-table 'gfm-mode-abbrev-table '())
-
 (define-abbrev-table 'global-abbrev-table '())
 
 (define-abbrev-table 'haskell-cabal-mode-abbrev-table '())
@@ -85,15 +67,9 @@
 
 (define-abbrev-table 'help-mode-abbrev-table '())
 
-(define-abbrev-table 'idl-mode-abbrev-table '())
-
 (define-abbrev-table 'inferior-j-mode-abbrev-table '())
 
 (define-abbrev-table 'inferior-julia-mode-abbrev-table '())
-
-(define-abbrev-table 'java-mode-abbrev-table
-  '(
-   ))
 
 (define-abbrev-table 'julia-mode-abbrev-table '())
 
@@ -101,15 +77,9 @@
 
 (define-abbrev-table 'literate-haskell-mode-abbrev-table '())
 
-(define-abbrev-table 'markdown-mode-abbrev-table '())
-
 (define-abbrev-table 'message-mode-abbrev-table '())
 
 (define-abbrev-table 'messages-buffer-mode-abbrev-table '())
-
-(define-abbrev-table 'objc-mode-abbrev-table
-  '(
-   ))
 
 (define-abbrev-table 'occur-edit-mode-abbrev-table '())
 
@@ -128,10 +98,6 @@
 (define-abbrev-table 'paradox-commit-list-mode-abbrev-table '())
 
 (define-abbrev-table 'paradox-menu-mode-abbrev-table '())
-
-(define-abbrev-table 'pike-mode-abbrev-table
-  '(
-   ))
 
 (define-abbrev-table 'process-menu-mode-abbrev-table '())
 

@@ -1173,19 +1173,23 @@ there in addition to Org mode.
   (use-package smartparens
       :ensure t
       :init
-      (smartparens-global-mode 1)
-      (show-smartparens-global-mode 1)
-      (setq
-       sp-highlight-pair-overlay nil
-       sp-highlight-wrap-overlay nil
-       sp-highlight-wrap-tag-overlay nil)
+      (progn
+        (smartparens-global-mode 1)
+        (show-smartparens-global-mode 1)
+        (setq
+         sp-highlight-pair-overlay nil
+         sp-highlight-wrap-overlay nil
+         sp-highlight-wrap-tag-overlay nil)
+        (sp-local-pair 'LaTeX-mode "|" "|")
+  )
 
       :config
       (progn
-        (use-package smartparens-config
-            :config (sp-pair "`" nil :actions :rem))
+        (use-package smartparens-config)
         (add-hook 'emacs-lisp-mode-hook 'turn-off-smartparens-mode)
-        (add-hook 'geiser-repl-mode-hook 'turn-off-smartparens-mode)))
+        (add-hook 'geiser-repl-mode-hook 'turn-off-smartparens-mode)
+        (sp-pair "`" nil :actions :rem)
+        (sp-local-pair 'LaTeX-mode "|" "|")))
 #+END_SRC
 
 
@@ -1448,6 +1452,12 @@ macros.
 
 See the section [[Paredit]] that turns on =paredit-mode=
 for elisp files.
+
+Some useful keybindings
+#+BEGIN_SRC emacs-lisp
+  (define-key emacs-lisp-mode-map (kbd "C-c C-b") #'eval-buffer)
+  (define-key emacs-lisp-mode-map (kbd "<C-return>") #'eval-region)
+#+END_SRC
 
 
 * LaTeX
@@ -2090,6 +2100,25 @@ snippets!
 #+END_SRC
 
 
+* Rust mode
+Rust is the hottest thing on the market right now.
+#+BEGIN_SRC emacs-lisp
+  (use-package rust-mode
+      :ensure t)
+  (add-hook 'rust-mode-hook
+            (lambda () (interactive)
+                    (electric-pair-mode 1)))
+#+END_SRC
+
+** Rust Format
+#+BEGIN_SRC emacs-lisp
+  (use-package rustfmt
+      :ensure t
+      :config
+      (add-hook 'rust-mode-hook #'rustfmt-enable-on-save))
+#+END_SRC
+
+
 * Undo
 Tree
 Undo tree gives a nice visualization of the undo-state. It makes
@@ -2286,6 +2315,7 @@ Upgrade packages silently and automatically.
   (use-package multi-term
       :ensure t)
 #+END_SRC
+
 
 * Epilog
 Packages to investigate

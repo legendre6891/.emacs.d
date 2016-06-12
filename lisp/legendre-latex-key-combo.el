@@ -140,6 +140,7 @@
          (*delete1*              . (delete-backward-char 1))
          (*math*                 . (texmathp))
          (*no-math*              . (not (texmathp)))
+         (*default-insert*       . (self-insert-command 1))
          )))
 
 
@@ -167,7 +168,7 @@
 ;; Load stuff
 ;;----------------------------------------------------------------------
 (setq space-list
-      '((*no-math*              . (insert " "))
+      '((*no-math*              . (progn *default-insert*))
         ((*Before-Is* "<==>")   . (progn *delete* (insert "\\iff ")))
         ((*Before-Is* ">=")     . (progn *delete* (insert "\\geq ")))
         ((*Before-Is* "<=")     . (progn *delete* (insert "\\leq ")))
@@ -180,13 +181,14 @@
         ((*Before-Is* "ae=>")   . (progn *delete* (insert "\\overset{\\text{a.e.}}{\\Longrightarrow} ")))
         ((*Before-Is* "P=>")    . (progn *delete* (insert "\\overset{\\P}{\\Longrightarrow} ")))
         ((*Before-Is* "N(0,1)") . (progn *delete* (insert "\\mathcal{N}(0,1)")))
-        (t                      . (insert " "))))
+        (t                      . (progn *default-insert*))))
 
 (defun legendre/digit-list (digit)
-  `((*no-math*              . (insert (format "%c" ,digit)))
+  `((*no-math*              . (progn *default-insert*))
     (*after-letter?*        . (insert (format "_{%c}" ,digit)))
     (*after-closing-brace?* . (save-excursion (backward-char 1) (insert (format "%c" ,digit))))
-    (t                      . (insert (format "%c" ,digit)))))
+    (t                      . (progn *default-insert*))))
+
 (setq zero-list  (legendre/digit-list ?0))
 (setq one-list   (legendre/digit-list ?1))
 (setq two-list   (legendre/digit-list ?2))
@@ -200,15 +202,15 @@
 
 (setq dot-list
       '(((*Before-Is* "..") . (progn *delete* (insert "\\dots")))
-        (t . (insert "."))))
+        (t . (progn *default-insert*))))
 
 (setq caret-list
-      '((*no-math*         . (cdlatex-sub-superscript))
+      '((*no-math*        . (cdlatex-sub-superscript))
         ((*before-is* ? ) . (insert-then-position "\\what{?}"))
         (t                . (cdlatex-sub-superscript))))
 
 (setq tilde-list
-      '((*no-math*         . (insert "~"))
+      '((*no-math*         . (progn *default-insert*))
         (*math*            . (insert-then-position "\\wtilde{?}"))))
 
 
