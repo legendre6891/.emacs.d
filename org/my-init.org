@@ -139,6 +139,11 @@ A no-frills package to set some sensible defaults.
       :ensure t)
 #+END_SRC
 
+*** Disable blinking cursor
+#+BEGIN_SRC emacs-lisp
+(blink-cursor-mode nil)
+#+END_SRC
+
 *** Disable trailing newline
 #+BEGIN_SRC emacs-lisp
 (setq-default mode-require-final-newline nil)
@@ -1059,9 +1064,9 @@ The question is what to do with the tab key, though it seems that
 integrating with =hippie-expand= is a good choice.
 
 See [[https://github.com/cqql/dotfiles/blob/master/src/.emacs.d/init.org][cqql's emacs init.org]] for more details here.
-#+BEGIN_SRC emacs-lisp :tangle no
-    (use-package company
-        :ensure t
+#+BEGIN_SRC emacs-lisp :tangle yes
+  (use-package company
+      :ensure t
       :bind ("C-M-SPC" . company-complete)
       :init
       (progn
@@ -1069,12 +1074,14 @@ See [[https://github.com/cqql/dotfiles/blob/master/src/.emacs.d/init.org][cqql's
               company-minimum-prefix-length 2
               company-show-numbers t
               company-selection-wrap-around t
+              company-tooltip-align-annotations t
               company-backends (list
                                 #'company-irony
                                 #'company-capf
                                 (list #'company-dabbrev-code
                                       #'company-keywords)
                                 #'company-files))
+
         (eval-after-load 'company
           '(progn
             (define-key company-active-map (kbd "TAB") 'company-select-next)
@@ -1083,14 +1090,14 @@ See [[https://github.com/cqql/dotfiles/blob/master/src/.emacs.d/init.org][cqql's
       :config
       (global-company-mode t))
 
-    (use-package company-dabbrev
+  (use-package company-dabbrev
       :init
-      (setf company-dabbrev-ignore-case 'keep-prefix
-            company-dabbrev-ignore-invisible t
-            company-dabbrev-downcase nil))
+    (setf company-dabbrev-ignore-case 'keep-prefix
+          company-dabbrev-ignore-invisible t
+          company-dabbrev-downcase nil))
 
   (use-package company-irony
-  :ensure t)
+      :ensure t)
 #+END_SRC
 
 

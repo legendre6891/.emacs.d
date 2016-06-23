@@ -21,3 +21,5 @@ session.*
 irony-server
 *irony-server*
 /org/my-init.log
+irony/*
+irony/**
