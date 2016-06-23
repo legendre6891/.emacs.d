@@ -2294,8 +2294,8 @@ This is nice eye-candy, but don't enable it by default.
 #+END_SRC
 
 ** Silent Package Upgrader
-Upgrade packages silently and automatically.
-#+BEGIN_SRC emacs-lisp
+Upgrade packages silently and automatically. Nope! This breaks too easily.
+#+BEGIN_SRC emacs-lisp :tangle no
 (use-package spu
   :ensure t
   :defer 5 ;; defer package loading for 5 second
