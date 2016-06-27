@@ -41,3 +41,4 @@ nstall the latest version of Org mode.")))
 
 ;; (require 'org-ref)
 )
+(put 'erase-buffer 'disabled nil)

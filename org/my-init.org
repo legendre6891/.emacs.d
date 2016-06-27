@@ -383,9 +383,11 @@ names. This is annoying, so disable it.
 =Flx Ido= uses another algorithm to calculate matches which seems to
 work better than the default.
 #+BEGIN_SRC emacs-lisp
-(use-package flx-ido
-    :ensure t
-    :config (flx-ido-mode 1))
+  (use-package flx-ido
+      :ensure t
+      :config (progn
+                (flx-ido-mode 1)
+                (ido-mode 1)))
 #+END_SRC
 
 Make the completion interface vertical; it is more legible this way.
@@ -940,8 +942,6 @@ Multiple cursors is lots of fun!
   (global-set-key (kbd "M-j") 'mc/mark-next-like-this)
   (global-set-key (kbd "M-k") 'mc/mark-previous-like-this)
   (global-set-key (kbd "M-J") 'mc/mark-all-like-this)
-  (global-set-key (kbd "M-.") 'mc/edit-lines)
-
 #+END_SRC
 
 
@@ -1076,8 +1076,8 @@ See [[https://github.com/cqql/dotfiles/blob/master/src/.emacs.d/init.org][cqql's
               company-selection-wrap-around t
               company-tooltip-align-annotations t
               company-backends (list
-                                #'company-irony
                                 #'company-capf
+                                #'company-irony
                                 (list #'company-dabbrev-code
                                       #'company-keywords)
                                 #'company-files))
@@ -2031,7 +2031,13 @@ comfortable with it to do more scripting.
   (use-package geiser
       :ensure t
       :init
-    (setq geiser-active-implementations '(racket)))
+      (setq geiser-active-implementations '(racket))
+      :config
+      (add-hook 'geiser-mode-hook #'comment-auto-fill))
+
+
+  (with-eval-after-load 'geiser-repl
+    (define-key geiser-repl-mode-map (kbd "C-l") #'legendre6891/my-clear))
 #+END_SRC
 
 
@@ -2321,6 +2327,17 @@ Upgrade packages silently and automatically. Nope! This breaks too easily.
 #+BEGIN_SRC emacs-lisp
   (use-package multi-term
       :ensure t)
+#+END_SRC
+
+** Exec-Path-From-Shell
+On Mac OS X (macOS), I want to the path set by my =bashrc= or =zshrc= be
+inherited without launching =emacs= from the shell.
+#+BEGIN_SRC emacs-lisp
+  (use-package exec-path-from-shell
+      :ensure t
+      :config
+      (when (memq window-system '(mac ns))
+        (exec-path-from-shell-initialize)))
 #+END_SRC
 
 
