@@ -278,8 +278,9 @@ we use =smex=.
     (if (window-minibuffer-p (frame-selected-window))
         (keyboard-escape-quit)
         (smex)))
-  (global-set-key (kbd "<f3>") 'quit-or-smex)
-  (global-set-key (kbd "<f4>") 'quit-or-smex)
+
+  (global-set-key (kbd "<f3>") #'highlight-phrase)
+  (global-set-key (kbd "<f4>") #'unhighlight-regexp)
 #+END_SRC
 
 Set =<f8>= to editing this very file.
@@ -292,7 +293,8 @@ Set =<f8>= to editing this very file.
 #+END_SRC
 
 Set =<f3>= to search because =C-s= is slightly too painful.
-#+BEGIN_SRC emacs-lisp
+*Unfortunately, I never developed the muscle memory to use this. See above.*
+#+BEGIN_SRC emacs-lisp :tangle no
   (global-set-key (kbd "<f3>") 'isearch-forward-regexp)
   (define-key isearch-mode-map (kbd "<f3>") 'isearch-repeat-forward)
   (define-key isearch-mode-map (kbd "<f4>") 'isearch-repeat-backward)
@@ -332,9 +334,13 @@ single =<f4>=.
 #+BEGIN_SRC emacs-lisp
   (defun edit-master-org-file ()
       (interactive)
-    (find-file (concat org-directory "master.org"))
-    )
-  (global-set-key (kbd "<f4>") #'edit-master-org-file)
+      (find-file (concat org-directory "master.org")))
+
+  ;; Unfortunately, I don't use org mode enough yet, so the following
+  ;; is uncommented for now.
+  ;; (global-set-key (kbd "<f4>") #'edit-master-org-file)
+
+
 #+END_SRC
 
 
@@ -700,8 +706,7 @@ Install but defer.
               ("zenburn-blue-4"   . "#597D80")
               ("zenburn-blue-5"   . "#436D6D")
               ("zenburn-magenta"  . "#E090C7")
-              ))
-      )
+              )))
 
   (use-package abyss-theme
       :ensure t
@@ -720,7 +725,7 @@ Install but defer.
                         :width 'normal))
 
   (if (eq system-type 'darwin)
-      (my-set-face "PragmataPro" 15))
+      (my-set-face "Courier Screenplay" 15))
 
   (if (eq system-type 'windows-nt)
       (my-set-face "Consolas" 12))
@@ -746,8 +751,9 @@ Make the initial frame always size 80 by 40.
 ** Smart Mode Line
 I'm actually not convined of the utility of this just yet,
 but let's throw it in because it does look somewhat nicer than the
-default mode line.
-#+BEGIN_SRC emacs-lisp
+default mode line. 
+*Actually, now I decided against it. It serves no real purpose.*
+#+BEGIN_SRC emacs-lisp  :tangle no
   (use-package smart-mode-line
       :ensure smart-mode-line
       :init
@@ -767,7 +773,7 @@ default mode line.
 ** Activate theme
 The extra =t= flag is so we don't get asked about treating themes
 as safe.
-#+BEGIN_SRC emacs-lisp :tangle yes
+#+BEGIN_SRC emacs-lisp :tangle no
   (if (not (display-graphic-p))
       (load-theme 'zenburn t)
     (load-theme 'zenburn t))
@@ -789,14 +795,13 @@ longer the case! I have now disabled it.)
 
 
 ** Smooth scroll
-Appparently this package is pretty good!
-#+BEGIN_SRC emacs-lisp
+Appparently this package is pretty good! [Update: not worth it.]
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package smooth-scroll
 :load-path "lisp/"
     :config
     (smooth-scroll-mode 1)
-    (setq smooth-scroll/vscroll-step-size 5)
-    )
+    (setq smooth-scroll/vscroll-step-size 5))
 #+END_SRC
 
 
@@ -859,6 +864,7 @@ abort completely with `C-g'."
 
 (setq save-abbrevs 'silently)
 (setq-default abbrev-mode t)
+(diminish 'abbrev-mode)
 #+END_SRC
 
 
@@ -989,6 +995,7 @@ enable and disable keys on the fly.
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
       :ensure t
+      :diminish yas-minor-mode
       :init
       (progn
         (setq yas-snippet-dirs
@@ -1067,26 +1074,29 @@ See [[https://github.com/cqql/dotfiles/blob/master/src/.emacs.d/init.org][cqql's
 #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package company
       :ensure t
+      :diminish company-mode
       :bind ("C-M-SPC" . company-complete)
       :init
       (progn
-        (setf company-idle-delay 0
-              company-minimum-prefix-length 2
-              company-show-numbers t
-              company-selection-wrap-around t
-              company-tooltip-align-annotations t
-              company-backends (list
-                                #'company-capf
-                                #'company-irony
-                                (list #'company-dabbrev-code
-                                      #'company-keywords)
-                                #'company-files))
+        (setf
+         company-idle-delay                0
+         company-minimum-prefix-length     2
+         company-show-numbers              t
+         company-selection-wrap-around     t
+         company-tooltip-align-annotations t
+         company-backends (list
+                           #'company-capf
+                           #'company-irony
+                           (list #'company-dabbrev-code
+                                 #'company-keywords)
+                           #'company-files))
 
-        (eval-after-load 'company
-          '(progn
-            (define-key company-active-map (kbd "TAB") 'company-select-next)
-            (define-key company-active-map [tab] 'company-select-next)))
-        )
+        (with-eval-after-load 'company
+          (define-key company-active-map (kbd "TAB") 'company-select-next)
+          (define-key company-active-map [tab] 'company-select-next)
+          (define-key company-active-map (kbd "<S-tab>") 'company-select-previous)
+          (define-key company-active-map [backtab] 'company-select-previous)))
+
       :config
       (global-company-mode t))
 
@@ -1179,6 +1189,7 @@ there in addition to Org mode.
 #+BEGIN_SRC emacs-lisp
   (use-package smartparens
       :ensure t
+      :diminish smartparens-mode
       :init
       (progn
         (smartparens-global-mode 1)
@@ -1195,6 +1206,8 @@ there in addition to Org mode.
         (use-package smartparens-config)
         (add-hook 'emacs-lisp-mode-hook 'turn-off-smartparens-mode)
         (add-hook 'geiser-repl-mode-hook 'turn-off-smartparens-mode)
+        (add-hook 'racket-mode-hook 'turn-off-smartparens-mode)
+        (add-hook 'racket-repl-mode-hook 'turn-off-smartparens-mode)
         (sp-pair "`" nil :actions :rem)
         (sp-local-pair 'LaTeX-mode "|" "|")))
 #+END_SRC
@@ -1207,6 +1220,7 @@ actually comes with a good set of keybindings, and old habits die
 hard.
 #+BEGIN_SRC emacs-lisp
   (use-package paredit
+      :diminish paredit-mode
       :ensure t
       :config
       (progn
@@ -1216,6 +1230,8 @@ hard.
         (add-hook 'lisp-mode-hook             'enable-paredit-mode)
         (add-hook 'lisp-interaction-mode-hook 'enable-paredit-mode)
         (add-hook 'geiser-repl-mode-hook 'enable-paredit-mode)
+        (add-hook 'racket-repl-mode-hook 'enable-paredit-mode)
+        (add-hook 'racket-mode-hook 'enable-paredit-mode)
         (add-hook 'scheme-mode-hook           'enable-paredit-mode)))
 #+END_SRC
 
@@ -2026,8 +2042,9 @@ comfortable with it to do more scripting.
 
 
 * Racket
+** Geiser Mode [not used for now]
 =Geiser= mode is good enough to use for Racket (Scheme).
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package geiser
       :ensure t
       :init
@@ -2038,6 +2055,16 @@ comfortable with it to do more scripting.
 
   (with-eval-after-load 'geiser-repl
     (define-key geiser-repl-mode-map (kbd "C-l") #'legendre6891/my-clear))
+#+END_SRC
+
+** Racket Mode
+Let's try =racket-mode= instead of =geiser=.
+#+BEGIN_SRC emacs-lisp
+  (use-package racket-mode
+      :ensure t)
+
+  (with-eval-after-load 'racket-repl
+    (define-key racket-repl-mode-map (kbd "C-l") #'legendre6891/my-clear))
 #+END_SRC
 
 
