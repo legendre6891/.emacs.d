@@ -95,7 +95,11 @@
 ;; Setup the substitution
 ;;----------------------------------------------------------------------
 
+
+
 (defun legendre/deep-map (f xs)
+  ;; This function takes a function f and a (possibly nested) xs
+  ;; and applies f over xs, no matter how deep xs is as a list.
   (if (not (null xs))
       (let ((x (first xs))
             (stuff (legendre/deep-map f (rest xs))))
@@ -113,12 +117,13 @@
           (ht-get H x)
           x)))
 
-
+;; This variable is defined as to keep track of the last
+;; insert, so that we may delete it with a macro.
 (setq legendre/legendre-key-combo-internal-string-length 0)
 
 (defun legendre/looking-back-string (x)
   ;; Check if right before the cursor, x is the string
-  ;; not very robust, but works well enough
+  ;; not very robust, but works well enough (and is fast!)
   (let ((l (length x)))
     (setq legendre/legendre-key-combo-internal-string-length (length x))
     (string-equal
@@ -126,7 +131,7 @@
      (buffer-substring-no-properties (- (point) l) (point)))))
 
 
-(setq legendre/replacement-hash (ht<-alist
+(setq legendre/replacement-hash (ht<-alist ;; <——— sets up a hash in this line
        '((*before*               . (preceding-char))
          (*before-is*            . (lambda (x) (legendre/looking-back-char x)))
          (*Before-Is*            . (lambda (x) (legendre/looking-back-string x)))
@@ -165,7 +170,7 @@
 ;; (global-set-key (kbd "<f11>") (make-smart-function example-list))
 
 ;;----------------------------------------------------------------------
-;; Load stuff
+;; Load all the fun stuff now.
 ;;----------------------------------------------------------------------
 (setq space-list
       '((*no-math*              . (progn *default-insert*))

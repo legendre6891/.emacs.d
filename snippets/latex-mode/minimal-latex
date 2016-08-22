@@ -139,6 +139,8 @@
 \DeclareMathOperator{\P}{\mathbf{P}}
 \newcommand{\Pto}{\xrightarrow[\phantom{n\to\infty}]{\P}}
 \DeclareMathOperator{\Q}{\mathbf{Q}}
+\DeclareMathOperator{\R}{\mathbf{R}}
+\DeclareMathOperator{\Z}{\mathbf{Z}}
 \DeclareMathOperator{\Cov}{\mathbf{Cov}}
 \DeclareMathOperator{\Var}{\mathbf{Var}}
 \DeclareMathOperator{\Prob}{\mathbf{Prob}}

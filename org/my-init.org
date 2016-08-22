@@ -1,6 +1,6 @@
 #+TITLE: Emacs Configuration
 #+AUTHOR: Kevin Li
-#+DATE: April 2, 2016
+#+DATE: August 22, 2016
 
 * Prelude
 This file is tangled and loaded via =init.el=, which
@@ -970,6 +970,7 @@ I need to figure out a way to reference (and attach?) files
 to an org document.
 
 
+
 * Yasnippet
 ** Introduction
 Yasnippet is very useful once setup correctly for each mode.
@@ -1457,6 +1458,7 @@ Use =ido= for completion.
 #+END_SRC
 
 
+
 * Pandoc Mode
 Pandoc is probably the most versatile document converter at the
 moment. Let's use it until we are more comfortable wtih Org=mode.
@@ -1570,7 +1572,9 @@ TeX.SX). It works, and I don't want to mess with it.
                                   ("ZATHURA" zathura-forward-search)
                                   ("LLPP" "llpp %o")
                                   ("XDVI" "xdvi %o")))
-    (setq TeX-view-program-selection '((output-pdf "Evince")
+    (setq TeX-view-program-selection '(
+                                       (output-pdf "LLPP")
+                                       (output-pdf "Evince")
                                        (output-pdf "ZATHURA")
                                        (output-dvi "xdvi"))))
 
@@ -1951,32 +1955,28 @@ Load my own package after everything has loaded.
 #+END_SRC
 
 
-
 * Emacs Speaks Statistics
 ** Installation
 As opposed to using RStudio, let's use ESS because it's getting lots
 of great reviews!
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
   (use-package ess
       :ensure t
       :init
-      (progn (setq ess-R-smart-operators t)     ; enables smart commas too
-             (autoload 'R-mode "ess-site"       
-               "Major mode for editing R source.  See `ess-mode' for more help."
-               t))
-      :config
-      (progn
-        (eval-after-load 'ess-smart-equals
-          '(progn
-            (add-hook 'ess-mode-hook 'ess-smart-equals-mode)
-            (add-hook 'ess-mode-hook 'electric-pair-mode)
-            (add-hook 'inferior-ess-mode-hook 'ess-smart-equals-mode)))
-        (use-package ess-smart-equals :ensure t)))
+      (setq ess-R-smart-operators t))
+
+  ;;(use-package ess-smart-equals
+   ;;   :ensure t)
+
+  ;; (with-eval-after-load 'ess-smart-equals
+  ;;   (add-hook 'ess-mode-hook 'ess-smart-equals-mode)
+  ;;   (add-hook 'ess-mode-hook 'electric-pair-mode)
+  ;;   (add-hook 'inferior-ess-mode-hook 'ess-smart-equals-mode))
 #+END_SRC
 
 ** Keybinds
 Certain keybinds are nice to have in a =.R= buffer.
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
   (with-eval-after-load 'ess
     (define-key  ess-mode-map (kbd "C-t") 'ess-switch-to-inferior-or-script-buffer)
     (define-key  inferior-ess-mode-map (kbd "C-t") 'ess-switch-to-inferior-or-script-buffer))
@@ -1985,7 +1985,7 @@ Certain keybinds are nice to have in a =.R= buffer.
 ** Customization
 See [[https://stat.ethz.ch/pipermail/ess-help/2009-July/005456.html][this post]] to make the ESS R console screen automagically scale
 with window size. (The bottom snippet is original though!)
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle yes
   (defun my-ess-post-run-hook ()
     (ess-execute-screen-options))
 
@@ -2027,6 +2027,8 @@ with window size. (The bottom snippet is original though!)
 * Clojure
 
 
+
+
 * Haskell
 Haskell is the cool kid on the block, and it is time to get
 comfortable with it to do more scripting.
@@ -2039,6 +2041,8 @@ comfortable with it to do more scripting.
         (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
         (add-hook 'haskell-mode-hook 'turn-on-haskell-unicode-input-method)))
 #+END_SRC
+
+
 
 
 * Racket
@@ -2102,6 +2106,9 @@ Anyhow, here is support for the J lang.
 #+END_SRC
 
 
+
+
+
 * CC modes
 This section sets up =Emacs= to handle editing C and C++ files.
 
@@ -2157,6 +2164,7 @@ Rust is the hottest thing on the market right now.
       :config
       (add-hook 'rust-mode-hook #'rustfmt-enable-on-save))
 #+END_SRC
+
 
 
 * Undo
@@ -2248,6 +2256,8 @@ See [[http://abizern.org/2014/01/05/hakyll-new-post-with-emacs/][this page]] for
      (replace-regexp-in-string " " "-" (downcase title))
      ".markdown"))
 #+END_SRC
+
+
 
 
 * Shell mode
@@ -2359,12 +2369,13 @@ Upgrade packages silently and automatically. Nope! This breaks too easily.
 ** Exec-Path-From-Shell
 On Mac OS X (macOS), I want to the path set by my =bashrc= or =zshrc= be
 inherited without launching =emacs= from the shell.
-#+BEGIN_SRC emacs-lisp
-  (use-package exec-path-from-shell
-      :ensure t
-      :config
-      (when (memq window-system '(mac ns))
-        (exec-path-from-shell-initialize)))
+#+BEGIN_SRC emacs-lisp :tangle no
+  (when (memq window-system '(mac ns))
+    (use-package exec-path-from-shell
+        :ensure t
+        :config
+        (when (memq window-system '(mac ns))
+          (exec-path-from-shell-initialize))))
 #+END_SRC
 
 
