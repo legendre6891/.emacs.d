@@ -269,6 +269,7 @@ package.
 
 ** Global Keybindings
 *** F-keys
+**** F2 and F3
 Set =<f2>= and =<f3>= to =C-g= if the minibuffer is focused,
 otherwise, execute an extended command =M-x=, for which
 we use =smex=. 
@@ -282,7 +283,7 @@ we use =smex=.
   (global-set-key (kbd "<f3>") #'highlight-phrase)
   (global-set-key (kbd "<f4>") #'unhighlight-regexp)
 #+END_SRC
-
+**** F8
 Set =<f8>= to editing this very file.
 #+BEGIN_SRC emacs-lisp
   (setq init-org-file
@@ -291,7 +292,7 @@ Set =<f8>= to editing this very file.
          "my-init.org"))
   (global-set-key (kbd "<f8>") (↑ (find-file init-org-file)))
 #+END_SRC
-
+**** F3
 Set =<f3>= to search because =C-s= is slightly too painful.
 *Unfortunately, I never developed the muscle memory to use this. See above.*
 #+BEGIN_SRC emacs-lisp :tangle no
@@ -300,7 +301,7 @@ Set =<f3>= to search because =C-s= is slightly too painful.
   (define-key isearch-mode-map (kbd "<f4>") 'isearch-repeat-backward)
 #+END_SRC
 
-
+**** F10
 Set =<f10>= to open the current buffer in Windows Explorer.
 Taken from here.
 #+BEGIN_SRC emacs-lisp
@@ -327,7 +328,8 @@ Taken from here.
       (global-set-key [f10] 'my-open-in-windows-explorer))
 
 #+END_SRC
-
+***** TODO Support other operating systems.
+**** F4
 It is useful to have a master org file in which we keep all the random
 notes and stuff. For this to be useful, load the master file with a
 single =<f4>=.
@@ -343,11 +345,13 @@ single =<f4>=.
 
 #+END_SRC
 
-
+**** F1 and F2
 See [[Yasnippet]] and Hydra; there, =<f1>= and =<f2>= is also bound.
 
-
-**** TODO Support other operating systems.
+**** F5
+#+BEGIN_SRC emacs-lisp
+  (global-set-key (kbd "<f5>") #'recompile-quietly)
+#+END_SRC
      
 *** Pause-key
 See section on [[Restart Emacs]].
@@ -2376,6 +2380,18 @@ inherited without launching =emacs= from the shell.
         :config
         (when (memq window-system '(mac ns))
           (exec-path-from-shell-initialize))))
+#+END_SRC
+
+
+* Running Recompile
+See [[https://www.emacswiki.org/emacs/CompileCommand#toc10][this link on EmacsWiki]] on how to run =compile= and =recompile=
+in a pleasant way.
+#+BEGIN_SRC emacs-lisp
+(defun recompile-quietly ()
+  "Re-compile without changing the window configuration."
+  (interactive)
+  (save-window-excursion
+    (recompile)))
 #+END_SRC
 
 

@@ -196,6 +196,11 @@
 } 
 \makeatother
 
+\makeatletter
+\def\imod#1{\allowbreak\mkern10mu({\operator@font mod}\,\,#1)}
+\makeatother
+
+
 
 %   ____          _                    ____  _____ _____    
 %  / ___|   _ ___| |_ ___  _ __ ___   |  _ \| ____|  ___|__ 
