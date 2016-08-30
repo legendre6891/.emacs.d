@@ -237,5 +237,23 @@
   (define-key LaTeX-mode-map (kbd "^") (make-smart-function caret-list))
   )
 
+
+(with-eval-after-load 'plain-tex
+  (define-key plain-TeX-mode-map (kbd "SPC") (make-smart-function space-list))
+  (define-key plain-TeX-mode-map (kbd "0") (make-smart-function zero-list))
+  (define-key plain-TeX-mode-map (kbd "1") (make-smart-function one-list))
+  (define-key plain-TeX-mode-map (kbd "2") (make-smart-function two-list))
+  (define-key plain-TeX-mode-map (kbd "3") (make-smart-function three-list))
+  (define-key plain-TeX-mode-map (kbd "4") (make-smart-function four-list))
+  (define-key plain-TeX-mode-map (kbd "5") (make-smart-function five-list))
+  (define-key plain-TeX-mode-map (kbd "6") (make-smart-function six-list))
+  (define-key plain-TeX-mode-map (kbd "7") (make-smart-function seven-list))
+  (define-key plain-TeX-mode-map (kbd "8") (make-smart-function eight-list))
+  (define-key plain-TeX-mode-map (kbd "9") (make-smart-function nine-list))
+  (define-key plain-TeX-mode-map (kbd ".") (make-smart-function dot-list))
+  (define-key plain-TeX-mode-map (kbd "~") (make-smart-function tilde-list))
+  (define-key plain-TeX-mode-map (kbd "^") (make-smart-function caret-list))
+  )
+
 ;;----------------------------------------------------------------------
 (provide 'legendre-latex-key-combo)

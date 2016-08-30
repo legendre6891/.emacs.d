@@ -1623,7 +1623,7 @@ Hard-wrap and disable =electric-indent-mode= which messes
 up AucTeX's internal indentation code. This actually depends
 on AucTeX since it defines =LaTeX-mode-hook=.
 #+BEGIN_SRC emacs-lisp
-  (with-eval-after-load "tex"
+  (with-eval-after-load 'tex
     (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
     (add-hook 'plain-TeX-mode-hook 'auto-fill-mode)
     (add-hook 'LaTeX-mode-hook (↑ (electric-indent-mode -1))))
@@ -1633,10 +1633,10 @@ on AucTeX since it defines =LaTeX-mode-hook=.
 This seems helpful. See the [[http://ftp.gnu.org/gnu/auctex/11.89-extra/auctex.pdf][AucTeX manual]] for more details.
 #+BEGIN_SRC emacs-lisp
   (add-hook 'plain-TeX-mode-hook
-             (lambda () (set (make-variable-buffer-local ’TeX-electric-math)
+             (lambda () (set (make-variable-buffer-local 'TeX-electric-math)
                              (cons "$" "$"))))
   (add-hook 'LaTeX-mode-hook
-             (lambda () (set (make-variable-buffer-local ’TeX-electric-math)
+             (lambda () (set (make-variable-buffer-local 'TeX-electric-math)
                              (cons "\\(" "\\)"))))
 #+END_SRC
 
