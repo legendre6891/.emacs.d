@@ -649,6 +649,9 @@ Install but defer.
   (use-package ample-theme
       :defer t
       :ensure t)
+  (use-package gotham-theme
+      :defer t
+      :ensure t)
   (use-package smyx-theme
       :defer t
       :ensure t)
@@ -735,7 +738,7 @@ Install but defer.
       (my-set-face "Consolas" 12))
 
   (if (eq system-type 'gnu/linux)
-      (my-set-face "PragmataPro" 12))
+      (my-set-face "mononoki" 12))
 #+END_SRC
 
 *** TODO cycle between fonts
