@@ -21,7 +21,6 @@
 %   | | |  _  | |__| |_| |  _ <| |___| |  | |___) |
 %   |_| |_| |_|_____\___/|_| \_\_____|_|  |_|____/ 
 \usepackage{amsthm}
-\usepackage{cleveref}
 \usepackage{mathtools}
 
 \theoremstyle{definition}
@@ -135,30 +134,40 @@
 % | |_| |  __/| |___|  _ <  / ___ \| || |_| |  _ < ___) |
 %  \___/|_|   |_____|_| \_\/_/   \_\_| \___/|_| \_\____/ 
 \let\P\relax
+
 \DeclareMathOperator{\E}{\mathbf{E}}
 \DeclareMathOperator{\P}{\mathbf{P}}
-\newcommand{\Pto}{\xrightarrow[\phantom{n\to\infty}]{\P}}
 \DeclareMathOperator{\Q}{\mathbf{Q}}
 \DeclareMathOperator{\R}{\mathbf{R}}
 \DeclareMathOperator{\Z}{\mathbf{Z}}
-\DeclareMathOperator{\Cov}{\mathbf{Cov}}
-\DeclareMathOperator{\Var}{\mathbf{Var}}
-\DeclareMathOperator{\Prob}{\mathbf{Prob}}
+
+\newcommand{\Pto}{\xrightarrow[\phantom{n\to\infty}]{\P}}
+\DeclareMathOperator{\Bias}{Bias}
 \DeclareMathOperator{\CDF}{\textsc{CDF}}
+\DeclareMathOperator{\Cov}{\mathbf{Cov}}
+\DeclareMathOperator{\MSE}{MSE}
+\DeclareMathOperator{\Prob}{\mathbf{Prob}}
+\DeclareMathOperator{\Var}{\mathbf{Var}}
 \newcommand\given[1][]{\:#1\vert\:}
 
-\DeclareMathOperator{\Unif}{\textsc{Unif}}
 \DeclareMathOperator{\Bernoulli}{\textsc{B}}
-\DeclareMathOperator{\Poisson}{\textsc{Pois}}
+\DeclareMathOperator{\Binomial}{\mathsf{Binomial}}
+\DeclareMathOperator{\GammaP}{\mathsf{Gamma}}
+\DeclareMathOperator{\IID}{\mathbin{\overset{\textsc{IID}}{\sim}}}
 \DeclareMathOperator{\Normal}{\textsc{Normal}}
+\DeclareMathOperator{\Pareto}{\mathsf{Pareto}}
+\DeclareMathOperator{\Poisson}{\textsc{Pois}}
+\DeclareMathOperator{\Pois}{\mathsf{Pois}}
+\DeclareMathOperator{\Unif}{\textsc{Unif}}
 
 \DeclareMathOperator*{\maximize}{maximize\,}
 \DeclareMathOperator*{\minimize}{minimize\,}
 \DeclareMathOperator*{\argmin}{arg\,min}
 \DeclareMathOperator*{\argmax}{arg\,max}
 
-\def\R{\mathbf{R}}
-\def\Z{\mathbf{Z}}
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\Ch}{Ch}
 
 \makeatletter
 \newcommand*{\indep}{%
@@ -209,6 +218,12 @@
 %  \____\__,_|___/\__\___/|_| |_| |_| |____/|_____|_|  |___/
 %
 \def\Rule{\medskip\noindent \hrule width\columnwidth\smallskip}
+\newcommand\problemfont[1]{{\fontfamily{lmss}\fontseries{bx}\selectfont#1}}
+
+\newcommand{\newproblem}{\par\noindent\rule{\columnwidth}{0.4pt}\par}
+\newcommand{\problemheader}[1]{\noindent\problemfont{#1}\;}
+\newcommand{\problem}[1]{\newproblem\problemheader{#1}}
+\newcommand{\squash}{\vglue-15pt}
 
 
 \begin{document}
