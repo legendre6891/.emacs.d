@@ -44,6 +44,14 @@
 \newtheorem*{remark}{Remark}
 \newtheorem*{note}{Note}
 
+\theoremstyle{definition} % just in case the style had changed
+\newcommand{\thistheoremname}{}
+\newtheorem*{genericthm}{\thistheoremname}
+\newenvironment{namedthm}[1]
+  {\renewcommand{\thistheoremname}{\fontfamily{lmss}\fontseries{bx}\selectfont#1}%
+   \begin{genericthm}}
+  {\end{genericthm}}
+
 
 %  __  __    _    ____   ____ ___ _   _ ____  
 % |  \/  |  / \  |  _ \ / ___|_ _| \ | / ___| 
@@ -224,6 +232,29 @@
 \newcommand{\problemheader}[1]{\noindent\problemfont{#1}\;}
 \newcommand{\problem}[1]{\newproblem\problemheader{#1}}
 \newcommand{\squash}{\vglue-15pt}
+
+\def\QED {{%        set up
+  \parfillskip=0pt        % so \par doesnt push \square to left
+  \widowpenalty=10000     % so we dont break the page before \square
+  \displaywidowpenalty=10000  % ditto
+  \finalhyphendemerits=0  % TeXbook exercise 14.32
+ %
+ %                 horizontal
+  \leavevmode             % \nobreak means lines not pages
+  \unskip                 % remove previous space or glue
+  \nobreak                % don't break lines
+  \hfil                   % ragged right if we spill over
+  \penalty50              % discouragement to do so
+  \hskip.2em              % ensure some space
+  \null                   % anchor following \hfill
+  \hfill                  % push \square to right
+  $\square$%              % the end-of-proof mark
+ %
+ %                   vertical
+  \par}}                  % build paragraph
+
+
+
 
 
 \begin{document}
