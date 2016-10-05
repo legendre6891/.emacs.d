@@ -2081,7 +2081,7 @@ Let's try =racket-mode= instead of =geiser=.
 
 * Julia
 ** TODO Write some configurations --- broken at the moment
-#+BEGIN_SRC emacs-lisp
+#+BEGIN_SRC emacs-lisp :tangle no
   (use-package julia-mode
       :ensure t)
 
