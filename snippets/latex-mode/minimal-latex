@@ -2,7 +2,7 @@
 # name: minimal-latex
 # key:
 # --
-\documentclass[10pt, twocolumn]{article}
+\documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 
 %   _____ ___  _   _ _____      __  __  __    _  _____ _   _ 
@@ -12,7 +12,7 @@
 %  |_|   \___/|_| \_| |_|   /_/    |_|  |_/_/   \_\_| |_| |_|
 \usepackage{tgtermes}
 \usepackage{inconsolata}
-\usepackage[subscriptcorrection]{mtpro2}
+\usepackage[subscriptcorrection, mtpcal]{mtpro2}
 \usepackage{amsmath}
 
 %  _____ _   _ _____ ___  ____  _____ __  __ ____  
@@ -58,7 +58,7 @@
 % | |\/| | / _ \ | |_) | |  _ | ||  \| \___ \ 
 % | |  | |/ ___ \|  _ <| |_| || || |\  |___) |
 % |_|  |_/_/   \_\_| \_\\____|___|_| \_|____/ 
-\usepackage[bmargin=0.5in,hmargin=0.3in,tmargin=0.3in,footskip=0.3in]{geometry}
+\usepackage[vmargin=0.5in,hmargin=0.75in]{geometry}
 
 %  _   _ _____    _    ____ ___ _   _  ____ ____  
 % | | | | ____|  / \  |  _ \_ _| \ | |/ ___/ ___| 
@@ -69,9 +69,6 @@
 \titleformat*{\section}{\fontfamily{lmss}\selectfont\Large\bfseries}
 \titleformat*{\subsection}{\fontfamily{lmss}\selectfont\large\bfseries}
 \titleformat*{\subsubsection}{\fontfamily{lmss}\selectfont\bfseries}
-\titlespacing*{\section}{0pt}{0pt}{0pt}
-\titlespacing*{\subsection}{0pt}{0pt}{0pt}
-\titlespacing*{\subsubsection}{0pt}{0pt}{0pt}
 \setcounter{secnumdepth}{-2}
 
 %  _____ _ _     _____
@@ -91,7 +88,7 @@
 % | |_| | | |  | || |___ | |  | |  | || |___ ___) |
 %  \___/  |_| |___|_____|___| |_| |___|_____|____/ 
 \usepackage{enumitem}
-\setlist[description]{font=\normalfont\scshape\bfseries}
+\setlist[description]{font=\normalfont\scshape\bfseries\boldmath}
 \usepackage{graphicx}
 \makeatletter
 \@addtoreset{equation}{section}
@@ -149,13 +146,15 @@
 \DeclareMathOperator{\R}{\mathbf{R}}
 \DeclareMathOperator{\Z}{\mathbf{Z}}
 
-\newcommand{\Pto}{\xrightarrow[\phantom{n\to\infty}]{\P}}
+\newcommand{\Pto}{\;\xrightarrow[\phantom{n\to\infty}]{\P}\;}
+\newcommand{\Dto}{\;\xRightarrow{\ \ \rm dist.\ \ }\;}
 \DeclareMathOperator{\Bias}{Bias}
 \DeclareMathOperator{\CDF}{\textsc{CDF}}
 \DeclareMathOperator{\Cov}{\mathbf{Cov}}
 \DeclareMathOperator{\MSE}{MSE}
 \DeclareMathOperator{\Prob}{\mathbf{Prob}}
 \DeclareMathOperator{\Var}{\mathbf{Var}}
+\DeclareMathOperator*{\plim}{plim}
 \newcommand\given[1][]{\:#1\vert\:}
 
 \DeclareMathOperator{\Bernoulli}{\textsc{B}}
