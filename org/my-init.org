@@ -738,7 +738,7 @@ Install but defer.
       (my-set-face "Consolas" 12))
 
   (if (eq system-type 'gnu/linux)
-      (my-set-face "mononoki" 12))
+      (my-set-face "ProFontIIx" 8))
 #+END_SRC
 
 *** TODO cycle between fonts
