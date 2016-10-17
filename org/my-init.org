@@ -732,7 +732,7 @@ Install but defer.
                         :width 'normal))
 
   (if (eq system-type 'darwin)
-      (my-set-face "Courier Screenplay" 15))
+      (my-set-face "PragmataPro" 12))
 
   (if (eq system-type 'windows-nt)
       (my-set-face "Consolas" 12))
@@ -780,10 +780,10 @@ default mode line.
 ** Activate theme
 The extra =t= flag is so we don't get asked about treating themes
 as safe.
-#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp
   (if (not (display-graphic-p))
       (load-theme 'zenburn t)
-    (load-theme 'zenburn t))
+    (load-theme 'sanityinc-tomorrow-bright t))
 #+END_SRC
 
 
@@ -1972,13 +1972,13 @@ of great reviews!
       :init
       (setq ess-R-smart-operators t))
 
-  ;;(use-package ess-smart-equals
-   ;;   :ensure t)
+  (use-package ess-smart-equals
+     :ensure t)
 
-  ;; (with-eval-after-load 'ess-smart-equals
-  ;;   (add-hook 'ess-mode-hook 'ess-smart-equals-mode)
-  ;;   (add-hook 'ess-mode-hook 'electric-pair-mode)
-  ;;   (add-hook 'inferior-ess-mode-hook 'ess-smart-equals-mode))
+  (with-eval-after-load 'ess-smart-equals
+    (add-hook 'ess-mode-hook 'ess-smart-equals-mode)
+    (add-hook 'ess-mode-hook 'electric-pair-mode)
+    (add-hook 'inferior-ess-mode-hook 'ess-smart-equals-mode))
 #+END_SRC
 
 ** Keybinds
