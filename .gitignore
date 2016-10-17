@@ -24,3 +24,4 @@ irony-server
 irony/*
 irony/**
 irony/bin/irony-server
+games/
