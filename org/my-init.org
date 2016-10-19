@@ -1596,9 +1596,9 @@ TeX.SX). It works, and I don't want to mess with it.
                                   ("LLPP" "llpp %o")
                                   ("XDVI" "xdvi %o")))
     (setq TeX-view-program-selection '(
+                                       (output-pdf "ZATHURA")
                                        (output-pdf "LLPP")
                                        (output-pdf "Evince")
-                                       (output-pdf "ZATHURA")
                                        (output-dvi "xdvi"))))
 
 
