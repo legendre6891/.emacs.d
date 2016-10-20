@@ -718,6 +718,22 @@ Install but defer.
   (use-package abyss-theme
       :ensure t
       :defer t)
+
+  (use-package ujelly-theme
+      :ensure t
+      :defer t)
+
+  (use-package monokai-theme
+      :ensure t
+      :defer t)
+
+  (use-package darkokai-theme
+      :ensure t
+      :defer t)
+
+  (use-package darkburn-theme
+      :ensure t
+      :defer t)
 #+END_SRC
 
 
@@ -738,7 +754,7 @@ Install but defer.
       (my-set-face "Consolas" 12))
 
   (if (eq system-type 'gnu/linux)
-      (my-set-face "ProFontIIx" 8))
+      (my-set-face "PragmataPro Mono" 12))
 #+END_SRC
 
 *** TODO cycle between fonts
@@ -1580,9 +1596,9 @@ TeX.SX). It works, and I don't want to mess with it.
                                   ("LLPP" "llpp %o")
                                   ("XDVI" "xdvi %o")))
     (setq TeX-view-program-selection '(
+                                       (output-pdf "ZATHURA")
                                        (output-pdf "LLPP")
                                        (output-pdf "Evince")
-                                       (output-pdf "ZATHURA")
                                        (output-dvi "xdvi"))))
 
 
