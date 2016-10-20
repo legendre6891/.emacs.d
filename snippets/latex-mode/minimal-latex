@@ -97,6 +97,9 @@
 \usepackage[final]{microtype}
 \usepackage[hang,flushmargin,symbol,perpage]{footmisc} 
 \setfnsymbol{wiley}
+\usepackage[skins,theorems]{tcolorbox}
+\tcbset{highlight math style={enhanced, colframe=black,colback=gray!20,arc=0pt,boxrule=1pt}}
+
 
 
 % _____  _    ____  _     _____ ____  
