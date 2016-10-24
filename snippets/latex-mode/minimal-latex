@@ -70,6 +70,7 @@
 \titleformat*{\subsection}{\fontfamily{lmss}\selectfont\large\bfseries}
 \titleformat*{\subsubsection}{\fontfamily{lmss}\selectfont\bfseries}
 \setcounter{secnumdepth}{-2}
+\def\sectionfont{\fontfamily{lmss}\selectfont\bfseries}
 
 %  _____ _ _     _____
 % |_   _(_) | __|__  /
