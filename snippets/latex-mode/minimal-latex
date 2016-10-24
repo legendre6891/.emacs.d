@@ -70,6 +70,7 @@
 \titleformat*{\subsection}{\fontfamily{lmss}\selectfont\large\bfseries}
 \titleformat*{\subsubsection}{\fontfamily{lmss}\selectfont\bfseries}
 \setcounter{secnumdepth}{-2}
+\def\sectionfont{\fontfamily{lmss}\selectfont\bfseries}
 
 %  _____ _ _     _____
 % |_   _(_) | __|__  /
@@ -97,6 +98,9 @@
 \usepackage[final]{microtype}
 \usepackage[hang,flushmargin,symbol,perpage]{footmisc} 
 \setfnsymbol{wiley}
+\usepackage[skins,theorems]{tcolorbox}
+\tcbset{highlight math style={enhanced, colframe=black,colback=gray!20,arc=0pt,boxrule=1pt}}
+
 
 
 % _____  _    ____  _     _____ ____  
