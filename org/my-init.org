@@ -746,7 +746,7 @@ Install but defer.
                         :width 'normal))
 
   (if (eq system-type 'darwin)
-      (my-set-face "PragmataPro" 12))
+      (my-set-face "InconsolataGo" 14))
 
   (if (eq system-type 'windows-nt)
       (my-set-face "Consolas" 12))
