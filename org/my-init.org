@@ -166,9 +166,7 @@ No reason not to have files auto-revert in 2016.
 
 *** Tab Settings
 #+BEGIN_SRC emacs-lisp
-(setq-default tab-width 8)
-(defvaralias 'c-basic-offset 'tab-width)
-(defvaralias 'cperl-indent-level 'tab-width)
+(setq-default tab-width 4)
 #+END_SRC
 
 *** Popwin
@@ -748,7 +746,7 @@ Install but defer.
                         :width 'normal))
 
   (if (eq system-type 'darwin)
-      (my-set-face "PragmataPro" 12))
+      (my-set-face "InconsolataGo" 14))
 
   (if (eq system-type 'windows-nt)
       (my-set-face "Consolas" 12))
@@ -2157,6 +2155,18 @@ Anyhow, here is support for the J lang.
 * CC modes
 This section sets up =Emacs= to handle editing C and C++ files.
 
+** Basic customizations
+Use a sane formatting standard.
+#+BEGIN_SRC emacs-lisp
+  (setq c-default-style "k&r"
+        c-basic-offset 4)
+
+  (add-hook 'c-mode-common-hook
+            (lambda ()
+              (electric-pair-mode t)
+              (electric-indent-mode t)))
+#+END_SRC
+
 ** Yasnippet Backtick
 Since the backtick is never used in CC modes, we can use it to expand
 snippets!
@@ -2168,7 +2178,6 @@ snippets!
   (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
 
 #+END_SRC
-
 
 ** Irony Mode
 *** Installation
@@ -2323,8 +2332,9 @@ use the following code.
       (eshell-send-input)))
 
   (add-hook 'eshell-mode-hook
-            '(lambda()
-              (local-set-key (kbd "C-l") 'eshell-clear-buffer)))
+            '(lambda ()
+              (local-set-key (kbd "C-l") 'eshell-clear-buffer)
+              (company-mode 0)))
 
 
   (with-eval-after-load 'ess
