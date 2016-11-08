@@ -1256,7 +1256,9 @@ hard.
         (add-hook 'geiser-repl-mode-hook 'enable-paredit-mode)
         (add-hook 'racket-repl-mode-hook 'enable-paredit-mode)
         (add-hook 'racket-mode-hook 'enable-paredit-mode)
-        (add-hook 'scheme-mode-hook           'enable-paredit-mode)))
+        (add-hook 'scheme-mode-hook           'enable-paredit-mode)
+        (add-hook 'slime-repl-mode-hook       'enable-paredit-mode)
+        (add-hook 'inferior-lisp-mode-hook 'enable-paredit-mode)))
 #+END_SRC
 
 
@@ -2049,7 +2051,27 @@ with window size. (The bottom snippet is original though!)
 
 * Clojure
 
+  
 
+
+
+
+* SLIME and SBCL
+Setting up =SLIME= to use with Steel Bank Common Lisp.
+#+BEGIN_SRC emacs-lisp
+  (use-package slime
+      :ensure t
+      :init
+      (progn
+        (setq inferior-lisp-program "/usr/bin/sbcl")
+        (setq slime-contribs '(slime-fancy)))
+
+      :config
+      (progn
+        (add-hook 'lisp-mode-hook (lambda () (slime-mode t)))))
+
+
+#+END_SRC
 
 
 * Haskell
