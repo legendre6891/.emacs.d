@@ -752,7 +752,7 @@ Install but defer.
       (my-set-face "Consolas" 12))
 
   (if (eq system-type 'gnu/linux)
-      (my-set-face "PragmataPro Mono" 12))
+      (my-set-face "InconsolataGo" 10))
 #+END_SRC
 
 *** TODO cycle between fonts
