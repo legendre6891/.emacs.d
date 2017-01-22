@@ -981,7 +981,7 @@ enable and disable keys on the fly.
 
   (defun setup-yasnippet-next-key (key)
     (define-key yas-minor-mode-map key 'yas-expand)
-    (define-key yas-keymap (kbd "C-;") 'yas-next-field-or-maybe-expand))
+    (define-key yas-keymap key 'yas-next-field-or-maybe-expand))
 #+END_SRC
 
 ** Install and Disable Tab Key
@@ -1614,8 +1614,6 @@ up AucTeX's internal indentation code. This actually depends
 on AucTeX since it defines =LaTeX-mode-hook=.
 #+BEGIN_SRC emacs-lisp
   (with-eval-after-load 'tex
-    (add-hook 'LaTeX-mode-hook 'turn-on-auto-fill)
-    (add-hook 'plain-TeX-mode-hook 'auto-fill-mode)
     (add-hook 'LaTeX-mode-hook (↑ (electric-indent-mode -1))))
 #+END_SRC
 
@@ -1931,8 +1929,10 @@ Enable =yasnippets= through =C-;=, which isn't used anywhere.
   (add-hook 'plain-TeX-mode-hook (↑ (setup-yasnippet-next-key (kbd "C-;"))))
   (add-hook 'LaTeX-mode-hook (↑ (setup-yasnippet-next-key (kbd "C-;"))))
 
-#+END_SRC
+  (add-hook 'plain-TeX-mode-hook (↑ (setup-yasnippet-next-key (kbd "<C-tab>"))))
+  (add-hook 'LaTeX-mode-hook (↑ (setup-yasnippet-next-key (kbd "<C-tab>"))))
 
+#+END_SRC
 
 ** Flyspell Mode
 #+BEGIN_SRC emacs-lisp

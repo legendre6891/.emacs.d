@@ -5,21 +5,17 @@
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
 
-%   _____ ___  _   _ _____      __  __  __    _  _____ _   _ 
-%  |  ___/ _ \| \ | |_   _|    / / |  \/  |  / \|_   _| | | |
-%  | |_ | | | |  \| | | |     / /  | |\/| | / _ \ | | | |_| |
-%  |  _|| |_| | |\  | | |    / /   | |  | |/ ___ \| | |  _  |
-%  |_|   \___/|_| \_| |_|   /_/    |_|  |_/_/   \_\_| |_| |_|
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% FONTS / MATH
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{tgtermes}
 \usepackage{inconsolata}
 \usepackage[subscriptcorrection, mtpcal]{mtpro2}
 \usepackage{amsmath}
 
-%  _____ _   _ _____ ___  ____  _____ __  __ ____  
-% |_   _| | | | ____/ _ \|  _ \| ____|  \/  / ___| 
-%   | | | |_| |  _|| | | | |_) |  _| | |\/| \___ \ 
-%   | | |  _  | |__| |_| |  _ <| |___| |  | |___) |
-%   |_| |_| |_|_____\___/|_| \_\_____|_|  |_|____/ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% THEOREMS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{amsthm}
 \usepackage{mathtools}
 
@@ -53,18 +49,14 @@
   {\end{genericthm}}
 
 
-%  __  __    _    ____   ____ ___ _   _ ____  
-% |  \/  |  / \  |  _ \ / ___|_ _| \ | / ___| 
-% | |\/| | / _ \ | |_) | |  _ | ||  \| \___ \ 
-% | |  | |/ ___ \|  _ <| |_| || || |\  |___) |
-% |_|  |_/_/   \_\_| \_\\____|___|_| \_|____/ 
-\usepackage[vmargin=0.5in,hmargin=0.75in]{geometry}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% MARGINS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[margin=0.75in]{geometry}
 
-%  _   _ _____    _    ____ ___ _   _  ____ ____  
-% | | | | ____|  / \  |  _ \_ _| \ | |/ ___/ ___| 
-% | |_| |  _|   / _ \ | | | | ||  \| | |  _\___ \ 
-% |  _  | |___ / ___ \| |_| | || |\  | |_| |___) |
-% |_| |_|_____/_/   \_\____/___|_| \_|\____|____/ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% HEADERS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage[compact]{titlesec}
 \titleformat*{\section}{\fontfamily{lmss}\selectfont\Large\bfseries}
 \titleformat*{\subsection}{\fontfamily{lmss}\selectfont\large\bfseries}
@@ -72,42 +64,43 @@
 \setcounter{secnumdepth}{-2}
 \def\sectionfont{\fontfamily{lmss}\selectfont\bfseries}
 
-%  _____ _ _     _____
-% |_   _(_) | __|__  /
-%   | | | | |/ /  / / 
-%   | | | |   <  / /_ 
-%   |_| |_|_|\_\/____|
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TikZ
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{tikz}
 \usetikzlibrary{calc,matrix}
 
 
 
-
-%  _   _ _____ ___ _     ___ _____ ___ _____ ____  
-% | | | |_   _|_ _| |   |_ _|_   _|_ _| ____/ ___| 
-% | | | | | |  | || |    | |  | |  | ||  _| \___ \ 
-% | |_| | | |  | || |___ | |  | |  | || |___ ___) |
-%  \___/  |_| |___|_____|___| |_| |___|_____|____/ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% UTILITIES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{enumitem}
 \setlist[description]{font=\normalfont\scshape\bfseries\boldmath}
+
 \usepackage{graphicx}
+
 \makeatletter
 \@addtoreset{equation}{section}
 \makeatother
 \renewcommand\theequation{\oldstylenums{\arabic{equation}}}
+
 \usepackage[final]{microtype}
+
 \usepackage[hang,flushmargin,symbol,perpage]{footmisc} 
 \setfnsymbol{wiley}
+
 \usepackage[skins,theorems]{tcolorbox}
 \tcbset{highlight math style={enhanced, colframe=black,colback=gray!20,arc=0pt,boxrule=1pt}}
 
+\usepackage[normalem]{ulem}
+\usepackage{stackengine}
+\stackMath
 
 
-% _____  _    ____  _     _____ ____  
-%|_   _|/ \  | __ )| |   | ____/ ___| 
-%  | | / _ \ |  _ \| |   |  _| \___ \ 
-%  | |/ ___ \| |_) | |___| |___ ___) |
-%  |_/_/   \_\____/|_____|_____|____/ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% TABLES
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage[labelfont=bf,format=plain,labelsep=period,width=.85\columnwidth]{caption}
 \usepackage{booktabs}
 \usepackage[section]{placeins}
@@ -136,12 +129,10 @@
 }
 
 
+%%%%%%%%%%%%%%%%%%%%
+% OPERATORS
+%%%%%%%%%%%%%%%%%%%%
 
-%   ___  ____  _____ ____      _  _____ ___  ____  ____  
-%  / _ \|  _ \| ____|  _ \    / \|_   _/ _ \|  _ \/ ___| 
-% | | | | |_) |  _| | |_) |  / _ \ | || | | | |_) \___ \ 
-% | |_| |  __/| |___|  _ <  / ___ \| || |_| |  _ < ___) |
-%  \___/|_|   |_____|_| \_\/_/   \_\_| \___/|_| \_\____/ 
 \let\P\relax
 
 \DeclareMathOperator{\E}{\mathbf{E}}
@@ -179,6 +170,10 @@
 \DeclareMathOperator{\im}{im}
 \DeclareMathOperator{\id}{id}
 \DeclareMathOperator{\Ch}{Ch}
+
+\DeclareMathOperator{\diag}{diag}
+\DeclareMathOperator{\tr}{tr}
+
 
 \makeatletter
 \newcommand*{\indep}{%
@@ -221,13 +216,9 @@
 \makeatother
 
 
-
-%   ____          _                    ____  _____ _____    
-%  / ___|   _ ___| |_ ___  _ __ ___   |  _ \| ____|  ___|__ 
-% | |  | | | / __| __/ _ \| '_ ` _ \  | | | |  _| | |_ / __|
-% | |__| |_| \__ \ || (_) | | | | | | | |_| | |___|  _|\__ \
-%  \____\__,_|___/\__\___/|_| |_| |_| |____/|_____|_|  |___/
-%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% CUSTOM DEFS
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \def\Rule{\medskip\noindent \hrule width\columnwidth\smallskip}
 \newcommand\problemfont[1]{{\fontfamily{lmss}\fontseries{bx}\selectfont#1}}
 
