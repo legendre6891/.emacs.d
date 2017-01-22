@@ -138,10 +138,6 @@ A no-frills package to set some sensible defaults.
       :ensure t)
 #+END_SRC
 
-*** Disable blinking cursor
-#+BEGIN_SRC emacs-lisp
-(blink-cursor-mode t)
-#+END_SRC
 
 *** Disable trailing newline
 #+BEGIN_SRC emacs-lisp
@@ -322,6 +318,18 @@ a GUI. Rebind it to undo.
   (global-set-key (kbd "C-z") #'undo)
 #+END_SRC
 
+*** Kill Buffer
+Instead of asking which buffer to kill, instead let's kill the current
+buffer if there is no prefix.
+#+BEGIN_SRC emacs-lisp
+  (defun emacs-d-kill-a-buffer (askp)
+    (interactive "P")
+    (if askp
+        (call-interactively #'kill-buffer)
+      (kill-this-buffer)))
+
+  (global-set-key (kbd "C-x k") #'emacs-d-kill-a-buffer)
+#+END_SRC
 
 
 ** Ido, Recentf, and Smex
@@ -419,7 +427,6 @@ Recentf supports Ido mode by keeping track of recently organized files.
 
 
 ** Helm
-
 *** Installation
 Can't believe I'm using =helm= now; it's a great program in
 moderation. But it's a good package and there's no reason
@@ -448,7 +455,7 @@ default behavior, only activate it when we didn't just use
           (setq this-command 'yank)
           (call-interactively 'yank-pop))))
 
-  (global-set-key (kbd "M-y")     'my-show-kill-ring)
+  ;; (global-set-key (kbd "M-y")     'my-show-kill-ring)
 #+END_SRC
 
 *** Further configuation
@@ -483,12 +490,12 @@ for =LaTeX= to work.
         (defun set-exec-path-from-shell-PATH ()
           (let ((path-from-shell
                  (shell-command-to-string
-                  "TERM=vt100 $SHELL -i -c 'echo $PATH'")))
+                  "env TERM=vt100 /bin/sh -i -c 'echo $PATH'")))
 
             (setenv "PATH" path-from-shell)
             (setq exec-path (split-string path-from-shell path-separator))))
 
-        (when window-system (set-exec-path-from-shell-PATH))
+        (when (display-graphic-p) (set-exec-path-from-shell-PATH))
 
         (setq mac-option-key-is-meta t)
         (setq mac-command-key-is-meta t)
@@ -688,86 +695,9 @@ Write a function (a la Spacemacs) that allows me to switch between fonts.
 *** TODO Check whether the font exists
 
 
-** Frame size and position
-Make the initial frame always size 80 by 40.
+** Disable blinking cursor
 #+BEGIN_SRC emacs-lisp
-(when window-system (set-frame-size (selected-frame) 80 40))
-#+END_SRC
-
-
-** Smart Mode Line
-I'm actually not convined of the utility of this just yet,
-but let's throw it in because it does look somewhat nicer than the
-default mode line. 
-*Actually, now I decided against it. It serves no real purpose.*
-#+BEGIN_SRC emacs-lisp  :tangle no
-  (use-package smart-mode-line
-      :ensure smart-mode-line
-      :init
-      (progn
-        (setq sml/theme 'automatic)
-        (setq sml/name-width 40)
-        (setq sml/mode-width 'full)
-        )
-      :config
-      (progn
-        (add-to-list 'sml/replacer-regexp-list '("^~/Dropbox (MIT)/" ":DB:") t)
-        (sml/setup)))
-#+END_SRC
-*** TODO Investigate this more and make it more functional
-
-
-** Activate theme
-The extra =t= flag is so we don't get asked about treating themes
-as safe.
-#+BEGIN_SRC emacs-lisp :tangle no
-  (if (not (display-graphic-p))
-      (load-theme 'zenburn t)
-    (load-theme 'sanityinc-tomorrow-bright t))
-#+END_SRC
-
-
-
-** Line Numbers
-Line numbers are surprisingly clunky in Emacs, which above all
-is a text editor. The =nlinum= package seems to be the best, and I
-find it useful enough to enable it everywhere. (UPDATE: This is no
-longer the case! I have now disabled it.)
-#+BEGIN_SRC emacs-lisp :tangle no
-(use-package nlinum
-    :ensure t)
-#+END_SRC
-
-
-
-
-** Smooth scroll
-Appparently this package is pretty good! [Update: not worth it.]
-#+BEGIN_SRC emacs-lisp :tangle no
-  (use-package smooth-scroll
-:load-path "lisp/"
-    :config
-    (smooth-scroll-mode 1)
-    (setq smooth-scroll/vscroll-step-size 5))
-#+END_SRC
-
-
-** Centered Windows Mode
-When only one window is active, center the text. This should be
-toggle-able with F2, as are the other appearance related settings.
-This package is buggy---disable for now.
-#+BEGIN_SRC emacs-lisp :tangle no
-  (use-package centered-window-mode
-      :ensure t)
-#+END_SRC
-
-
-** Writeroom-Mode
-Sometimes, I just need to focus!
-#+BEGIN_SRC emacs-lisp
-(use-package writeroom-mode             ; Distraction-free editing
-  :ensure t
-  :bind (("C-c t r" . writeroom-mode)))
+(blink-cursor-mode 0)
 #+END_SRC
 
 
@@ -824,10 +754,12 @@ I stole this from [[http://endlessparentheses.com/ispell-and-abbrev-the-perfect-
 #+BEGIN_SRC emacs-lisp
   (use-package avy
     :ensure t)
+
   (use-package counsel
     :ensure t
     :bind (("C-h f" . counsel-describe-function)
-           ("C-h v" . counsel-describe-variable))
+           ("C-h v" . counsel-describe-variable)
+           ("M-y" . counsel-yank-pop))
     :init
     (setq ivy-re-builders-alist
           '((t . ivy--regex-fuzzy)))
@@ -884,18 +816,26 @@ The problem is that the =TAB= key is too useful in Org-mode and
 CDLaTeX mode. Hence, we need a couple functions to effectively
 enable and disable keys on the fly.
 #+BEGIN_SRC emacs-lisp
-  (defun disable-yasnippet-key (key)
-    (define-key yas-minor-mode-map key nil))
-
   (defun disable-yasnippet-tab-key ()
-  (interactive)
+    (interactive)
     (define-key yas-minor-mode-map [(tab)]        nil)
     (define-key yas-minor-mode-map (kbd "TAB")    nil)
-    (define-key yas-minor-mode-map (kbd "<tab>")  nil))
+    (define-key yas-minor-mode-map (kbd "<tab>")  nil)
+    (define-key yas-minor-mode-map (kbd "<backtab>")    nil)
+    (define-key yas-minor-mode-map (kbd "<S-tab>")    nil)
+    (define-key yas-minor-mode-map (kbd "TAB")    nil))
+
+  (defun yas-keymap-is-active-p ()
+    (eq (key-binding (kbd "C-g")) 'yas-abort-snippet))
 
   (defun setup-yasnippet-next-key (key)
-    (define-key yas-minor-mode-map key 'yas-expand)
-    (define-key yas-keymap key 'yas-next-field-or-maybe-expand))
+    (local-set-key
+     key
+     (lambda ()
+       (interactive)
+       (if (yas-keymap-is-active-p)
+           (call-interactively #'yas-next-field-or-maybe-expand)
+         (call-interactively #'yas-expand)))))
 #+END_SRC
 
 ** Install and Disable Tab Key
@@ -1835,21 +1775,22 @@ and the like.
 ** Yasnippets
 Enable =yasnippets= through =C-;=, which isn't used anywhere.
 #+BEGIN_SRC emacs-lisp
-  (add-hook 'plain-TeX-mode-hook 'disable-yasnippet-tab-key)
-  (add-hook 'LaTeX-mode-hook 'disable-yasnippet-tab-key)
+  (defun my-TeX-yasnippet-common-hook ()
+    (setup-yasnippet-next-key (kbd "C-;"))
+    (setup-yasnippet-next-key (kbd "<C-tab>")))
 
-  (add-hook 'plain-TeX-mode-hook (↑ (setup-yasnippet-next-key (kbd "C-;"))))
-  (add-hook 'LaTeX-mode-hook (↑ (setup-yasnippet-next-key (kbd "C-;"))))
-
-  (add-hook 'plain-TeX-mode-hook (↑ (setup-yasnippet-next-key (kbd "<C-tab>"))))
-  (add-hook 'LaTeX-mode-hook (↑ (setup-yasnippet-next-key (kbd "<C-tab>"))))
-
+  (add-hook 'plain-TeX-mode-hook 'my-TeX-yasnippet-common-hook)
+  (add-hook 'LaTeX-mode-hook 'my-TeX-yasnippet-common-hook)
 #+END_SRC
+
 
 ** Flyspell Mode
 #+BEGIN_SRC emacs-lisp
-(add-hook 'LaTeX-mode-hook #'turn-on-flyspell)
-(add-hook 'plain-TeX--mode-hook #'turn-on-flypspell)
+  (defun my-TeX-flyspell-common-hook ()
+    (define-key flyspell-mode-map (kbd "C-;") nil))
+
+  (add-hook 'LaTeX-mode-hook     'my-TeX-flyspell-common-hook)
+  (add-hook 'plain-TeX-mode-hook 'my-TeX-flyspell-common-hook)
 #+END_SRC
 
 
@@ -2050,16 +1991,23 @@ Use a sane formatting standard.
               (electric-indent-mode t)))
 #+END_SRC
 
+** Format using Clang Format
+=clang-format= should be the "go to" tool to format C and C++ files.
+#+BEGIN_SRC emacs-lisp
+  (use-package clang-format
+      :ensure t)
+#+END_SRC
+
 ** Yasnippet Backtick
 Since the backtick is never used in CC modes, we can use it to expand
 snippets!
 #+BEGIN_SRC emacs-lisp
   (defun my-c-mode-common-hook ()
-    (define-key yas-minor-mode-map (kbd "`") 'yas-expand)
-    (define-key yas-keymap (kbd "`") 'yas-next-field-or-maybe-expand))
+    (setup-yasnippet-next-key (kbd "`"))
+    (setup-yasnippet-next-key (kbd "TAB")))
+
 
   (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
-
 #+END_SRC
 
 ** Irony Mode
@@ -2085,6 +2033,7 @@ snippets!
 
 
 * Rust mode
+** Rust mode
 Rust is the hottest thing on the market right now.
 #+BEGIN_SRC emacs-lisp
   (use-package rust-mode
@@ -2168,30 +2117,13 @@ See [[http://abizern.org/2014/01/05/hakyll-new-post-with-emacs/][this page]] for
        (expand-file-name file-name (concat (hakyll-site-location) "posts")))
       (switch-to-buffer file-name)))
 
-  (defun hakyll-new-note (title)
-    "Create a new Note with TITLE."
-    (interactive "sTitle: ")
-    (let ((file-name (hakyll-note-title title)))
-      (set-buffer (get-buffer-create file-name))
-      (markdown-mode)
-      (insert (format "---\ntitle: %s\ndescription: \n---\n\n" title))
-      (write-file
-       (expand-file-name file-name (concat (hakyll-site-location) "notes")))
-      (switch-to-buffer file-name)))
-
   (defun hakyll-post-title (title)
     "Return a file name based on TITLE for the post."
     (concat
      (format-time-string "%Y-%m-%d")
      "-"
      (replace-regexp-in-string " " "-" (downcase title))
-     ".markdown"))
-
-  (defun hakyll-note-title (title)
-    "Return a file name based on TITLE for the note."
-    (concat
-     (replace-regexp-in-string " " "-" (downcase title))
-     ".markdown"))
+     ".org"))
 #+END_SRC
 
 
