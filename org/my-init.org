@@ -1,6 +1,6 @@
 #+TITLE: Emacs Configuration
 #+AUTHOR: Kevin Li
-#+DATE: August 22, 2016
+#+DATE: January 22, 2017
 
 * Prelude
 This file is tangled and loaded via =init.el=, which
@@ -61,7 +61,6 @@ the custom file with a useless form [[http://www.gnu.org/software/emacs/manual/h
   (setq custom-file "~/.emacs.d/emacs-custom.el")
   (if (not (file-exists-p custom-file))
       (write-region "(ignore \"Custom file loaded\")" nil custom-file))
-    
 
   (load custom-file)
 #+END_SRC
@@ -74,7 +73,7 @@ The following function takes in a symbol and a
 prompt; if the symbol isn't defined at this point (after the custom
 file's loaded), then prompt the user for its value. Afterwards, put in the
 custom file so it needn't be asked again.
-#+BEGIN_SRC emacs-lisp :tangle yes
+#+BEGIN_SRC emacs-lisp
 (defun ensure-in-custom (SYM PROMPT)
   (interactive)
   (if (not (boundp SYM))
@@ -87,7 +86,7 @@ custom file so it needn't be asked again.
         )))
 #+END_SRC
 Now make sure that our full name and email address are always defined.
-#+BEGIN_SRC emacs-lisp :tangle yes
+#+BEGIN_SRC emacs-lisp
 (ensure-in-custom 'full-name "Enter your full name: ")
 (ensure-in-custom 'email-address "Enter your email address: ")
 #+END_SRC
@@ -141,7 +140,7 @@ A no-frills package to set some sensible defaults.
 
 *** Disable blinking cursor
 #+BEGIN_SRC emacs-lisp
-(blink-cursor-mode nil)
+(blink-cursor-mode t)
 #+END_SRC
 
 *** Disable trailing newline
@@ -1005,7 +1004,6 @@ Use ido prompting method.
   (setq yas-prompt-functions '(yas-ido-prompt yas-completing-prompt))
 #+END_SRC
 
-
 ** Yasnippet Hydra
 I believe that =yasnippet= is hugely good, but it takes some time to
 configure that the process is just slightly "too painful" that I avoid
@@ -1043,7 +1041,6 @@ While in snippet mode, saving a snippet should just load and quit.
   (define-key snippet-mode-map (kbd "C-x C-s")
     #'yas-load-snippet-buffer-and-close)
 #+END_SRC
-
 
 ** TODO Add different folders for different modes of snippet files
 
