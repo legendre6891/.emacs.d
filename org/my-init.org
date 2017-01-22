@@ -218,37 +218,39 @@ Erase regions in a sane way.
 
 If no line is selected, then just copy the line. See [[http://ergoemacs.org/emacs/emacs_copy_cut_current_line.html][Xah Lee's code]]
 for the following implementation.
-#+BEGIN_SRC emacs-lisp :tangle no
+#+BEGIN_SRC emacs-lisp
   (defun xah-copy-line-or-region ()
     "Copy current line, or text selection.
   When called repeatedly, append copy subsequent lines.
-  When `universal-argument' is called first, copy whole buffer
-  (respects `narrow-to-region').
+  When `universal-argument' is called first, copy whole buffer (respects `narrow-to-region').
 
   URL `http://ergoemacs.org/emacs/emacs_copy_cut_current_line.html'
-  Version 2015-12-30"
+  Version 2016-06-18"
     (interactive)
-    (let (ξp1 ξp2)
+    (let (-p1 -p2)
       (if current-prefix-arg
-          (setq ξp1 (point-min) ξp2 (point-max))
-          (if (use-region-p)
-              (setq ξp1 (region-beginning) ξp2 (region-end))
-              (setq ξp1 (line-beginning-position) ξp2 (line-end-position))))
+          (setq -p1 (point-min) -p2 (point-max))
+        (if (use-region-p)
+            (setq -p1 (region-beginning) -p2 (region-end))
+          (setq -p1 (line-beginning-position) -p2 (line-end-position))))
       (if (eq last-command this-command)
           (progn
+            (progn ; hack. exit if there's no more next line
+              (end-of-line)
+              (forward-char)
+              (backward-char))
             ;; (push-mark (point) "NOMSG" "ACTIVATE")
             (kill-append "\n" nil)
-            (forward-line 1)
-            (end-of-line)
             (kill-append (buffer-substring-no-properties (line-beginning-position) (line-end-position)) nil)
             (message "Line copy appended"))
-          (progn
-            (kill-ring-save ξp1 ξp2)
-            (if current-prefix-arg
-                (message "Buffer text copied")
-                (message "Text copied"))))))
-
-
+        (progn
+          (kill-ring-save -p1 -p2)
+          (if current-prefix-arg
+              (message "Buffer text copied")
+            (message "Text copied"))))
+      (end-of-line)
+      (forward-char)
+      ))
   (global-set-key (kbd "M-w") 'xah-copy-line-or-region) ;copy
 #+END_SRC
 
