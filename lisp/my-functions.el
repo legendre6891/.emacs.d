@@ -19,6 +19,13 @@
   (setq-local comment-auto-fill-only-comments t)
   (auto-fill-mode 1))
 
+(defun quit-or-smex ()
+  (interactive)
+  (if (window-minibuffer-p (frame-selected-window))
+      (keyboard-escape-quit)
+    (smex)))
+
+
 (provide 'my-functions)
 
 

@@ -268,16 +268,8 @@ package.
 ** Global Keybindings
 *** F-keys
 **** F2 and F3
-Set =<f2>= and =<f3>= to =C-g= if the minibuffer is focused,
-otherwise, execute an extended command =M-x=, for which
-we use =smex=. 
+Use =F2= and =F3= to highlight symbols.
 #+BEGIN_SRC emacs-lisp
-  (defun quit-or-smex ()
-    (interactive)
-    (if (window-minibuffer-p (frame-selected-window))
-        (keyboard-escape-quit)
-        (smex)))
-
   (global-set-key (kbd "<f3>") #'highlight-phrase)
   (global-set-key (kbd "<f4>") #'unhighlight-regexp)
 #+END_SRC
@@ -290,15 +282,6 @@ Set =<f8>= to editing this very file.
          "my-init.org"))
   (global-set-key (kbd "<f8>") (↑ (find-file init-org-file)))
 #+END_SRC
-**** F3
-Set =<f3>= to search because =C-s= is slightly too painful.
-*Unfortunately, I never developed the muscle memory to use this. See above.*
-#+BEGIN_SRC emacs-lisp :tangle no
-  (global-set-key (kbd "<f3>") 'isearch-forward-regexp)
-  (define-key isearch-mode-map (kbd "<f3>") 'isearch-repeat-forward)
-  (define-key isearch-mode-map (kbd "<f4>") 'isearch-repeat-backward)
-#+END_SRC
-
 **** F10
 Set =<f10>= to open the current buffer in Windows Explorer.
 Taken from here.
@@ -327,25 +310,8 @@ Taken from here.
 
 #+END_SRC
 ***** TODO Support other operating systems.
-**** F4
-It is useful to have a master org file in which we keep all the random
-notes and stuff. For this to be useful, load the master file with a
-single =<f4>=.
-#+BEGIN_SRC emacs-lisp
-  (defun edit-master-org-file ()
-      (interactive)
-      (find-file (concat org-directory "master.org")))
-
-  ;; Unfortunately, I don't use org mode enough yet, so the following
-  ;; is uncommented for now.
-  ;; (global-set-key (kbd "<f4>") #'edit-master-org-file)
-
-
-#+END_SRC
-
 **** F1 and F2
 See [[Yasnippet]] and Hydra; there, =<f1>= and =<f2>= is also bound.
-
 **** F5
 #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "<f5>") #'recompile-quietly)
