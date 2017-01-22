@@ -538,16 +538,11 @@ GUI elements (e.g. linum-mode, theme, font).
     ("m" menu-bar-mode "Toggle menu bar.")
     ("t" (load-theme 'ample-flat) "Load theme")
     ("d" (disable-theme 'ample-flat) "Disable theme")
-    ;; ("c" (call-interactively 'centered-window-mode) "Center the frame")
     )
 
   (global-set-key (kbd "<f2>") #'my-hydra-gui/body)
 #+END_SRC
 
-*** Expand Region Hydras
-See [[Expand Region]].
-*** Avy Hydra
-See section on [[Avy]].
 
 
 ** Key-combo
@@ -871,32 +866,6 @@ disable it in Linux.
                   (lambda ()
                     (interactive)
                     (er/expand-region -1)))
-#+END_SRC
-
-I shamelessly stole these from
-[[http://cute-jumper.github.io/emacs/2016/02/22/my-simple-setup-to-avoid-rsi-in-emacs][here]]; it helps with expand region. Fortunately, I think that the
-=M-n= shortcut is good enough, so let's disable it for now.
-#+BEGIN_SRC emacs-lisp :tangle no
-  (defhydra hydra-mark (:body-pre (call-interactively 'set-mark-command)
-                                  :exit t)
-    "hydra for mark commands"
-    ("SPC" er/expand-region)
-    ("S-SPC" er/expand-region)
-    ("P" er/mark-inside-pairs)
-    ("Q" er/mark-inside-quotes)
-    ("p" er/mark-outside-pairs)
-    ("q" er/mark-outside-quotes)
-    ("d" er/mark-defun)
-    ("c" er/mark-comment)
-    ("." er/mark-text-sentence)
-    ("h" er/mark-text-paragraph)
-    ("w" er/mark-word)
-    ("u" er/mark-url)
-    ("m" er/mark-email)
-    ("s" er/mark-symbol)
-    ("j" (funcall 'set-mark-command t) :exit nil))
-
-  (bind-key* "S-SPC" #'hydra-mark/body)
 #+END_SRC
 
 
