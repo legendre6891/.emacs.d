@@ -545,28 +545,6 @@ GUI elements (e.g. linum-mode, theme, font).
 
 
 
-** Key-combo
-Key-combo is like key-chord on steroids. Useful for some LaTeX addons.
-EDIT: made my own key-combo, so let's disable this for now.
-#+BEGIN_SRC emacs-lisp  :tangle no
-  (use-package key-combo
-      :ensure t
-      :config
-      (global-key-combo-mode t))
-#+END_SRC
-
-
-** Smart Tab
-Trying this out as a replacement for SuperTab. UPDATE: Not yet.
-#+BEGIN_SRC emacs-lisp :tangle no
-  (use-package smart-tab
-    :load-path "lisp/"
-    :config
-    (progn
-      (global-smart-tab-mode)))
-#+END_SRC
-
-
 ** Restart Emacs
 It's nice to have a shortcut to restart emacs on.
 #+BEGIN_SRC emacs-lisp
