@@ -328,14 +328,6 @@ a GUI. Rebind it to undo.
   (global-set-key (kbd "C-z") #'undo)
 #+END_SRC
 
-*** Replace region
-Replace string is an awesome feature. Use it.
-Disabled for now; see the next section on 
-Visual Regexp.
-#+BEGIN_SRC emacs-lisp :tangle no
-  (global-set-key (kbd "M-r") #'replace-string)
-  (global-set-key (kbd "M-R") #'replace-regexp)
-#+END_SRC
 
 
 ** Ido, Recentf, and Smex
