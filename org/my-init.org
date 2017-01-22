@@ -268,12 +268,6 @@ package.
 
 ** Global Keybindings
 *** F-keys
-**** F2 and F3
-Use =F2= and =F3= to highlight symbols.
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<f3>") #'highlight-phrase)
-  (global-set-key (kbd "<f4>") #'unhighlight-regexp)
-#+END_SRC
 **** F8
 Set =<f8>= to editing this very file.
 #+BEGIN_SRC emacs-lisp
