@@ -826,27 +826,6 @@ I stole this from [[http://endlessparentheses.com/ispell-and-abbrev-the-perfect-
 #+END_SRC
 
 
-* Expand Region
-Expand region is occasionally useful for editing Lisp and I suppose
-sometimes for LaTeX if I set it up correctly. The =M-SPC= shortcut
-usually doesn't work (on Windows/Linux), but thankfully I know how
-disable it in Linux. 
-#+BEGIN_SRC emacs-lisp
-  (use-package expand-region
-      :ensure t)
-
-  (global-set-key (kbd "M-n")
-                  (lambda ()
-                    (interactive)
-                    (er/expand-region 1)))
-
-  (global-set-key (kbd "M-m")
-                  (lambda ()
-                    (interactive)
-                    (er/expand-region -1)))
-#+END_SRC
-
-
 * Avy, Swiper, and Counsel
 #+BEGIN_SRC emacs-lisp
   (use-package avy
@@ -880,6 +859,7 @@ Multiple cursors is lots of fun!
   (global-set-key (kbd "M-j") 'mc/mark-next-like-this)
   (global-set-key (kbd "M-k") 'mc/mark-previous-like-this)
   (global-set-key (kbd "M-J") 'mc/mark-all-like-this)
+  (global-set-key (kbd "M-n") mc/mark-next-like-this-word)
 #+END_SRC
 
 
