@@ -679,7 +679,7 @@ Install but defer.
                         :width 'normal))
 
   (if (eq system-type 'darwin)
-      (my-set-face "PragmataPro" 16))
+      (my-set-face "PragmataPro" 14))
 
   (if (eq system-type 'windows-nt)
       (my-set-face "Consolas" 12))
@@ -1978,7 +1978,6 @@ Anyhow, here is support for the J lang.
 
 * CC modes
 This section sets up =Emacs= to handle editing C and C++ files.
-
 ** Basic customizations
 Use a sane formatting standard.
 #+BEGIN_SRC emacs-lisp
@@ -1995,7 +1994,11 @@ Use a sane formatting standard.
 =clang-format= should be the "go to" tool to format C and C++ files.
 #+BEGIN_SRC emacs-lisp
   (use-package clang-format
-      :ensure t)
+      :ensure t
+      :config
+      (with-eval-after-load 'cc-mode
+        (define-key c++-mode-map (kbd "M-=") #'clang-format-buffer)))
+
 #+END_SRC
 
 ** Yasnippet Backtick
@@ -2011,27 +2014,99 @@ snippets!
 #+END_SRC
 
 ** Irony Mode
-*** Installation
+Install =irony= and activate it CC mode.
 #+BEGIN_SRC emacs-lisp
-(use-package irony
-:ensure t)
+  (use-package irony
+      :ensure t)
 
-(add-hook 'c++-mode-hook 'irony-mode)
-(add-hook 'c-mode-hook 'irony-mode)
-(add-hook 'objc-mode-hook 'irony-mode)
+  (add-hook 'c++-mode-hook 'irony-mode)
+  (add-hook 'c-mode-hook 'irony-mode)
+  (add-hook 'objc-mode-hook 'irony-mode)
 
-;; replace the `completion-at-point' and `complete-symbol' bindings in
-;; irony-mode's buffers by irony-mode's function
-(defun my-irony-mode-hook ()
-  (define-key irony-mode-map [remap completion-at-point]
-    'irony-completion-at-point-async)
-  (define-key irony-mode-map [remap complete-symbol]
-    'irony-completion-at-point-async))
-(add-hook 'irony-mode-hook 'my-irony-mode-hook)
-(add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+  ;; replace the `completion-at-point' and `complete-symbol' bindings in
+  ;; irony-mode's buffers by irony-mode's function
+  (defun my-irony-mode-hook ()
+    (define-key irony-mode-map [remap completion-at-point]
+      'irony-completion-at-point-async)
+    (define-key irony-mode-map [remap complete-symbol]
+      'irony-completion-at-point-async))
+
+  (add-hook 'irony-mode-hook 'my-irony-mode-hook)
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+
+
+  (use-package company-irony-c-headers
+      :ensure t)
+
+  (with-eval-after-load 'company
+    (add-to-list 'company-backends 'company-irony-c-headers))
+#+END_SRC
+** RTags
+Install RTags and activate it.
+#+BEGIN_SRC emacs-lisp
+  (use-package rtags
+      :ensure t
+      :init
+      (progn
+        (setq rtags-completions-enabled t)
+        (setq rtags-autostart-diagnostics t))
+      :config
+      (rtags-enable-standard-keybindings))
+
+
+  (with-eval-after-load 'company
+    (add-to-list 'company-backends 'company-rtags))
+
+  (with-eval-after-load 'cc-mode
+    (define-key c-mode-base-map (kbd "C-.") #'rtags-find-symbol-at-point)
+    (define-key c-mode-base-map (kbd "M-.") #'rtags-find-symbol)
+    (define-key c-mode-base-map (kbd "C-,") #'rtags-find-references-at-point)
+    (define-key c-mode-base-map (kbd "M-,") #'rtags-find-references)
+    (define-key c-mode-base-map (kbd "M-[") #'rtags-location-stack-back)
+    (define-key c-mode-base-map (kbd "M-]") #'rtags-location-stack-forward))
+#+END_SRC
+** Flycheck
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+      :ensure t)
+
+  (add-hook 'c++-mode-hook 'flycheck-mode)
+  (add-hook 'c-mode-hook   'flycheck-mode)
+
+  (require 'flycheck-rtags)
+
+  (defun my-flycheck-rtags-setup ()
+    (flycheck-select-checker 'rtags)
+    (setq-local flycheck-highlighting-mode nil)
+    (setq-local flycheck-check-syntax-automatically nil))
+
+  (add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup)
+
+
+  (use-package flycheck-irony
+      :ensure t)
+  (eval-after-load 'flycheck
+    '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+#+END_SRC
+** CMake IDE
+#+BEGIN_SRC emacs-lisp
+  (use-package cmake-ide
+      :ensure t
+      :config  (cmake-ide-setup))
 #+END_SRC
 
 
+* CMake Support
+#+BEGIN_SRC emacs-lisp
+  (use-package cmake-mode
+      :ensure t)
+
+  (use-package cmake-font-lock
+      :ensure t)
+
+  (autoload 'cmake-font-lock-activate "cmake-font-lock" nil t)
+  (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
+#+END_SRC
 * Rust mode
 ** Rust mode
 Rust is the hottest thing on the market right now.
