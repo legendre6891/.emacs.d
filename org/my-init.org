@@ -702,6 +702,12 @@ Write a function (a la Spacemacs) that allows me to switch between fonts.
 
 
 * Abbrev Mode
+Load the fat fingers abbrev.
+#+BEGIN_SRC emacs-lisp
+  (read-abbrev-file "~/.emacs.d/abbrev_def_fat_fingers")
+#+END_SRC
+
+
 I stole this from [[http://endlessparentheses.com/ispell-and-abbrev-the-perfect-auto-correct.html][this blog post]].
 #+BEGIN_SRC emacs-lisp
   (setq abbrev-file-name "~/.emacs.d/abbrev_defs")
