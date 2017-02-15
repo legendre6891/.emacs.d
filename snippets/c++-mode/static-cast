@@ -1,0 +1,4 @@
+# key: cast
+# name: static-cast
+# --
+static_cast<${1:T}>($0)

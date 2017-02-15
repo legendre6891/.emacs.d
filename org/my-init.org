@@ -3,23 +3,23 @@
 #+DATE: January 22, 2017
 
 * Prelude
-This file is tangled and loaded via =init.el=, which
-should just contain the following.
-#+BEGIN_SRC emacs-lisp :tangle no
+  This file is tangled and loaded via =init.el=, which
+  should just contain the following.
+  #+BEGIN_SRC emacs-lisp :tangle no
 (require 'org)
 (org-babel-load-file
  (expand-file-name
   "my-init.org"
   (concat user-emacs-directory "org"
    )))
-#+END_SRC
+  #+END_SRC
 
 
 
 * Package Setup
-Most of the settings rely on installing packages. So the first
-order of business is to initialize the package system.
-#+BEGIN_SRC emacs-lisp
+  Most of the settings rely on installing packages. So the first
+  order of business is to initialize the package system.
+  #+BEGIN_SRC emacs-lisp
 ;; so we don't get bothered about coding system
 (prefer-coding-system 'utf-8) 
 
@@ -28,52 +28,52 @@ order of business is to initialize the package system.
 (add-to-list 'package-archives '("melpa" .
                                  "http://melpa.org/packages/"))
 (package-initialize)
-#+END_SRC
-Next, we pull in the conveninence package =use-package=,
-which is used to actually configure the packages
-#+BEGIN_SRC emacs-lisp
+  #+END_SRC
+  Next, we pull in the conveninence package =use-package=,
+  which is used to actually configure the packages
+  #+BEGIN_SRC emacs-lisp
 ;; Bootstrap `use-package'
 (unless (package-installed-p 'use-package)
   (package-refresh-contents)
   (package-install 'use-package))
 (require 'use-package)
-#+END_SRC
+  #+END_SRC
 
-I think the [[https://github.com/Malabarba/paradox][=paradox=]] package is a lot better than the built in one,
-so let's install that.
-#+BEGIN_SRC emacs-lisp
+  I think the [[https://github.com/Malabarba/paradox][=paradox=]] package is a lot better than the built in one,
+  so let's install that.
+  #+BEGIN_SRC emacs-lisp
   (use-package paradox
       :ensure t)
-#+END_SRC
+  #+END_SRC
 
 
 * General Settings
-These following settings should always be on, and depends
-only on an up-to-date Emacs installation. They try to
-provide a comfortable experience for debugging init files
-in the case that the rest of the things somehow break.
+  These following settings should always be on, and depends
+  only on an up-to-date Emacs installation. They try to
+  provide a comfortable experience for debugging init files
+  in the case that the rest of the things somehow break.
 ** The Custom File
-Don't litter =init.el= with customizations with =Customize=.
-Create an empty file for it, in case it is not present.
-Since emacs will refuse to load a completely empty file, we bootstrap
-the custom file with a useless form [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Calling-Functions.html][=ignore=]].
-#+BEGIN_SRC emacs-lisp
+   Don't litter =init.el= with customizations with =Customize=.
+   Create an empty file for it, in case it is not present.
+   Since emacs will refuse to load a completely empty file, we bootstrap
+   the custom file with a useless form [[http://www.gnu.org/software/emacs/manual/html_node/elisp/Calling-Functions.html][=ignore=]].
+   #+BEGIN_SRC emacs-lisp
   (setq custom-file "~/.emacs.d/emacs-custom.el")
   (if (not (file-exists-p custom-file))
       (write-region "(ignore \"Custom file loaded\")" nil custom-file))
 
   (load custom-file)
-#+END_SRC
+   #+END_SRC
 
-The =custom-file= is not kept under version control, so it is
-convenient to put some personal settings in there that shouldn't be
-seen on Github.  
+   The =custom-file= is not kept under version control, so it is
+   convenient to put some personal settings in there that shouldn't be
+   seen on Github.  
 
-The following function takes in a symbol and a
-prompt; if the symbol isn't defined at this point (after the custom
-file's loaded), then prompt the user for its value. Afterwards, put in the
-custom file so it needn't be asked again.
-#+BEGIN_SRC emacs-lisp
+   The following function takes in a symbol and a
+   prompt; if the symbol isn't defined at this point (after the custom
+   file's loaded), then prompt the user for its value. Afterwards, put in the
+   custom file so it needn't be asked again.
+   #+BEGIN_SRC emacs-lisp
 (defun ensure-in-custom (SYM PROMPT)
   (interactive)
   (if (not (boundp SYM))
@@ -84,19 +84,19 @@ custom file so it needn't be asked again.
         (write-region (concat (prin1-to-string piece) "\n")
          nil custom-file 'append)
         )))
-#+END_SRC
-Now make sure that our full name and email address are always defined.
-#+BEGIN_SRC emacs-lisp
+   #+END_SRC
+   Now make sure that our full name and email address are always defined.
+   #+BEGIN_SRC emacs-lisp
 (ensure-in-custom 'full-name "Enter your full name: ")
 (ensure-in-custom 'email-address "Enter your email address: ")
-#+END_SRC
+   #+END_SRC
 
 
 ** Home and Dropbox Folder setup
-It is convenient to know where my "home" folder is (not the folder
-that Emacs thinks is home), and also where the Dropbox folder
-is. Later, we may define some shortcuts using these constants.
-#+BEGIN_SRC emacs-lisp
+   It is convenient to know where my "home" folder is (not the folder
+   that Emacs thinks is home), and also where the Dropbox folder
+   is. Later, we may define some shortcuts using these constants.
+   #+BEGIN_SRC emacs-lisp
   (setq user-home-folder
         (file-name-as-directory
          ;; Windows doesn't use the ~ convention
@@ -107,100 +107,99 @@ is. Later, we may define some shortcuts using these constants.
   (setq user-dropbox-folder
         (file-name-as-directory
          (concat user-home-folder "Dropbox (MIT)")))
-#+END_SRC
+   #+END_SRC
 
 
 ** Custom Elisp
 *** Editing Related
-Load some general use functions.
-#+BEGIN_SRC emacs-lisp
+    Load some general use functions.
+    #+BEGIN_SRC emacs-lisp
   (use-package my-functions
     :load-path "lisp/")
-#+END_SRC
+    #+END_SRC
 
 *** Elisp Programming Related
-A macro that makes a single form
-into an anonymous function that calls the form
-#+BEGIN_SRC emacs-lisp
+    A macro that makes a single form
+    into an anonymous function that calls the form
+    #+BEGIN_SRC emacs-lisp
   (defmacro ↑ (form)
       `(lambda () (interactive) ,form))
   (defmacro → (λ)
       `(lambda (x) (apply #',λ x)))
-#+END_SRC
+    #+END_SRC
 
 
 ** General Settings
-These settings should always be present.
+   These settings should always be present.
 *** Better Defaults
-A no-frills package to set some sensible defaults.
-#+BEGIN_SRC emacs-lisp
+    A no-frills package to set some sensible defaults.
+    #+BEGIN_SRC emacs-lisp
   (use-package better-defaults
       :ensure t)
-#+END_SRC
-
+    #+END_SRC
 
 *** Disable trailing newline
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (setq-default mode-require-final-newline nil)
-#+END_SRC
+    #+END_SRC
 
 *** Long lines mode
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (set-default 'truncate-lines t)
-#+END_SRC
+    #+END_SRC
 *** Auto Revert Mode
-No reason not to have files auto-revert in 2016.
-#+BEGIN_SRC emacs-lisp
+    No reason not to have files auto-revert in 2016.
+    #+BEGIN_SRC emacs-lisp
   (global-auto-revert-mode t)
-#+END_SRC
+    #+END_SRC
 *** Visuals
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (setq ring-bell-function 'ignore)
 (setq inhibit-startup-message t)
-#+END_SRC
+    #+END_SRC
 
 *** Tab Settings
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
 (setq-default tab-width 4)
-#+END_SRC
+    #+END_SRC
 
 *** Popwin
-Don't let temporary buffers annoy you! /Disabled because =popwin=
-makes looking up functions when programming painful./
-#+BEGIN_SRC emacs-lisp :tangle no
+    Don't let temporary buffers annoy you! /Disabled because =popwin=
+    makes looking up functions when programming painful./
+    #+BEGIN_SRC emacs-lisp :tangle no
   (use-package popwin
       :ensure t
       :config
       (popwin-mode 1))
-#+END_SRC
+    #+END_SRC
 *** Miscellaneous
-Always show column numbers
-#+BEGIN_SRC emacs-lisp
+    Always show column numbers
+    #+BEGIN_SRC emacs-lisp
 (column-number-mode t)
-#+END_SRC
+    #+END_SRC
 
-Never make me type =yes= or =no=.
-#+BEGIN_SRC emacs-lisp
+    Never make me type =yes= or =no=.
+    #+BEGIN_SRC emacs-lisp
 (defalias 'yes-or-no-p 'y-or-n-p)
-#+END_SRC
+    #+END_SRC
 
-Easier navigation with mark ring.
-#+BEGIN_SRC emacs-lisp
+    Easier navigation with mark ring.
+    #+BEGIN_SRC emacs-lisp
 (setq set-mark-command-repeat-pop t)
-#+END_SRC
+    #+END_SRC
 
-Don't garbage collect so much.
-#+BEGIN_SRC emacs-lisp
+    Don't garbage collect so much.
+    #+BEGIN_SRC emacs-lisp
 (setq gc-cons-threshold (* 1024 1024 50))
-#+END_SRC
+    #+END_SRC
 
-Sane defaults for erasing region.
-#+BEGIN_SRC emacs-lisp
+    Sane defaults for erasing region.
+    #+BEGIN_SRC emacs-lisp
 (delete-selection-mode t)
-#+END_SRC
+    #+END_SRC
 
-Erase regions in a sane way.
-#+BEGIN_SRC emacs-lisp
+    Erase regions in a sane way.
+    #+BEGIN_SRC emacs-lisp
   (defun kill-word-or-region ()
     (interactive)
     (if (not (use-region-p))
@@ -210,11 +209,11 @@ Erase regions in a sane way.
   (global-set-key "\C-w" 'kill-word-or-region)
   (global-set-key "\C-x\C-k" 'kill-region)
   (global-set-key "\C-c\C-k" 'kill-region)
-#+END_SRC
+    #+END_SRC
 
-If no line is selected, then just copy the line. See [[http://ergoemacs.org/emacs/emacs_copy_cut_current_line.html][Xah Lee's code]]
-for the following implementation.
-#+BEGIN_SRC emacs-lisp
+    If no line is selected, then just copy the line. See [[http://ergoemacs.org/emacs/emacs_copy_cut_current_line.html][Xah Lee's code]]
+    for the following implementation.
+    #+BEGIN_SRC emacs-lisp :tangle no
   (defun xah-copy-line-or-region ()
     "Copy current line, or text selection.
   When called repeatedly, append copy subsequent lines.
@@ -248,35 +247,47 @@ for the following implementation.
       (forward-char)
       ))
   (global-set-key (kbd "M-w") 'xah-copy-line-or-region) ;copy
-#+END_SRC
+    #+END_SRC
 
 *** Commenting
-Evil nerd commenter doesn't require =evil-mode=, but it is a good
-package.
-#+BEGIN_SRC emacs-lisp
+    Evil nerd commenter doesn't require =evil-mode=, but it is a good
+    package.
+    #+BEGIN_SRC emacs-lisp
   (use-package evil-nerd-commenter
     :ensure t
     :init
     (progn
       (evilnc-default-hotkeys)))
+    #+END_SRC
+
+
+** General Mode (Keybinds!)
+General mode to manage keybindings.
+#+BEGIN_SRC emacs-lisp
+  (use-package general
+      :ensure t
+      :config
+      (general-define-key
+       "M-t" 'ivy-switch-buffer
+       "M-p" 'ace-window))
 #+END_SRC
 
 
 ** Global Keybindings
 *** F-keys
 **** F8
-Set =<f8>= to editing this very file.
-#+BEGIN_SRC emacs-lisp
+     Set =<f8>= to editing this very file.
+     #+BEGIN_SRC emacs-lisp
   (setq init-org-file
         (concat
          (file-name-as-directory (expand-file-name "org" user-emacs-directory))
          "my-init.org"))
   (global-set-key (kbd "<f8>") (↑ (find-file init-org-file)))
-#+END_SRC
+     #+END_SRC
 **** F10
-Set =<f10>= to open the current buffer in Windows Explorer.
-Taken from here.
-#+BEGIN_SRC emacs-lisp
+     Set =<f10>= to open the current buffer in Windows Explorer.
+     Taken from here.
+     #+BEGIN_SRC emacs-lisp
   (defun my-open-in-windows-explorer ()
     "Launch the windows explorer in the current directory and selects current file"
     (interactive)
@@ -299,29 +310,32 @@ Taken from here.
   (if (eq system-type 'windows-nt)
       (global-set-key [f10] 'my-open-in-windows-explorer))
 
-#+END_SRC
+     #+END_SRC
 ***** TODO Support other operating systems.
 **** F1 and F2
-See [[Yasnippet]] and Hydra; there, =<f1>= and =<f2>= is also bound.
+     See [[Yasnippet]] and Hydra; there, =<f1>= and =<f2>= is also bound.
 **** F5
-#+BEGIN_SRC emacs-lisp
-  (global-set-key (kbd "<f5>") #'recompile-quietly)
-#+END_SRC
+     #+BEGIN_SRC emacs-lisp
+       (global-set-key (kbd "<f5>")
+                       (lambda ()
+                         (interactive)
+                         (ansi-term "/usr/local/bin/bash")))
+     #+END_SRC
      
 *** Pause-key
-See section on [[Restart Emacs]].
+    See section on [[Restart Emacs]].
 
 *** Undo key
-Control-Z is otherwise useless because I always use Emacs with
-a GUI. Rebind it to undo.
-#+BEGIN_SRC emacs-lisp
+    Control-Z is otherwise useless because I always use Emacs with
+    a GUI. Rebind it to undo.
+    #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-z") #'undo)
-#+END_SRC
+    #+END_SRC
 
 *** Kill Buffer
-Instead of asking which buffer to kill, instead let's kill the current
-buffer if there is no prefix.
-#+BEGIN_SRC emacs-lisp
+    Instead of asking which buffer to kill, instead let's kill the current
+    buffer if there is no prefix.
+    #+BEGIN_SRC emacs-lisp
   (defun emacs-d-kill-a-buffer (askp)
     (interactive "P")
     (if askp
@@ -329,40 +343,40 @@ buffer if there is no prefix.
       (kill-this-buffer)))
 
   (global-set-key (kbd "C-x k") #'emacs-d-kill-a-buffer)
-#+END_SRC
+    #+END_SRC
 
 
 ** Ido, Recentf, and Smex
 *** General settings
-Ido is one of the reasons why Emacs is great! It takes a little bit of
-setting up to make it more comfortable to use.
+    Ido is one of the reasons why Emacs is great! It takes a little bit of
+    setting up to make it more comfortable to use.
 
-Enable virtual buffers: even if a buffer is closed, we still have
-access to it.
-#+BEGIN_SRC emacs-lisp
+    Enable virtual buffers: even if a buffer is closed, we still have
+    access to it.
+    #+BEGIN_SRC emacs-lisp
 (setq ido-use-virtual-buffers t)
-#+END_SRC
+    #+END_SRC
 
-When a filename doesn't complete, ido will search recently used
-names. This is annoying, so disable it.
-#+BEGIN_SRC emacs-lisp
+    When a filename doesn't complete, ido will search recently used
+    names. This is annoying, so disable it.
+    #+BEGIN_SRC emacs-lisp
 (setq ido-auto-merge-work-directories-length -1)
-#+END_SRC
+    #+END_SRC
 
-=Flx Ido= uses another algorithm to calculate matches which seems to
-work better than the default.
-#+BEGIN_SRC emacs-lisp
+    =Flx Ido= uses another algorithm to calculate matches which seems to
+    work better than the default.
+    #+BEGIN_SRC emacs-lisp
   (use-package flx-ido
       :ensure t
       :config (progn
                 (flx-ido-mode 1)
                 (ido-mode 1)))
-#+END_SRC
+    #+END_SRC
 
-Make the completion interface vertical; it is more legible this way.
-In addition, define up and down keys, because =<left>= and =<right>=
-arrows are too inconvenient.
-#+BEGIN_SRC emacs-lisp
+    Make the completion interface vertical; it is more legible this way.
+    In addition, define up and down keys, because =<left>= and =<right>=
+    arrows are too inconvenient.
+    #+BEGIN_SRC emacs-lisp
 (use-package ido-vertical-mode
     :ensure t
     :config
@@ -374,12 +388,12 @@ arrows are too inconvenient.
         (define-key ido-completion-map (kbd "C-k") 'ido-prev-match)
         (define-key ido-completion-map (kbd "C-p") 'ido-prev-match))
       (add-hook 'ido-setup-hook 'ido-define-keys)))
-#+END_SRC
+    #+END_SRC
 
 *** Ido everywhere
-Use Ido for most completions; sadly this doesn't quite cover 100% of
-the cases yet, but it's close.
-#+BEGIN_SRC emacs-lisp
+    Use Ido for most completions; sadly this doesn't quite cover 100% of
+    the cases yet, but it's close.
+    #+BEGIN_SRC emacs-lisp
 (ido-everywhere)
 (use-package ido-ubiquitous
     :ensure t
@@ -395,96 +409,34 @@ the cases yet, but it's close.
     (progn
       (ido-ubiquitous-use-new-completing-read yas/expand 'yasnippet)
       (ido-ubiquitous-use-new-completing-read yas/visit-snippet-file 'yasnippet)))
-#+END_SRC
-The last two lines are used to make make completing with =yasnippet=
-work well.
+    #+END_SRC
+    The last two lines are used to make make completing with =yasnippet=
+    work well.
 
 **** TODO Investigate Helm?
 
 *** Recentf
-Recentf supports Ido mode by keeping track of recently organized files.
-#+BEGIN_SRC emacs-lisp
+    Recentf supports Ido mode by keeping track of recently organized files.
+    #+BEGIN_SRC emacs-lisp
 (use-package recentf
     :config
   (progn
     (recentf-mode 1)
     (setq recentf-max-menu-items 500)))
-#+END_SRC
+    #+END_SRC
 
 *** Smex
-=M-x= support but for ido.
-#+BEGIN_SRC emacs-lisp
-(use-package smex
-    :ensure t
-    :bind
-    (("M-x" . smex)
-     ("C-x C-m" . smex)
-     ("C-c C-m" . smex)
-     ("C-c m" . smex)
-     ("C-x m" . smex)))
-#+END_SRC
+    Instead of using =Smex=, let's try out =counsel-M-x=.
+    #+BEGIN_SRC emacs-lisp
 
+    #+END_SRC
 
-
-** Helm
-*** Installation
-Can't believe I'm using =helm= now; it's a great program in
-moderation. But it's a good package and there's no reason
-to ignore it.
-
-Disabled for now! Ido may still be better ...
-#+BEGIN_SRC emacs-lisp
-  (use-package helm
-      :ensure t
-      :init
-      (progn
-        (require 'helm-config)))
-#+END_SRC
-
-*** Key bindings
-I like =helm-kill-ring= and =helm-mark-ring= and =helm-mini=.
-For the kill-ring, use the bind =M-y=, but to preserve
-default behavior, only activate it when we didn't just use 
-=C-y=.
-#+BEGIN_SRC emacs-lisp
-  (defun my-show-kill-ring ()
-    (interactive)
-    (if (not (eq last-command 'yank))
-        (helm-show-kill-ring)
-        (progn
-          (setq this-command 'yank)
-          (call-interactively 'yank-pop))))
-
-  ;; (global-set-key (kbd "M-y")     'my-show-kill-ring)
-#+END_SRC
-
-*** Further configuation
-Fuzzy match is a must.
-#+BEGIN_SRC emacs-lisp
-  (setq helm-buffers-fuzzy-matching t)
-  (setq helm-recentf-fuzzy-match t)
-#+END_SRC
-
-Other stuff as introduced by =tudho=. 
-#+BEGIN_SRC emacs-lisp
-  (setq
-   ;; open helm buffer inside current window, not occupy whole other window
-   helm-split-window-in-side-p           t
-   ;; move to end or beginning of source when reaching top or bottom of source.
-   helm-move-to-line-cycle-in-source     t
-   ;; search for library in `require' and `declare-function' sexp.
-   helm-ff-search-library-in-sexp        t
-   ;; scroll 8 lines other window using M-<next>/M-<prior>
-   helm-scroll-amount                    8
-
-   helm-ff-file-name-history-use-recentf t)
-#+END_SRC
 
 
 ** Mac OS X specific settings
-We need let Emacs know about the the =LaTeX= path
-for =LaTeX= to work.
-#+BEGIN_SRC emacs-lisp
+   We need let Emacs know about the the =LaTeX= path
+   for =LaTeX= to work.
+   #+BEGIN_SRC emacs-lisp
   (if (eq system-type 'darwin)
       (progn
         (defun set-exec-path-from-shell-PATH ()
@@ -513,67 +465,65 @@ for =LaTeX= to work.
         (setenv "PATH" (concat (getenv "PATH") ":/usr/bin"))
 
         (setq exec-path (append exec-path '("/usr/bin")))))
-#+END_SRC
+   #+END_SRC
 
 
 ** Hydra
-Hydra mode is a new package that allow one to create custom interfaces
-like Org's export menu. It is great for mapping commands that one
-would like a hotkey for but isn't used enough to use an entire
-keybinding.
-#+BEGIN_SRC emacs-lisp
+   Hydra mode is a new package that allow one to create custom interfaces
+   like Org's export menu. It is great for mapping commands that one
+   would like a hotkey for but isn't used enough to use an entire
+   keybinding.
+   #+BEGIN_SRC emacs-lisp
   (use-package hydra
       :ensure t)
-#+END_SRC
+   #+END_SRC
 
 *** Yasnippet Hydra
-See [[Yasnippet]].
+    See [[Yasnippet]].
 
 *** GUI Hydra
-I want a hydra to control various
-GUI elements (e.g. linum-mode, theme, font).
+    I want a hydra to control various
+    GUI elements (e.g. linum-mode, theme, font).
 
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
   (defhydra my-hydra-gui (:color blue)
     ("f" menu-set-font "Set font.")
     ("m" menu-bar-mode "Toggle menu bar.")
-    ("t" (load-theme 'ample-flat) "Load theme")
-    ("d" (disable-theme 'ample-flat) "Disable theme")
-    )
+    ("t" (call-interactively #'counsel-load-theme) "Load theme"))
 
   (global-set-key (kbd "<f2>") #'my-hydra-gui/body)
-#+END_SRC
+    #+END_SRC
 
 
 
 ** Restart Emacs
-It's nice to have a shortcut to restart emacs on.
-#+BEGIN_SRC emacs-lisp
+   It's nice to have a shortcut to restart emacs on.
+   #+BEGIN_SRC emacs-lisp
   (use-package restart-emacs
       :ensure t
       :init
       (global-set-key (kbd "<pause>") #'restart-emacs))
-#+END_SRC
+   #+END_SRC
 
 
 ** Visual Regexp
-This is a great package that provides live feedback on regexps.
-#+BEGIN_SRC emacs-lisp
+   This is a great package that provides live feedback on regexps.
+   #+BEGIN_SRC emacs-lisp
   (use-package visual-regexp
       :ensure t
       :config
       (progn
         (global-set-key (kbd "M-r") 'vr/replace)))
-#+END_SRC
+   #+END_SRC
 
 
 * Look and Feel
-Here, we install various themes.  Install =emacs24= themes and set up
-a font. I'm not sure at this point whether to simply /install/ the
-themes or actually activate them.
+  Here, we install various themes.  Install =emacs24= themes and set up
+  a font. I'm not sure at this point whether to simply /install/ the
+  themes or actually activate them.
 ** Themes
-Install but defer.
-#+BEGIN_SRC emacs-lisp
+   Install but defer.
+   #+BEGIN_SRC emacs-lisp
   (use-package color-theme-sanityinc-tomorrow
       :defer t
       :ensure t)
@@ -665,12 +615,12 @@ Install but defer.
   (use-package darkburn-theme
       :ensure t
       :defer t)
-#+END_SRC
+   #+END_SRC
 
 
 ** Fonts
 *** Activating a font
-#+BEGIN_SRC emacs-lisp :tangle yes
+    #+BEGIN_SRC emacs-lisp :tangle yes
   (defun my-set-face (font height)
     (set-face-attribute 'default nil
                         :family font
@@ -679,37 +629,37 @@ Install but defer.
                         :width 'normal))
 
   (if (eq system-type 'darwin)
-      (my-set-face "PragmataPro" 14))
+      (my-set-face "mononoki" 13))
 
   (if (eq system-type 'windows-nt)
       (my-set-face "Consolas" 12))
 
   (if (eq system-type 'gnu/linux)
       (my-set-face "InconsolataGo" 10))
-#+END_SRC
+    #+END_SRC
 
 *** TODO cycle between fonts
-Write a function (a la Spacemacs) that allows me to switch between fonts.
+    Write a function (a la Spacemacs) that allows me to switch between fonts.
 **** With ido support?
 
 *** TODO Check whether the font exists
 
 
 ** Disable blinking cursor
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 (blink-cursor-mode 0)
-#+END_SRC
+   #+END_SRC
 
 
 * Abbrev Mode
-Load the fat fingers abbrev.
-#+BEGIN_SRC emacs-lisp
+  Load the fat fingers abbrev.
+  #+BEGIN_SRC emacs-lisp
   (read-abbrev-file "~/.emacs.d/abbrev_def_fat_fingers")
-#+END_SRC
+  #+END_SRC
 
 
-I stole this from [[http://endlessparentheses.com/ispell-and-abbrev-the-perfect-auto-correct.html][this blog post]].
-#+BEGIN_SRC emacs-lisp
+  I stole this from [[http://endlessparentheses.com/ispell-and-abbrev-the-perfect-auto-correct.html][this blog post]].
+  #+BEGIN_SRC emacs-lisp
   (setq abbrev-file-name "~/.emacs.d/abbrev_defs")
 
   (define-key ctl-x-map "\C-i"
@@ -753,38 +703,61 @@ I stole this from [[http://endlessparentheses.com/ispell-and-abbrev-the-perfect-
 
   (setq save-abbrevs 'silently)
   (setq-default abbrev-mode t)
-#+END_SRC
+  #+END_SRC
 
 
 * Avy, Swiper, and Counsel
+  #+BEGIN_SRC emacs-lisp
+    (use-package avy
+        :ensure t)
+
+    (use-package counsel
+        :ensure t
+        :diminish t
+        :bind (("C-h f"   . counsel-describe-function)
+               ("C-h v"   . counsel-describe-variable)
+               ("M-y"     . counsel-yank-pop)
+               ("M-x"     . counsel-M-x)
+               ("C-x C-f" . counsel-find-file))
+        :init
+        (setq ivy-re-builders-alist
+              '((t . ivy--regex-fuzzy)))
+        :config
+        (progn
+          (add-to-list 'ivy-initial-inputs-alist
+                       '(counsel-M-x . ""))
+          (add-to-list 'ivy-initial-inputs-alist
+                       '(counsel-describe-function . ""))
+          (add-to-list 'ivy-initial-inputs-alist
+                       '(counsel-describe-variable . ""))
+          (counsel-mode)))
+
+    (use-package ivy-rich
+        :ensure t
+        :bind (("C-x b" . ivy-switch-buffer))
+        :init
+        (progn
+          (setq ivy-virtual-abbreviate 'full
+                ivy-rich-switch-buffer-align-virtual-buffer t
+                ivy-use-virtual-buffers t)))
+
+    (with-eval-after-load 'ivy
+      (ivy-set-display-transformer 'ivy-switch-buffer
+                                   'ivy-rich-switch-buffer-transformer))
+  #+END_SRC
+
+
+
+* Ace-Window
 #+BEGIN_SRC emacs-lisp
-  (use-package avy
-    :ensure t)
-
-  (use-package counsel
-    :ensure t
-    :bind (("C-h f" . counsel-describe-function)
-           ("C-h v" . counsel-describe-variable)
-           ("M-y" . counsel-yank-pop))
-    :init
-    (setq ivy-re-builders-alist
-          '((t . ivy--regex-fuzzy)))
-    :config
-    (progn
-      (add-to-list 'ivy-initial-inputs-alist
-                   '(counsel-M-x . ""))
-      (add-to-list 'ivy-initial-inputs-alist
-                   '(counsel-describe-function . ""))
-      (add-to-list 'ivy-initial-inputs-alist
-                   '(counsel-describe-variable . ""))))
-
+  (use-package ace-window
+      :ensure t)
 #+END_SRC
 
 
-
 * Multiple Cursors
-Multiple cursors is lots of fun!
-#+BEGIN_SRC emacs-lisp
+  Multiple cursors is lots of fun!
+  #+BEGIN_SRC emacs-lisp
   (use-package multiple-cursors
       :ensure t)
 
@@ -792,36 +765,36 @@ Multiple cursors is lots of fun!
   (global-set-key (kbd "M-k") 'mc/mark-previous-like-this)
   (global-set-key (kbd "M-J") 'mc/mark-all-like-this)
   (global-set-key (kbd "M-n") 'mc/mark-next-like-this-word)
-#+END_SRC
+  #+END_SRC
 
 
 * Evil Mode
-After several iterations of
-switching back and forth from Emacs and Vim, I gave Evil a go.
-It worked great for a while, but in the end it was just more hassle
-than it's worth, the reason being that key-binds in Emacs
-and its many modes are not designed with modal input in mind.
+  After several iterations of
+  switching back and forth from Emacs and Vim, I gave Evil a go.
+  It worked great for a while, but in the end it was just more hassle
+  than it's worth, the reason being that key-binds in Emacs
+  and its many modes are not designed with modal input in mind.
 
-Thus, it became a hassle to define new keys,
-especially when I wanted to enable keys only for
-insert mode only for certain key-maps. I can't find a good solution
-for this, so I turned off =evil-mode= for the time being.
+  Thus, it became a hassle to define new keys,
+  especially when I wanted to enable keys only for
+  insert mode only for certain key-maps. I can't find a good solution
+  for this, so I turned off =evil-mode= for the time being.
 
-But my old =evil-mode= customizations are still useful
-if I ever wanted to come back to it, so I include them here.
+  But my old =evil-mode= customizations are still useful
+  if I ever wanted to come back to it, so I include them here.
 ** TODO Include evil mode stuff
-I need to figure out a way to reference (and attach?) files
-to an org document.
+   I need to figure out a way to reference (and attach?) files
+   to an org document.
 
 
 
 * Yasnippet
 ** Introduction
-Yasnippet is very useful once setup correctly for each mode.
-The problem is that the =TAB= key is too useful in Org-mode and
-CDLaTeX mode. Hence, we need a couple functions to effectively
-enable and disable keys on the fly.
-#+BEGIN_SRC emacs-lisp
+   Yasnippet is very useful once setup correctly for each mode.
+   The problem is that the =TAB= key is too useful in Org-mode and
+   CDLaTeX mode. Hence, we need a couple functions to effectively
+   enable and disable keys on the fly.
+   #+BEGIN_SRC emacs-lisp
   (defun disable-yasnippet-tab-key ()
     (interactive)
     (define-key yas-minor-mode-map [(tab)]        nil)
@@ -842,10 +815,10 @@ enable and disable keys on the fly.
        (if (yas-keymap-is-active-p)
            (call-interactively #'yas-next-field-or-maybe-expand)
          (call-interactively #'yas-expand)))))
-#+END_SRC
+   #+END_SRC
 
 ** Install and Disable Tab Key
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
       :ensure t
       :diminish yas-minor-mode
@@ -858,19 +831,19 @@ enable and disable keys on the fly.
       (progn
         (yas-global-mode)
         (disable-yasnippet-tab-key)))
-#+END_SRC
+   #+END_SRC
 
-Use ido prompting method.
-#+BEGIN_SRC emacs-lisp
+   Use ido prompting method.
+   #+BEGIN_SRC emacs-lisp
   (setq yas-prompt-functions '(yas-ido-prompt yas-completing-prompt))
-#+END_SRC
+   #+END_SRC
 
 ** Yasnippet Hydra
-I believe that =yasnippet= is hugely good, but it takes some time to
-configure that the process is just slightly "too painful" that I avoid
-using it. Let's settle this with a neat =hydra= /globally/ bound to the ever so
-easy to reach =f1=.
-#+BEGIN_SRC emacs-lisp  
+   I believe that =yasnippet= is hugely good, but it takes some time to
+   configure that the process is just slightly "too painful" that I avoid
+   using it. Let's settle this with a neat =hydra= /globally/ bound to the ever so
+   easy to reach =f1=.
+   #+BEGIN_SRC emacs-lisp  
   (defhydra hydra-yasnippet (:color blue :hint nil)
       "
                   ^YASnippets^
@@ -895,13 +868,13 @@ easy to reach =f1=.
       ("v" yas-visit-snippet-file))
 
   (global-set-key (kbd "<f1>") 'hydra-yasnippet/body)
-#+END_SRC
+   #+END_SRC
 
-While in snippet mode, saving a snippet should just load and quit.
-#+BEGIN_SRC emacs-lisp
+   While in snippet mode, saving a snippet should just load and quit.
+   #+BEGIN_SRC emacs-lisp
   (define-key snippet-mode-map (kbd "C-x C-s")
     #'yas-load-snippet-buffer-and-close)
-#+END_SRC
+   #+END_SRC
 
 ** TODO Add different folders for different modes of snippet files
 
@@ -917,12 +890,12 @@ While in snippet mode, saving a snippet should just load and quit.
 
 
 ** Introduction and Installation
-Decided to settle down once and forall on configuring company mode.
-The question is what to do with the tab key, though it seems that
-integrating with =hippie-expand= is a good choice.
+   Decided to settle down once and forall on configuring company mode.
+   The question is what to do with the tab key, though it seems that
+   integrating with =hippie-expand= is a good choice.
 
-See [[https://github.com/cqql/dotfiles/blob/master/src/.emacs.d/init.org][cqql's emacs init.org]] for more details here.
-#+BEGIN_SRC emacs-lisp :tangle yes
+   See [[https://github.com/cqql/dotfiles/blob/master/src/.emacs.d/init.org][cqql's emacs init.org]] for more details here.
+   #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package company
       :ensure t
       :diminish company-mode
@@ -959,85 +932,30 @@ See [[https://github.com/cqql/dotfiles/blob/master/src/.emacs.d/init.org][cqql's
 
   (use-package company-irony
       :ensure t)
-#+END_SRC
+   #+END_SRC
 
 
 ** Better Hippie Expand
-See [[https://www.reddit.com/r/emacs/comments/30h2gr/what_keybindings_do_you_use_for_completion/cpu1ui6][this reddit post]] for more details.
-*** Fix spelling in comments
-#+BEGIN_SRC emacs-lisp
-  (use-package helm-flyspell
-      :ensure t)
-
-  (use-package popup
-      :ensure t)
-
-  ;;;; Make flyspell-correct-word-before-point look better (not a mouse menu)
-
-  ;;;; See this link http://www.emacswiki.org/emacs/FlySpell#toc11
-  (defun flyspell-emacs-popup-textual (event poss word)
-    "A textual flyspell popup menu."
-    (require 'popup)
-    (let* ((corrects (if flyspell-sort-corrections
-                         (sort (car (cdr (cdr poss))) 'string<)
-                         (car (cdr (cdr poss)))))
-           (cor-menu (if (consp corrects)
-                         (mapcar (lambda (correct)
-                                   (list correct correct))
-                                 corrects)
-                         '()))
-           (affix (car (cdr (cdr (cdr poss)))))
-           show-affix-info
-           (base-menu  (let ((save (if (and (consp affix) show-affix-info)
-                                       (list
-                                        (list (concat "Save affix: " (car affix))
-                                              'save)
-                                        '("Accept (session)" session)
-                                        '("Accept (buffer)" buffer))
-                                       '(("Save word" save)
-                                         ("Accept (session)" session)
-                                         ("Accept (buffer)" buffer)))))
-                         (if (consp cor-menu)
-                             (append cor-menu (cons "" save))
-                             save)))
-           (menu (mapcar
-                  (lambda (arg) (if (consp arg) (car arg) arg))
-                  base-menu)))
-      (cadr (assoc (popup-menu* menu :scroll-bar t) base-menu))))
-
-
-  (eval-after-load "flyspell"
-    '(progn
-      (fset 'flyspell-emacs-popup 'flyspell-emacs-popup-textual)))
-
-
-
-  (defun try-flyspell (arg)
-    (if (nth 4 (syntax-ppss))
-        (progn
-          (call-interactively 'flyspell-correct-word-before-point))
-        nil))
-#+END_SRC
-
+   See [[https://www.reddit.com/r/emacs/comments/30h2gr/what_keybindings_do_you_use_for_completion/cpu1ui6][this reddit post]] for more details.
 *** Better Hippie Expand
-See the same reddit post as above.
-#+BEGIN_SRC emacs-lisp
+    See the same reddit post as above.
+    #+BEGIN_SRC emacs-lisp
   (setq hippie-expand-try-functions-list
         '(;try-flyspell
           yas-hippie-try-expand 
           try-expand-dabbrev-visible 
           (lambda (arg) (call-interactively 'company-complete))
           ))
-#+END_SRC
+    #+END_SRC
 
 
 * Smartparens
-=Smartparens= is almost a necessity in C-like languages; it is less
-essentially useless in Lisps because we will be using =paredit=. Also,
-smartparens is kind of useful in (La)TeX mode, so we should turn it on
-there in addition to Org mode.
+  =Smartparens= is almost a necessity in C-like languages; it is less
+  essentially useless in Lisps because we will be using =paredit=. Also,
+  smartparens is kind of useful in (La)TeX mode, so we should turn it on
+  there in addition to Org mode.
 
-#+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp
   (use-package smartparens
       :ensure t
       :diminish smartparens-mode
@@ -1061,15 +979,15 @@ there in addition to Org mode.
         (add-hook 'racket-repl-mode-hook 'turn-off-smartparens-mode)
         (sp-pair "`" nil :actions :rem)
         (sp-local-pair 'LaTeX-mode "|" "|")))
-#+END_SRC
+  #+END_SRC
 
 
 * Paredit
 
-Enable =paredit=; I still prefer it over =smartparens= because it
-actually comes with a good set of keybindings, and old habits die
-hard.
-#+BEGIN_SRC emacs-lisp
+  Enable =paredit=; I still prefer it over =smartparens= because it
+  actually comes with a good set of keybindings, and old habits die
+  hard.
+  #+BEGIN_SRC emacs-lisp
   (use-package paredit
       :diminish paredit-mode
       :ensure t
@@ -1086,48 +1004,48 @@ hard.
         (add-hook 'scheme-mode-hook           'enable-paredit-mode)
         (add-hook 'slime-repl-mode-hook       'enable-paredit-mode)
         (add-hook 'inferior-lisp-mode-hook 'enable-paredit-mode)))
-#+END_SRC
+  #+END_SRC
 
 
 
 * Org Mode
 ** Appearance
-Since we use Org Babel so often, it is important to highlight
-code in source blocks.
-#+BEGIN_SRC emacs-lisp
+   Since we use Org Babel so often, it is important to highlight
+   code in source blocks.
+   #+BEGIN_SRC emacs-lisp
   (setq org-src-fontify-natively t)
-#+END_SRC
+   #+END_SRC
 
-Fontify the whole heading to make it look nice.
-#+BEGIN_SRC emacs-lisp
+   Fontify the whole heading to make it look nice.
+   #+BEGIN_SRC emacs-lisp
   (setq org-fontify-whole-heading-line t)
-#+END_SRC
+   #+END_SRC
 
 
 ** Org as a Word Processor
-See [[http://www.howardism.org/Technical/Emacs/orgmode-wordprocessor.html][Org as a Word Processor]] for more details.
+   See [[http://www.howardism.org/Technical/Emacs/orgmode-wordprocessor.html][Org as a Word Processor]] for more details.
 *** Get rid of distraction
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
   (setq org-hide-emphasis-markers t)
-#+END_SRC
+    #+END_SRC
 
 *** Better Bullets
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
   (font-lock-add-keywords 'org-mode
                           '(("^ +\\([-*]\\) "
                              (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
-#+END_SRC
+    #+END_SRC
 
 *** Better Header Bullets
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
     :ensure t)
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
-#+END_SRC
+    #+END_SRC
 
 *** Better Headers
-I don't quite like how this looks yet, so I will skip it.
-#+BEGIN_SRC emacs-lisp :tangle no
+    I don't quite like how this looks yet, so I will skip it.
+    #+BEGIN_SRC emacs-lisp :tangle no
   (let* ((variable-tuple (cond ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
                                ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
                                ((x-list-fonts "Verdana")         '(:font "Verdana"))
@@ -1147,40 +1065,40 @@ I don't quite like how this looks yet, so I will skip it.
                             `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
                             `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
 
-#+END_SRC
+    #+END_SRC
 
 
 ** Editing features
-We can also allow plain lists starting with alphabet instead
-of just numbers.
-#+BEGIN_SRC emacs-lisp
+   We can also allow plain lists starting with alphabet instead
+   of just numbers.
+   #+BEGIN_SRC emacs-lisp
   (setq org-list-allow-alphabetical t)
-#+END_SRC
+   #+END_SRC
 
-Let's be smart about invisible edits.
-#+BEGIN_SRC emacs-lisp
+   Let's be smart about invisible edits.
+   #+BEGIN_SRC emacs-lisp
   (setq org-catch-invisible-edits 'show-and-error)
-#+END_SRC
+   #+END_SRC
 
-We always want to turn on =auto-fill-mode= in Org files, so that lines
-automagically wrap at 80 columns.
-#+BEGIN_SRC emacs-lisp
+   We always want to turn on =auto-fill-mode= in Org files, so that lines
+   automagically wrap at 80 columns.
+   #+BEGIN_SRC emacs-lisp
   (add-hook 'org-mode-hook 'auto-fill-mode)
-#+END_SRC
+   #+END_SRC
 
 
 ** Directory structure
-Set the *default directory* for Org-mode.
-#+BEGIN_SRC emacs-lisp
+   Set the *default directory* for Org-mode.
+   #+BEGIN_SRC emacs-lisp
   (let ((org-folder
          (file-name-as-directory (concat user-dropbox-folder "Org"))))
     (setq org-directory org-folder))
-#+END_SRC
+   #+END_SRC
 
 
 ** Custom key binds
-Set the global hotkeys which are commended in the manual.
-#+BEGIN_SRC emacs-lisp
+   Set the global hotkeys which are commended in the manual.
+   #+BEGIN_SRC emacs-lisp
   (global-set-key (kbd "C-c l") 'org-store-link)
   (global-set-key (kbd "C-c a") 'org-agenda)
   (global-set-key (kbd "C-c c") 'org-capture)
@@ -1189,57 +1107,57 @@ Set the global hotkeys which are commended in the manual.
     (lambda () (interactive)
             (setq current-prefix-arg '(4))
             (call-interactively 'org-time-stamp-inactive)))
-#+END_SRC
+   #+END_SRC
   
-We need an easier key on LaTeX. In future Org versions, use
-=org-toggle-latex-fragment=.
-#+BEGIN_SRC emacs-lisp
+   We need an easier key on LaTeX. In future Org versions, use
+   =org-toggle-latex-fragment=.
+   #+BEGIN_SRC emacs-lisp
   (org-defkey org-mode-map (kbd "C-.") 'org-preview-latex-fragment)
-#+END_SRC
+   #+END_SRC
 
 
 ** Support for LaTeX in Org
 *** Inside Org Mode
-Larger LaTeX fonts; it seems that 1.4 is too large, so let's leave this
-*OFF* for now.
-#+BEGIN_SRC emacs-lisp :tangle no
+    Larger LaTeX fonts; it seems that 1.4 is too large, so let's leave this
+    *OFF* for now.
+    #+BEGIN_SRC emacs-lisp :tangle no
   (plist-put org-format-latex-options :scale 1.4)
   (plist-put org-format-latex-options :html-scale 1.4)
-#+END_SRC
+    #+END_SRC
 
-Autoload CDLaTeX mode and RefTeX.
-#+BEGIN_SRC emacs-lisp
-  (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
-  (add-hook 'org-mode-hook (↑ (reftex-mode t)))
-#+END_SRC
+    Autoload CDLaTeX mode and RefTeX.
+    #+BEGIN_SRC emacs-lisp
+      (add-hook 'org-mode-hook 'turn-on-org-cdlatex)
+      (add-hook 'org-mode-hook (lambda () (interactive) (reftex-mode t)))
+    #+END_SRC
 
-Turn on LaTeX syntax highlighting.
-#+BEGIN_SRC emacs-lisp
+    Turn on LaTeX syntax highlighting.
+    #+BEGIN_SRC emacs-lisp
   (setq org-highlight-latex-and-related '(latex script))
-#+END_SRC
+    #+END_SRC
 
-Make smart-parens do their thing.
-#+BEGIN_SRC emacs-lisp
+    Make smart-parens do their thing.
+    #+BEGIN_SRC emacs-lisp
   (sp-local-pair 'org-mode "$" "$")
-#+END_SRC
+    #+END_SRC
 
 **** TODO Make the dollar sign $ type actual dollars.
 
 *** Exporting to LaTeX
 **** Margins and Microtype
-#+BEGIN_SRC emacs-lisp
+     #+BEGIN_SRC emacs-lisp
   (add-to-list 'org-latex-packages-alist '("final" "microtype"))
   (add-to-list 'org-latex-packages-alist '("margin=1in" "geometry"))
-#+END_SRC
+     #+END_SRC
 **** TODO Theorems
 
 
 
 **** Colors in exported code blocks.
-Perhaps =minted= is the better choice, but there are apparently "repercussions"
-that I don't want to deal with, as outlined in the documentation
-of =org-latex-listings=.
-#+BEGIN_SRC emacs-lisp
+     Perhaps =minted= is the better choice, but there are apparently "repercussions"
+     that I don't want to deal with, as outlined in the documentation
+     of =org-latex-listings=.
+     #+BEGIN_SRC emacs-lisp
   (setq org-latex-listings 'minted)
   (require 'ox-latex)
   (add-to-list 'org-latex-packages-alist '("" "minted"))
@@ -1248,7 +1166,7 @@ of =org-latex-listings=.
       "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
       "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
       ))
-#+END_SRC
+     #+END_SRC
 
 **** TODO Insert the appropriate packages
      - geometry
@@ -1260,20 +1178,20 @@ of =org-latex-listings=.
 
 
 ** HTML Export settings
-Highlight code blocks in HTML.
-#+BEGIN_SRC emacs-lisp
+   Highlight code blocks in HTML.
+   #+BEGIN_SRC emacs-lisp
   (use-package htmlize
       :ensure t)
-#+END_SRC
+   #+END_SRC
 
 
-The footer is somewhat useless; don't show it at all.
-#+BEGIN_SRC emacs-lisp
+   The footer is somewhat useless; don't show it at all.
+   #+BEGIN_SRC emacs-lisp
   (setq org-html-validation-link nil)
-#+END_SRC
+   #+END_SRC
 
-Turn off TOC and and headline numbering in HTML.
-#+BEGIN_SRC emacs-lisp :tangle no
+   Turn off TOC and and headline numbering in HTML.
+   #+BEGIN_SRC emacs-lisp :tangle no
   (defun my-org-change-html-options (plist backend)
     (when (eq backend 'html)
       (plist-put plist :with-toc nil)
@@ -1281,121 +1199,121 @@ Turn off TOC and and headline numbering in HTML.
       ))
 
   (add-to-list 'org-export-filter-options-functions #'my-org-change-html-options)
-#+END_SRC
+   #+END_SRC
 
-We want to use the [[https://cmcenroe.me/writ/][Writ CSS]] style, so we need to wrap everything
-around an article tag.
-#+BEGIN_SRC emacs-lisp
+   We want to use the [[https://cmcenroe.me/writ/][Writ CSS]] style, so we need to wrap everything
+   around an article tag.
+   #+BEGIN_SRC emacs-lisp
   (setq org-html-divs
         '((preamble "div" "preamble")
           (content "article" "")
           (postamble "div" "postamble")))
-#+END_SRC
+   #+END_SRC
 
 
 ** Easy templates
-Since =emacs-lisp= code blocks are so prevalent,
-make a new template key for them, using =E=.
-#+BEGIN_SRC emacs-lisp
+   Since =emacs-lisp= code blocks are so prevalent,
+   make a new template key for them, using =E=.
+   #+BEGIN_SRC emacs-lisp
   (add-to-list 'org-structure-template-alist
                '("E" "#+BEGIN_SRC emacs-lisp\n?\n#+END_SRC"))
-#+END_SRC
+   #+END_SRC
 
 
 ** Org Settings
-Use =ido= for completion.
-#+BEGIN_SRC emacs-lisp
+   Use =ido= for completion.
+   #+BEGIN_SRC emacs-lisp
 (setq org-completion-use-ido t)
 (setq org-outline-path-complete-in-steps nil)
-#+END_SRC
+   #+END_SRC
 
 
 
 * Pandoc Mode
-Pandoc is probably the most versatile document converter at the
-moment. Let's use it until we are more comfortable wtih Org=mode.
-#+BEGIN_SRC emacs-lisp
+  Pandoc is probably the most versatile document converter at the
+  moment. Let's use it until we are more comfortable wtih Org=mode.
+  #+BEGIN_SRC emacs-lisp
   (use-package pandoc-mode
       :ensure t)
-#+END_SRC
+  #+END_SRC
 
 
 * Emacs-Lisp
-Use CL lisp indent; it seems preferable in these =use-package=
-macros.
-#+BEGIN_SRC emacs-lisp
+  Use CL lisp indent; it seems preferable in these =use-package=
+  macros.
+  #+BEGIN_SRC emacs-lisp
   (setq lisp-indent-function 'common-lisp-indent-function)
-#+END_SRC
+  #+END_SRC
 
-See the section [[Paredit]] that turns on =paredit-mode=
-for elisp files.
+  See the section [[Paredit]] that turns on =paredit-mode=
+  for elisp files.
 
-Some useful keybindings
-#+BEGIN_SRC emacs-lisp
+  Some useful keybindings
+  #+BEGIN_SRC emacs-lisp
   (define-key emacs-lisp-mode-map (kbd "C-c C-b") #'eval-buffer)
   (define-key emacs-lisp-mode-map (kbd "<C-return>") #'eval-region)
-#+END_SRC
+  #+END_SRC
 
 
 * LaTeX
-Emacs is the best text editor for editing plain TeX and LaTeX files; I
-am slowly in the process of migrating from TeX/LaTeX to Org, but that
-process will require sometime as RefTeX does not yet work gracefully
-with LaTeX. Without further ado ...
+  Emacs is the best text editor for editing plain TeX and LaTeX files; I
+  am slowly in the process of migrating from TeX/LaTeX to Org, but that
+  process will require sometime as RefTeX does not yet work gracefully
+  with LaTeX. Without further ado ...
 
 ** AucTeX
-AucTeX is an improved mode for editing LaTeX files; we will not use
-most of its features since the minor mode CDLaTeX subsumes some
-of them.
+   AucTeX is an improved mode for editing LaTeX files; we will not use
+   most of its features since the minor mode CDLaTeX subsumes some
+   of them.
 
 *** Installation
-First make sure that =auctex= is installed
-#+BEGIN_SRC emacs-lisp
+    First make sure that =auctex= is installed
+    #+BEGIN_SRC emacs-lisp
   (use-package tex-site
       :ensure auctex)
-#+END_SRC
+    #+END_SRC
 
 *** Parsing
-Enable parse on load and save (useful for detecting plain TeX
-versus LaTeX).
-#+BEGIN_SRC emacs-lisp
+    Enable parse on load and save (useful for detecting plain TeX
+    versus LaTeX).
+    #+BEGIN_SRC emacs-lisp
 (setq TeX-parse-self t)
 (setq TeX-auto-save t)
 (setq-default TeX-master nil)
-#+END_SRC
+    #+END_SRC
 
 *** Annoyance Fixes
-This really should belong in the main branch of AUCTeX.
-#+BEGIN_SRC emacs-lisp
+    This really should belong in the main branch of AUCTeX.
+    #+BEGIN_SRC emacs-lisp
   (setq texmathp-tex-commands
         '(("\\tag" arg-off)
           ("\\tag*" arg-off)))
-#+END_SRC
+    #+END_SRC
 *** Producing DVI vs PDF
-We can configure AucTeX to automatically produce PDFs, but
-I actually prefer DVI files, so let's leave the following setting
-off for now.
-#+BEGIN_SRC emacs-lisp
+    We can configure AucTeX to automatically produce PDFs, but
+    I actually prefer DVI files, so let's leave the following setting
+    off for now.
+    #+BEGIN_SRC emacs-lisp
   (setq TeX-PDF-mode t)
   (setq TeX-PDF-via-dvips-ps2pdf nil)
   (setq TeX-source-correlate-mode t)
-#+END_SRC
+    #+END_SRC
 
 *** Arara
-Arara is a snazzy tool! See
-[[http://emacs.stackexchange.com/questions/9715/arara-integration-in-emacs][this Emacs.SE answer]] for how to set it up.
-#+BEGIN_SRC emacs-lisp
+    Arara is a snazzy tool! See
+    [[http://emacs.stackexchange.com/questions/9715/arara-integration-in-emacs][this Emacs.SE answer]] for how to set it up.
+    #+BEGIN_SRC emacs-lisp
 (eval-after-load "tex"
   '(add-to-list 'TeX-command-list
         '("Arara" "arara %s" TeX-run-TeX nil t :help "Run Arara.")))
-#+END_SRC
+    #+END_SRC
 
 *** Viewers 
-For Mac OS, =Skim= is the best PDF viewer (even though it is not that
-good). For Windows, it is clearly SumatraPDF. On Linux, evince and
-xdvi are quite good. I stole the code below from somewhere (on
-TeX.SX). It works, and I don't want to mess with it.
-#+BEGIN_SRC emacs-lisp
+    For Mac OS, =Skim= is the best PDF viewer (even though it is not that
+    good). For Windows, it is clearly SumatraPDF. On Linux, evince and
+    xdvi are quite good. I stole the code below from somewhere (on
+    TeX.SX). It works, and I don't want to mess with it.
+    #+BEGIN_SRC emacs-lisp
   (if (eq system-type 'darwin)
       (setq
        ;; Set the list of viewers for Mac OS X.
@@ -1464,32 +1382,32 @@ TeX.SX). It works, and I don't want to mess with it.
   ;;     (start-process "zathura-synctex" zathura-launch-buf "zathura" "--synctex-forward" synctex pdfname)
   ;;     (start-process "raise-zathura-wmctrl" zathura-launch-buf "wmctrl" "-a" pdfname)
   ;;     ))
-#+END_SRC
+    #+END_SRC
 
 *** Minor modes for editing LaTeX
-Hard-wrap and disable =electric-indent-mode= which messes
-up AucTeX's internal indentation code. This actually depends
-on AucTeX since it defines =LaTeX-mode-hook=.
-#+BEGIN_SRC emacs-lisp
+    Hard-wrap and disable =electric-indent-mode= which messes
+    up AucTeX's internal indentation code. This actually depends
+    on AucTeX since it defines =LaTeX-mode-hook=.
+    #+BEGIN_SRC emacs-lisp
   (with-eval-after-load 'tex
     (add-hook 'LaTeX-mode-hook (↑ (electric-indent-mode -1))))
-#+END_SRC
+    #+END_SRC
 
 *** Electric Math mode
-This seems helpful. See the [[http://ftp.gnu.org/gnu/auctex/11.89-extra/auctex.pdf][AucTeX manual]] for more details.
-#+BEGIN_SRC emacs-lisp
+    This seems helpful. See the [[http://ftp.gnu.org/gnu/auctex/11.89-extra/auctex.pdf][AucTeX manual]] for more details.
+    #+BEGIN_SRC emacs-lisp
   (add-hook 'plain-TeX-mode-hook
              (lambda () (set (make-variable-buffer-local 'TeX-electric-math)
                              (cons "$" "$"))))
   (add-hook 'LaTeX-mode-hook
              (lambda () (set (make-variable-buffer-local 'TeX-electric-math)
                              (cons "\\(" "\\)"))))
-#+END_SRC
+    #+END_SRC
 
 
 ** RefTeX
 *** Installation
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
   (use-package reftex ; TeX/BibTeX cross-reference management
       :defer t
       :init
@@ -1498,11 +1416,11 @@ This seems helpful. See the [[http://ftp.gnu.org/gnu/auctex/11.89-extra/auctex.p
         (setq reftex-plug-into-AuCTeX t)))
 
 (setq reftex-label-alist nil)
-#+END_SRC
+    #+END_SRC
 
 *** Cleverref
-See [[http://tex.stackexchange.com/questions/119253/cleveref-auctex-and-reftex-set-up/119273#119273][this TeX.SX question]] for details.
-#+BEGIN_SRC emacs-lisp
+    See [[http://tex.stackexchange.com/questions/119253/cleveref-auctex-and-reftex-set-up/119273#119273][this TeX.SX question]] for details.
+    #+BEGIN_SRC emacs-lisp
 (eval-after-load
     "latex"
   '(TeX-add-style-hook
@@ -1519,33 +1437,33 @@ See [[http://tex.stackexchange.com/questions/119253/cleveref-auctex-and-reftex-s
        '("Cref" TeX-arg-ref)
        '("cpageref" TeX-arg-ref)
        '("Cpageref" TeX-arg-ref)))))
-#+END_SRC
+    #+END_SRC
 
 
 ** CDLaTeX
-CDLaTeX is the last piece of the triumphrate of
-LaTeX facilities for LaTeX.
+   CDLaTeX is the last piece of the triumphrate of
+   LaTeX facilities for LaTeX.
 
 *** Installation
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
   (use-package cdlatex
       :ensure t
       :load-path "lisp/")
-#+END_SRC
+    #+END_SRC
 
-Now we can always turn it on, both for LaTeX and for TeX.
-#+BEGIN_SRC emacs-lisp
+    Now we can always turn it on, both for LaTeX and for TeX.
+    #+BEGIN_SRC emacs-lisp
   (add-hook 'TeX-mode-hook 'turn-on-cdlatex)
   (add-hook 'LaTeX-mode-hook 'turn-on-cdlatex)
-#+END_SRC
+    #+END_SRC
 
 
 *** Automatic Parentheses
-Thankfully, [[Smartparens][=smartparens=]] can be ued in LaTeX mode no problem;
-therefore, we don't need to have CDLaTeX do the work.
+    Thankfully, [[Smartparens][=smartparens=]] can be ued in LaTeX mode no problem;
+    therefore, we don't need to have CDLaTeX do the work.
 
-Also, LaTeX-combo-keys, could also disable the caret.
-#+BEGIN_SRC emacs-lisp
+    Also, LaTeX-combo-keys, could also disable the caret.
+    #+BEGIN_SRC emacs-lisp
   (setq cdlatex-paired-parens "$")
   ;; (define-key cdlatex-mode-map "$" nil)
   (define-key cdlatex-mode-map "(" nil)
@@ -1554,16 +1472,16 @@ Also, LaTeX-combo-keys, could also disable the caret.
   (define-key cdlatex-mode-map "|" nil)
   (define-key cdlatex-mode-map "<" nil)
   (define-key cdlatex-mode-map "^" nil)
-#+END_SRC
+    #+END_SRC
 
 
 *** Templates
-Pressing =<tab>= in CDLaTeX, among other things, active a poor man's
-version of =yasnippet=. It is preferable to =yasnippet= because it
-integrates better with the rest of CDLaTeX.
+    Pressing =<tab>= in CDLaTeX, among other things, active a poor man's
+    version of =yasnippet=. It is preferable to =yasnippet= because it
+    integrates better with the rest of CDLaTeX.
 
 **** Math Shortcuts
-#+BEGIN_SRC emacs-lisp
+     #+BEGIN_SRC emacs-lisp
   (defun simple-math-template (key docstring expansion)
     `(,key ,docstring ,expansion cdlatex-position-cursor nil nil t))
 
@@ -1590,15 +1508,15 @@ integrates better with the rest of CDLaTeX.
         '((?t "\\text" nil t nil nil)
           (?s "\\mathscr" nil t nil nil)
           ))
-#+END_SRC
+     #+END_SRC
 
 
 **** Environment support
-To support inserting environments, we need to setup both AUCTeX,
-RefTeX, and CDLaTeX in tandem. For example, to setup the axiom
-environment, we need to do the following (this code block is not
-tangled)
-#+BEGIN_SRC emacs-lisp :tangle no
+     To support inserting environments, we need to setup both AUCTeX,
+     RefTeX, and CDLaTeX in tandem. For example, to setup the axiom
+     environment, we need to do the following (this code block is not
+     tangled)
+     #+BEGIN_SRC emacs-lisp :tangle no
   (add-to-list
    'reftex-label-alist
    '("axiom" ?a "ax:" "~\\ref{%s}" t ("axiom" "ax.")))
@@ -1613,10 +1531,10 @@ tangled)
   (add-to-list
    'cdlatex-env-alist
    '("axiom" "\\begin{axiom}\nAUTOLABEL\n?\n\\end{axiom}\n" nil))
-#+END_SRC
+     #+END_SRC
 
-Now add the environments.
-#+BEGIN_SRC emacs-lisp
+     Now add the environments.
+     #+BEGIN_SRC emacs-lisp
   (defun my-setup-latex-environment (env ref-char ref-key shortcut doc)
     (add-to-list 'reftex-label-alist
                  (list env
@@ -1654,15 +1572,15 @@ Now add the environments.
 
   (add-to-list 'cdlatex-command-alist
                '("sp" "Insert split env" "" LaTeX-environment-menu ("split") nil t))
-#+END_SRC
+     #+END_SRC
 
 
 
 ** Pretty Symbols
-Pretty symbols help when there is a lot of Greek letters. This doesn't
-quite work well yet (can't turn off the triangles),
-so let's not tangle it for now.
-#+BEGIN_SRC emacs-lisp :tangle no
+   Pretty symbols help when there is a lot of Greek letters. This doesn't
+   quite work well yet (can't turn off the triangles),
+   so let's not tangle it for now.
+   #+BEGIN_SRC emacs-lisp :tangle no
   (use-package magic-latex-buffer
       :ensure t
       :init
@@ -1677,15 +1595,15 @@ so let's not tangle it for now.
   (with-eval-after-load 'latex
     (define-key LaTeX-mode-map (kbd "<f3>") 'magic-latex-buffer)
     )
-#+END_SRC
+   #+END_SRC
 
 
 ** Shortcuts
 *** Compiling
-Compiling shouldn't have to be =C-c C-c <RET>=, and viewing
-shouldn't have to be =C-c C-v=. Rebind these keys to hotkeys that are
-normally of no use anyway.
-#+BEGIN_SRC emacs-lisp
+    Compiling shouldn't have to be =C-c C-c <RET>=, and viewing
+    shouldn't have to be =C-c C-v=. Rebind these keys to hotkeys that are
+    normally of no use anyway.
+    #+BEGIN_SRC emacs-lisp
   (defun latex-compile ()
     (interactive)
     (save-buffer)
@@ -1708,19 +1626,19 @@ normally of no use anyway.
 
   (eval-after-load 'plain-tex
     '(define-key plain-TeX-mode-map (kbd "C-v") 'TeX-view))
-#+END_SRC
+    #+END_SRC
 
 *** Moving
-I don't use the commands that move between environments often enough
-to justify  entire keybindings, so disable them.
-#+BEGIN_SRC emacs-lisp
+    I don't use the commands that move between environments often enough
+    to justify  entire keybindings, so disable them.
+    #+BEGIN_SRC emacs-lisp
   (with-eval-after-load 'latex
     (define-key LaTeX-mode-map (kbd "C-M-a") nil)
     (define-key LaTeX-mode-map (kbd "C-M-e") nil))
-#+END_SRC
+    #+END_SRC
 
 *** Custom symbols
-#+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp
   (defun insert-then-position (str)
     (interactive)
     (insert str)
@@ -1770,49 +1688,49 @@ to justify  entire keybindings, so disable them.
     (my-define-latex-keys plain-TeX-mode-map "C-," "\\langle ? \\rangle")
     (my-define-latex-keys plain-TeX-mode-map "C-o" "\\circ?")
   )
-#+END_SRC
+    #+END_SRC
 
 
 *** TODO Make M-u insert an underscore, M-i insert caret, and M-o insert both
-Next define easy shortcuts for inserting underscores
-and the like.
+    Next define easy shortcuts for inserting underscores
+    and the like.
 
 
 ** Yasnippets
-Enable =yasnippets= through =C-;=, which isn't used anywhere.
-#+BEGIN_SRC emacs-lisp
+   Enable =yasnippets= through =C-;=, which isn't used anywhere.
+   #+BEGIN_SRC emacs-lisp
   (defun my-TeX-yasnippet-common-hook ()
     (setup-yasnippet-next-key (kbd "C-;"))
     (setup-yasnippet-next-key (kbd "<C-tab>")))
 
   (add-hook 'plain-TeX-mode-hook 'my-TeX-yasnippet-common-hook)
   (add-hook 'LaTeX-mode-hook 'my-TeX-yasnippet-common-hook)
-#+END_SRC
+   #+END_SRC
 
 
 ** Flyspell Mode
-#+BEGIN_SRC emacs-lisp
-  (defun my-TeX-flyspell-common-hook ()
-    (define-key flyspell-mode-map (kbd "C-;") nil))
+   #+BEGIN_SRC emacs-lisp
+     (add-hook 'LaTeX-mode-hook     (lambda () (interactive) (flyspell-mode t)))
+     (add-hook 'plain-TeX-mode-hook (lambda () (interactive) (flyspell-mode t)))
 
-  (add-hook 'LaTeX-mode-hook     'my-TeX-flyspell-common-hook)
-  (add-hook 'plain-TeX-mode-hook 'my-TeX-flyspell-common-hook)
-#+END_SRC
+     (with-eval-after-load 'flyspell
+       (define-key flyspell-mode-map (kbd "C-;") nil))
+   #+END_SRC
 
 
 ** My Own Package!
-Load my own package after everything has loaded.
-#+BEGIN_SRC emacs-lisp
+   Load my own package after everything has loaded.
+   #+BEGIN_SRC emacs-lisp
   (use-package legendre-latex-key-combo
       :load-path "lisp/")
-#+END_SRC
+   #+END_SRC
 
 
 * Emacs Speaks Statistics
 ** Installation
-As opposed to using RStudio, let's use ESS because it's getting lots
-of great reviews!
-#+BEGIN_SRC emacs-lisp :tangle yes
+   As opposed to using RStudio, let's use ESS because it's getting lots
+   of great reviews!
+   #+BEGIN_SRC emacs-lisp :tangle yes
   (use-package ess
       :ensure t
       :init
@@ -1825,20 +1743,20 @@ of great reviews!
     (add-hook 'ess-mode-hook 'ess-smart-equals-mode)
     (add-hook 'ess-mode-hook 'electric-pair-mode)
     (add-hook 'inferior-ess-mode-hook 'ess-smart-equals-mode))
-#+END_SRC
+   #+END_SRC
 
 ** Keybinds
-Certain keybinds are nice to have in a =.R= buffer.
-#+BEGIN_SRC emacs-lisp :tangle yes
+   Certain keybinds are nice to have in a =.R= buffer.
+   #+BEGIN_SRC emacs-lisp :tangle yes
   (with-eval-after-load 'ess
     (define-key  ess-mode-map (kbd "C-t") 'ess-switch-to-inferior-or-script-buffer)
     (define-key  inferior-ess-mode-map (kbd "C-t") 'ess-switch-to-inferior-or-script-buffer))
-#+END_SRC
+   #+END_SRC
 
 ** Customization
-See [[https://stat.ethz.ch/pipermail/ess-help/2009-July/005456.html][this post]] to make the ESS R console screen automagically scale
-with window size. (The bottom snippet is original though!)
-#+BEGIN_SRC emacs-lisp :tangle yes
+   See [[https://stat.ethz.ch/pipermail/ess-help/2009-July/005456.html][this post]] to make the ESS R console screen automagically scale
+   with window size. (The bottom snippet is original though!)
+   #+BEGIN_SRC emacs-lisp :tangle yes
   (defun my-ess-post-run-hook ()
     (ess-execute-screen-options))
 
@@ -1874,7 +1792,7 @@ with window size. (The bottom snippet is original though!)
                 (if (string-match-p R-buffer-regex-string (buffer-name))
                     (ess-execute-screen-options)))))
 
-#+END_SRC
+   #+END_SRC
 
 
 * Clojure
@@ -1885,8 +1803,8 @@ with window size. (The bottom snippet is original though!)
 
 
 * SLIME and SBCL
-Setting up =SLIME= to use with Steel Bank Common Lisp.
-#+BEGIN_SRC emacs-lisp
+  Setting up =SLIME= to use with Steel Bank Common Lisp.
+  #+BEGIN_SRC emacs-lisp
   (use-package slime
       :ensure t
       :init
@@ -1899,13 +1817,13 @@ Setting up =SLIME= to use with Steel Bank Common Lisp.
         (add-hook 'lisp-mode-hook (lambda () (slime-mode t)))))
 
 
-#+END_SRC
+  #+END_SRC
 
 
 * Haskell
-Haskell is the cool kid on the block, and it is time to get
-comfortable with it to do more scripting.
-#+BEGIN_SRC emacs-lisp
+  Haskell is the cool kid on the block, and it is time to get
+  comfortable with it to do more scripting.
+  #+BEGIN_SRC emacs-lisp
   (use-package haskell-mode
       :ensure t
       :config
@@ -1913,15 +1831,15 @@ comfortable with it to do more scripting.
         (add-hook 'haskell-mode-hook 'haskell-indentation-mode)
         (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
         (add-hook 'haskell-mode-hook 'turn-on-haskell-unicode-input-method)))
-#+END_SRC
+  #+END_SRC
 
 
 
 
 * Racket
 ** Geiser Mode [not used for now]
-=Geiser= mode is good enough to use for Racket (Scheme).
-#+BEGIN_SRC emacs-lisp :tangle no
+   =Geiser= mode is good enough to use for Racket (Scheme).
+   #+BEGIN_SRC emacs-lisp :tangle no
   (use-package geiser
       :ensure t
       :init
@@ -1932,22 +1850,22 @@ comfortable with it to do more scripting.
 
   (with-eval-after-load 'geiser-repl
     (define-key geiser-repl-mode-map (kbd "C-l") #'legendre6891/my-clear))
-#+END_SRC
+   #+END_SRC
 
 ** Racket Mode
-Let's try =racket-mode= instead of =geiser=.
-#+BEGIN_SRC emacs-lisp
+   Let's try =racket-mode= instead of =geiser=.
+   #+BEGIN_SRC emacs-lisp
   (use-package racket-mode
       :ensure t)
 
   (with-eval-after-load 'racket-repl
     (define-key racket-repl-mode-map (kbd "C-l") #'legendre6891/my-clear))
-#+END_SRC
+   #+END_SRC
 
 
 * Julia
 ** TODO Write some configurations --- broken at the moment
-#+BEGIN_SRC emacs-lisp :tangle no
+   #+BEGIN_SRC emacs-lisp :tangle no
   (use-package julia-mode
       :ensure t)
 
@@ -1959,14 +1877,14 @@ Let's try =racket-mode= instead of =geiser=.
   (add-hook 'julia-mode-hook 'my-julia-mode-hooks)
   (define-key julia-mode-map (kbd "C-c C-c") 'julia-shell-run-region-or-line)
   (define-key julia-mode-map (kbd "C-c C-s") 'julia-shell-save-and-go)
-#+END_SRC
+   #+END_SRC
 
 
 * J mode
-I have a soft spot for the J programming language---guess it appeals
-to my inner mathematician + hacker meld because it is so terse?
-Anyhow, here is support for the J lang.
-#+BEGIN_SRC emacs-lisp
+  I have a soft spot for the J programming language---guess it appeals
+  to my inner mathematician + hacker meld because it is so terse?
+  Anyhow, here is support for the J lang.
+  #+BEGIN_SRC emacs-lisp
   (use-package j-mode
       :ensure t
       :init
@@ -1976,17 +1894,17 @@ Anyhow, here is support for the J lang.
        '(j-conjunction-face ((t (:foreground "Blue"))))
        '(j-other-face ((t (:foreground "Black")))))
       )
-#+END_SRC
+  #+END_SRC
 
 
 
 
 
 * CC modes
-This section sets up =Emacs= to handle editing C and C++ files.
+  This section sets up =Emacs= to handle editing C and C++ files.
 ** Basic customizations
-Use a sane formatting standard.
-#+BEGIN_SRC emacs-lisp
+   Use a sane formatting standard.
+   #+BEGIN_SRC emacs-lisp
   (setq c-default-style "k&r"
         c-basic-offset 4)
 
@@ -1994,34 +1912,34 @@ Use a sane formatting standard.
             (lambda ()
               (electric-pair-mode t)
               (electric-indent-mode t)))
-#+END_SRC
+   #+END_SRC
 
 ** Format using Clang Format
-=clang-format= should be the "go to" tool to format C and C++ files.
-#+BEGIN_SRC emacs-lisp
+   =clang-format= should be the "go to" tool to format C and C++ files.
+   #+BEGIN_SRC emacs-lisp
   (use-package clang-format
       :ensure t
       :config
       (with-eval-after-load 'cc-mode
         (define-key c++-mode-map (kbd "M-=") #'clang-format-buffer)))
 
-#+END_SRC
+   #+END_SRC
 
 ** Yasnippet Backtick
-Since the backtick is never used in CC modes, we can use it to expand
-snippets!
-#+BEGIN_SRC emacs-lisp
+   Since the backtick is never used in CC modes, we can use it to expand
+   snippets!
+   #+BEGIN_SRC emacs-lisp
   (defun my-c-mode-common-hook ()
     (setup-yasnippet-next-key (kbd "`"))
     (setup-yasnippet-next-key (kbd "TAB")))
 
 
   (add-hook 'c-mode-common-hook 'my-c-mode-common-hook)
-#+END_SRC
+   #+END_SRC
 
 ** Irony Mode
-Install =irony= and activate it CC mode.
-#+BEGIN_SRC emacs-lisp
+   Install =irony= and activate it CC mode.
+   #+BEGIN_SRC emacs-lisp
   (use-package irony
       :ensure t)
 
@@ -2046,10 +1964,10 @@ Install =irony= and activate it CC mode.
 
   (with-eval-after-load 'company
     (add-to-list 'company-backends 'company-irony-c-headers))
-#+END_SRC
+   #+END_SRC
 ** RTags
-Install RTags and activate it.
-#+BEGIN_SRC emacs-lisp
+   Install RTags and activate it.
+   #+BEGIN_SRC emacs-lisp
   (use-package rtags
       :ensure t
       :init
@@ -2070,9 +1988,9 @@ Install RTags and activate it.
     (define-key c-mode-base-map (kbd "M-,") #'rtags-find-references)
     (define-key c-mode-base-map (kbd "M-[") #'rtags-location-stack-back)
     (define-key c-mode-base-map (kbd "M-]") #'rtags-location-stack-forward))
-#+END_SRC
+   #+END_SRC
 ** Flycheck
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
   (use-package flycheck
       :ensure t)
 
@@ -2093,17 +2011,20 @@ Install RTags and activate it.
       :ensure t)
   (eval-after-load 'flycheck
     '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
-#+END_SRC
+   #+END_SRC
 ** CMake IDE
-#+BEGIN_SRC emacs-lisp
+   Automatically calling =rdm= if possible.
+   #+BEGIN_SRC emacs-lisp :tangle no
   (use-package cmake-ide
       :ensure t
-      :config  (cmake-ide-setup))
-#+END_SRC
+      :config
+      (when (executable-find "rdm")
+        (cmake-ide-setup)))
+   #+END_SRC
 
 
 * CMake Support
-#+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp
   (use-package cmake-mode
       :ensure t)
 
@@ -2112,33 +2033,35 @@ Install RTags and activate it.
 
   (autoload 'cmake-font-lock-activate "cmake-font-lock" nil t)
   (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
-#+END_SRC
+  #+END_SRC
+
+
 * Rust mode
 ** Rust mode
-Rust is the hottest thing on the market right now.
-#+BEGIN_SRC emacs-lisp
+   Rust is the hottest thing on the market right now.
+   #+BEGIN_SRC emacs-lisp
   (use-package rust-mode
       :ensure t)
   (add-hook 'rust-mode-hook
             (lambda () (interactive)
                     (electric-pair-mode 1)))
-#+END_SRC
+   #+END_SRC
 
 ** Rust Format
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
   (use-package rustfmt
       :ensure t
       :config
       (add-hook 'rust-mode-hook #'rustfmt-enable-on-save))
-#+END_SRC
+   #+END_SRC
 
 
 
 * Undo
-Tree
-Undo tree gives a nice visualization of the undo-state. It makes
-navigating the undo states much more intuitive.
-#+BEGIN_SRC emacs-lisp
+  Tree
+  Undo tree gives a nice visualization of the undo-state. It makes
+  navigating the undo states much more intuitive.
+  #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
       :ensure t
       :config
@@ -2154,28 +2077,28 @@ navigating the undo states much more intuitive.
         )
       :bind
       ("M-u" . undo-tree-visualize))
-#+END_SRC
+  #+END_SRC
 
 
 * Asymptote Mode
-#+BEGIN_SRC emacs-lisp
+  #+BEGIN_SRC emacs-lisp
   (use-package asy-mode
     :load-path "lisp/")
-#+END_SRC
+  #+END_SRC
 
 
 * It's Magit!
-=Magit= is a gerat Git client; it alone makes emacs worth using.
-#+BEGIN_SRC emacs-lisp
+  =Magit= is a gerat Git client; it alone makes emacs worth using.
+  #+BEGIN_SRC emacs-lisp
   (use-package magit
       :ensure t
       :bind ("C-x g" . magit-status))
-#+END_SRC
+  #+END_SRC
 
 
 * Hakyll Posts
-See [[http://abizern.org/2014/01/05/hakyll-new-post-with-emacs/][this page]] for setting up Hakyll with emacs.
-#+BEGIN_SRC emacs-lisp
+  See [[http://abizern.org/2014/01/05/hakyll-new-post-with-emacs/][this page]] for setting up Hakyll with emacs.
+  #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode
       :ensure t)
 
@@ -2205,15 +2128,15 @@ See [[http://abizern.org/2014/01/05/hakyll-new-post-with-emacs/][this page]] for
      "-"
      (replace-regexp-in-string " " "-" (downcase title))
      ".org"))
-#+END_SRC
+  #+END_SRC
 
 
 
 
 * Shell mode
-I want to be able to use =C-l= to clear the screen in shell modes, so
-use the following code.
-#+BEGIN_SRC emacs-lisp
+  I want to be able to use =C-l= to clear the screen in shell modes, so
+  use the following code.
+  #+BEGIN_SRC emacs-lisp
   (defun legendre6891/my-clear ()
     (interactive)
     (let ((comint-buffer-maximum-size 0))
@@ -2235,26 +2158,26 @@ use the following code.
 
   (with-eval-after-load 'ess
     (define-key inferior-ess-mode-map (kbd "C-l") #'legendre6891/my-clear))
-#+END_SRC
+  #+END_SRC
 
 
 * Small Utilities
 ** Tomatinho
-Seems like a good Pomodoro tracker.
-#+BEGIN_SRC emacs-lisp
+   Seems like a good Pomodoro tracker.
+   #+BEGIN_SRC emacs-lisp
   (use-package tomatinho
       :ensure t)
-#+END_SRC
+   #+END_SRC
 
 ** Rainbow
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
   (use-package rainbow-mode
       :ensure t)
-#+END_SRC
+   #+END_SRC
 
 ** CSV-Mode
-CSV mode is pretty cool for viewing CSV files.
-#+BEGIN_SRC emacs-lisp
+   CSV mode is pretty cool for viewing CSV files.
+   #+BEGIN_SRC emacs-lisp
   (use-package csv-mode
       :ensure t
       :config
@@ -2266,17 +2189,17 @@ CSV mode is pretty cool for viewing CSV files.
         )
       )
 
-#+END_SRC
+   #+END_SRC
 
 ** Very Large Files
-Use this mode to view large files.
-#+BEGIN_SRC emacs-lisp
+   Use this mode to view large files.
+   #+BEGIN_SRC emacs-lisp
   (use-package vlf
       :ensure t)
-#+END_SRC
+   #+END_SRC
 ** Sublimity
-This is nice eye-candy, but don't enable it by default.
-#+BEGIN_SRC emacs-lisp
+   This is nice eye-candy, but don't enable it by default.
+   #+BEGIN_SRC emacs-lisp
   (use-package sublimity
       :ensure t
       :init
@@ -2285,78 +2208,78 @@ This is nice eye-candy, but don't enable it by default.
       (progn
         (sublimity-map-set-delay 0)
         ))
-#+END_SRC
+   #+END_SRC
 
 ** Silent Package Upgrader
-Upgrade packages silently and automatically. Nope! This breaks too easily.
-#+BEGIN_SRC emacs-lisp :tangle no
+   Upgrade packages silently and automatically. Nope! This breaks too easily.
+   #+BEGIN_SRC emacs-lisp :tangle no
 (use-package spu
   :ensure t
   :defer 5 ;; defer package loading for 5 second
   :config (spu-package-upgrade-daily))
-#+END_SRC
+   #+END_SRC
 
 ** Pretty Print
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
     (unless (boundp 'x-max-tooltip-size)
       (setq x-max-tooltip-size '(80 . 40)))
 
   (use-package pp+
     :ensure t)
-#+END_SRC
+   #+END_SRC
 ** Thing-At-Point
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
 (use-package thingatpt+
 :ensure t
 :init (tap-redefine-std-fns))
-#+END_SRC
+   #+END_SRC
 
 ** Multi Term
-#+BEGIN_SRC emacs-lisp
+   #+BEGIN_SRC emacs-lisp
   (use-package multi-term
       :ensure t)
-#+END_SRC
+   #+END_SRC
 
 ** Exec-Path-From-Shell
-On Mac OS X (macOS), I want to the path set by my =bashrc= or =zshrc= be
-inherited without launching =emacs= from the shell.
-#+BEGIN_SRC emacs-lisp :tangle no
+   On Mac OS X (macOS), I want to the path set by my =bashrc= or =zshrc= be
+   inherited without launching =emacs= from the shell.
+   #+BEGIN_SRC emacs-lisp :tangle no
   (when (memq window-system '(mac ns))
     (use-package exec-path-from-shell
         :ensure t
         :config
         (when (memq window-system '(mac ns))
           (exec-path-from-shell-initialize))))
-#+END_SRC
+   #+END_SRC
 
 
 * Running Recompile
-See [[https://www.emacswiki.org/emacs/CompileCommand#toc10][this link on EmacsWiki]] on how to run =compile= and =recompile=
-in a pleasant way.
-#+BEGIN_SRC emacs-lisp
+  See [[https://www.emacswiki.org/emacs/CompileCommand#toc10][this link on EmacsWiki]] on how to run =compile= and =recompile=
+  in a pleasant way.
+  #+BEGIN_SRC emacs-lisp
 (defun recompile-quietly ()
   "Re-compile without changing the window configuration."
   (interactive)
   (save-window-excursion
     (recompile)))
-#+END_SRC
+  #+END_SRC
 
 
 * Epilog
-Packages to investigate
-- [[https://github.com/mrkkrp/zzz-to-char][=zzz-char=]]
-- =char-menu=
-- =latex-unicode-math-mode=
-- [[https://github.com/noctuid/general.el][=general=]] for keybindings.
+  Packages to investigate
+  - [[https://github.com/mrkkrp/zzz-to-char][=zzz-char=]]
+  - =char-menu=
+  - =latex-unicode-math-mode=
+  - [[https://github.com/noctuid/general.el][=general=]] for keybindings.
 
 
 
-Some Org mode related settings to to faciliate editting of this file.
+  Some Org mode related settings to to faciliate editting of this file.
 
-#+PROPERTY: header-args:emacs-lisp :tangle yes
+  #+PROPERTY: header-args:emacs-lisp :tangle yes
 
-#+LATEX_HEADER: \usepackage{tgtermes}
-#+LATEX_HEADER: \usepackage{inconsolata}
-#+LATEX_HEADER: \def\textlambda{$\lambda$}
-#+LATEX_HEADER: \def\textxi{$\xi$}
+  #+LATEX_HEADER: \usepackage{tgtermes}
+  #+LATEX_HEADER: \usepackage{inconsolata}
+  #+LATEX_HEADER: \def\textlambda{$\lambda$}
+  #+LATEX_HEADER: \def\textxi{$\xi$}
 

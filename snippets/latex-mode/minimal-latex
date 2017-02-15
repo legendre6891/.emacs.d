@@ -61,7 +61,6 @@
 \titleformat*{\section}{\fontfamily{lmss}\selectfont\Large\bfseries}
 \titleformat*{\subsection}{\fontfamily{lmss}\selectfont\large\bfseries}
 \titleformat*{\subsubsection}{\fontfamily{lmss}\selectfont\bfseries}
-\setcounter{secnumdepth}{-2}
 \def\sectionfont{\fontfamily{lmss}\selectfont\bfseries}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -80,9 +79,6 @@
 
 \usepackage{graphicx}
 
-\makeatletter
-\@addtoreset{equation}{section}
-\makeatother
 \renewcommand\theequation{\oldstylenums{\arabic{equation}}}
 
 \usepackage[final]{microtype}

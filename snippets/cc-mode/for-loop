@@ -2,6 +2,6 @@
 # name: for-loop
 # key: for
 # --
-for (${1:int} ${2:i} = ${3:0}; $2 < $4; ++$2) {
+for (const auto & ${1:elem} : ${3:container}) {
          $0
 }
