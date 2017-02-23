@@ -5,6 +5,8 @@
 
 (define-abbrev-table 'Info-edit-mode-abbrev-table '())
 
+(define-abbrev-table 'Man-mode-abbrev-table '())
+
 (define-abbrev-table 'Rd-mode-abbrev-table
   '(
     ("`ag" "\\arguments" nil 0)
@@ -96,6 +98,10 @@
 (define-abbrev-table 'emacs-lisp-mode-abbrev-table '())
 
 (define-abbrev-table 'ess-julia-mode-abbrev-table '())
+
+(define-abbrev-table 'evil-command-window-mode-abbrev-table '())
+
+(define-abbrev-table 'evil-list-view-mode-abbrev-table '())
 
 (define-abbrev-table 'flycheck-error-list-mode-abbrev-table '())
 
@@ -363,7 +369,7 @@
     ("admissable" "admissible" nil 0)
     ("admited" "admitted" nil 0)
     ("admitedly" "admittedly" nil 0)
-    ("adn" "and" nil 0)
+    ("adn" "and" nil 2)
     ("adolecent" "adolescent" nil 0)
     ("adquire" "acquire" nil 0)
     ("adquired" "acquired" nil 0)
@@ -501,6 +507,7 @@
     ("ammused" "amused" nil 0)
     ("amoung" "among" nil 0)
     ("amoungst" "amongst" nil 0)
+    ("amtching" "matching" nil 0)
     ("amung" "among" nil 0)
     ("amunition" "ammunition" nil 0)
     ("analagous" "analogous" nil 0)
@@ -675,6 +682,7 @@
     ("asssassans" "assassins" nil 0)
     ("assualt" "assault" nil 0)
     ("assualted" "assaulted" nil 0)
+    ("assuem" "assume" nil 0)
     ("assumptoin" "assumption" nil 0)
     ("assymetric" "asymmetric" nil 0)
     ("assymetrical" "asymmetrical" nil 0)
@@ -1366,7 +1374,7 @@
     ("definately" "definitely" nil 0)
     ("definatly" "definitely" nil 0)
     ("definetly" "definitely" nil 0)
-    ("definining" "defining" nil 0)
+    ("definining" "defining" nil 1)
     ("definit" "definite" nil 0)
     ("definitly" "definitely" nil 0)
     ("definiton" "definition" nil 0)
@@ -1742,6 +1750,7 @@
     ("establising" "establishing" nil 0)
     ("ethnocentricm" "ethnocentrism" nil 0)
     ("ethose" "ethos" nil 0)
+    ("euqal" "equal" nil 0)
     ("evenhtually" "eventually" nil 0)
     ("eventally" "eventually" nil 0)
     ("eventially" "eventually" nil 0)
@@ -1899,7 +1908,7 @@
     ("follwoing" "following" nil 1)
     ("folowing" "following" nil 0)
     ("fomed" "formed" nil 0)
-    ("fomr" "form" nil 0)
+    ("fomr" "form" nil 1)
     ("fonetic" "phonetic" nil 0)
     ("fontrier" "fontier" nil 0)
     ("foootball" "football" nil 0)
@@ -1964,6 +1973,7 @@
     ("garantees" "guarantees" nil 0)
     ("garnison" "garrison" nil 0)
     ("gauarana" "guaraná" nil 0)
+    ("gauaranteed" "guaranteed" nil 0)
     ("gaurantee" "guarantee" nil 0)
     ("gauranteed" "guaranteed" nil 0)
     ("gaurantees" "guarantees" nil 0)
@@ -2358,7 +2368,9 @@
     ("intergration" "integration" nil 0)
     ("interm" "interim" nil 0)
     ("internation" "international" nil 0)
+    ("interpereattoin" "interpretation" nil 0)
     ("interpet" "interpret" nil 0)
+    ("interpreation" "interpretation" nil 0)
     ("interrim" "interim" nil 0)
     ("interrugum" "interregnum" nil 0)
     ("intertaining" "entertaining" nil 0)
@@ -2397,6 +2409,7 @@
     ("irreplacable" "irreplaceable" nil 0)
     ("irresistable" "irresistible" nil 0)
     ("irresistably" "irresistibly" nil 0)
+    ("irreudcible" "irreducible" nil 0)
     ("isnt" "isn" (quote t) 0)
     ("issueing" "issuing" nil 0)
     ("itnroduced" "introduced" nil 0)
@@ -2405,6 +2418,7 @@
     ("iwth" "with" nil 1)
     ("iwthout" "without" nil 0)
     ("jaques" "jacques" nil 0)
+    ("jauanry" "january" nil 0)
     ("jaunary" "january" nil 1)
     ("jeapardy" "jeopardy" nil 0)
     ("jewllery" "jewellery" nil 0)
@@ -2427,7 +2441,7 @@
     ("knowlegeable" "knowledgeable" nil 0)
     ("knwo" "know" nil 0)
     ("knwos" "knows" nil 0)
-    ("konw" "know" nil 0)
+    ("konw" "know" nil 1)
     ("konws" "knows" nil 0)
     ("kwno" "know" nil 0)
     ("labatory" "lavatory" nil 0)
@@ -2562,6 +2576,7 @@
     ("mataphysical" "metaphysical" nil 0)
     ("materalists" "materialist" nil 0)
     ("mathamatics" "mathematics" nil 0)
+    ("mathcing" "matching" nil 0)
     ("mathematican" "mathematician" nil 0)
     ("mathematicas" "mathematics" nil 0)
     ("matheticians" "mathematicians" nil 0)
@@ -2904,6 +2919,7 @@
     ("oximoron" "oxymoron" nil 0)
     ("p0enis" "penis" nil 0)
     ("paide" "paid" nil 0)
+    ("pairwse" "pairwise" nil 2)
     ("paitience" "patience" nil 0)
     ("palce" "palace" nil 0)
     ("paleolitic" "paleolithic" nil 0)
@@ -2924,6 +2940,7 @@
     ("paraphenalia" "paraphernalia" nil 0)
     ("parellels" "parallels" nil 0)
     ("parituclar" "particular" nil 0)
+    ("pariwise" "pairwise" nil 0)
     ("parliment" "parliament" nil 0)
     ("parrakeets" "parakeets" nil 0)
     ("parralel" "parallel" nil 0)
@@ -2933,7 +2950,7 @@
     ("parrallely" "parallelly" nil 0)
     ("partialy" "partially" nil 0)
     ("particually" "particularly" nil 0)
-    ("particualr" "particular" nil 0)
+    ("particualr" "particular" nil 1)
     ("particuarly" "particularly" nil 0)
     ("particularily" "particularly" nil 0)
     ("particulary" "particularly" nil 0)
@@ -3139,6 +3156,8 @@
     ("pregancies" "pregnancies" nil 0)
     ("preiod" "period" nil 0)
     ("preliferation" "proliferation" nil 0)
+    ("prelimianry" "preliminary" nil 1)
+    ("prelimiarny" "preliminary" nil 0)
     ("premeire" "premiere" nil 0)
     ("premeired" "premiered" nil 0)
     ("premillenial" "premillennial" nil 0)
@@ -3459,6 +3478,7 @@
     ("relized" "realized" nil 0)
     ("relpacement" "replacement" nil 0)
     ("remaing" "remaining" nil 0)
+    ("remaning" "remaining" nil 0)
     ("remanining" "remaining" nil 0)
     ("remeber" "remember" nil 0)
     ("rememberable" "memorable" nil 0)
@@ -3591,6 +3611,7 @@
     ("rocord" "record" nil 0)
     ("roomate" "roommate" nil 0)
     ("rougly" "roughly" nil 0)
+    ("rrequired" "required" nil 0)
     ("rucuperate" "recuperate" nil 0)
     ("rudimentatry" "rudimentary" nil 0)
     ("rulle" "rule" nil 0)
@@ -3743,7 +3764,7 @@
     ("snese" "sneeze" nil 0)
     ("socalism" "socialism" nil 0)
     ("socities" "societies" nil 0)
-    ("soem" "some" nil 1)
+    ("soem" "some" nil 3)
     ("sofware" "software" nil 0)
     ("sohw" "show" nil 0)
     ("soilders" "soldiers" nil 0)
@@ -3779,6 +3800,7 @@
     ("spainish" "Spanish" nil 0)
     ("speach" "speech" nil 0)
     ("specfic" "specific" nil 0)
+    ("specfied" "specified" nil 0)
     ("speciallized" "specialized" nil 0)
     ("specif" "specify" nil 0)
     ("specifiying" "specifying" nil 0)
@@ -4009,7 +4031,7 @@
     ("tabacco" "tobacco" nil 0)
     ("tablaue" "tableau" nil 0)
     ("tahn" "than" nil 0)
-    ("taht" "that" nil 0)
+    ("taht" "that" nil 1)
     ("talekd" "talked" nil 0)
     ("targetted" "targeted" nil 0)
     ("targetting" "targeting" nil 0)
@@ -4025,7 +4047,7 @@
     ("technitian" "technician" nil 0)
     ("technnology" "technology" nil 0)
     ("technolgy" "technology" nil 0)
-    ("teh" "the" nil 14)
+    ("teh" "the" nil 16)
     ("tehy" "they" nil 0)
     ("telelevision" "television" nil 0)
     ("televsion" "television" nil 0)
@@ -4090,9 +4112,10 @@
     ("thrid" "third" nil 0)
     ("throrough" "thorough" nil 0)
     ("throughly" "thoroughly" nil 0)
-    ("throughotu" "throughout" nil 0)
+    ("throughotu" "throughout" nil 1)
     ("throught" "through" nil 0)
     ("througout" "throughout" nil 0)
+    ("throuhgout" "throughout" nil 0)
     ("thru" "through" nil 0)
     ("thsi" "this" nil 1)
     ("thsoe" "those" nil 0)
@@ -4368,6 +4391,7 @@
     ("wayword" "wayward" nil 0)
     ("weaponary" "weaponry" nil 0)
     ("weas" "was" nil 0)
+    ("wehenver" "whenever" nil 0)
     ("wehn" "when" nil 1)
     ("weild" "wield" nil 0)
     ("weilded" "wielded" nil 0)
@@ -4377,6 +4401,7 @@
     ("whant" "want" nil 0)
     ("whants" "wants" nil 0)
     ("whcih" "which" nil 0)
+    ("whenvever" "whenever" nil 0)
     ("wheras" "whereas" nil 0)
     ("wherease" "whereas" nil 0)
     ("whereever" "wherever" nil 0)
@@ -4622,11 +4647,19 @@
 
 (define-abbrev-table 'sldb-mode-abbrev-table '())
 
+(define-abbrev-table 'slime-compiler-notes-mode-abbrev-table '())
+
 (define-abbrev-table 'slime-connection-list-mode-abbrev-table '())
+
+(define-abbrev-table 'slime-fuzzy-completions-mode-abbrev-table '())
 
 (define-abbrev-table 'slime-inspector-mode-abbrev-table '())
 
 (define-abbrev-table 'slime-thread-control-mode-abbrev-table '())
+
+(define-abbrev-table 'slime-trace-dialog--detail-mode-abbrev-table '())
+
+(define-abbrev-table 'slime-trace-dialog-mode-abbrev-table '())
 
 (define-abbrev-table 'slime-xref-mode-abbrev-table '())
 
@@ -4639,6 +4672,8 @@
 (define-abbrev-table 'speedbar-mode-abbrev-table '())
 
 (define-abbrev-table 'tabulated-list-mode-abbrev-table '())
+
+(define-abbrev-table 'tar-mode-abbrev-table '())
 
 (define-abbrev-table 'term-mode-abbrev-table '())
 
