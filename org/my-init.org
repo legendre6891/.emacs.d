@@ -536,9 +536,6 @@ General mode to manage keybindings.
   (use-package smyx-theme
       :defer t
       :ensure t)
-  (use-package aurora-theme
-      :defer t
-      :ensure t)
   (use-package pastelmac-theme
       :defer t
       :ensure t)
@@ -635,7 +632,7 @@ General mode to manage keybindings.
       (my-set-face "Consolas" 12))
 
   (if (eq system-type 'gnu/linux)
-      (my-set-face "InconsolataGo" 10))
+      (my-set-face "Input" 10))
     #+END_SRC
 
 *** TODO cycle between fonts
@@ -2037,24 +2034,17 @@ General mode to manage keybindings.
 
 
 * Rust mode
-** Rust mode
-   Rust is the hottest thing on the market right now.
-   #+BEGIN_SRC emacs-lisp
-  (use-package rust-mode
-      :ensure t)
-  (add-hook 'rust-mode-hook
-            (lambda () (interactive)
-                    (electric-pair-mode 1)))
-   #+END_SRC
+  Rust is the hottest thing on the market right now.
+  #+BEGIN_SRC emacs-lisp
+     (use-package rust-mode
+         :ensure t)
+     (add-hook 'rust-mode-hook
+               (lambda ()
+                 (interactive)
+                 (electric-pair-mode 1)))
 
-** Rust Format
-   #+BEGIN_SRC emacs-lisp
-  (use-package rustfmt
-      :ensure t
-      :config
-      (add-hook 'rust-mode-hook #'rustfmt-enable-on-save))
-   #+END_SRC
-
+     (add-hook 'rust-mode-hook #'rustfmt-enable-on-save)
+  #+END_SRC
 
 
 * Undo

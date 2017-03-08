@@ -1368,6 +1368,7 @@
     ("definetly" "definitely" nil 0)
     ("definining" "defining" nil 0)
     ("definit" "definite" nil 0)
+    ("definitino" "definition" nil 0)
     ("definitly" "definitely" nil 0)
     ("definiton" "definition" nil 0)
     ("defintion" "definition" nil 0)
@@ -1899,7 +1900,7 @@
     ("follwoing" "following" nil 1)
     ("folowing" "following" nil 0)
     ("fomed" "formed" nil 0)
-    ("fomr" "form" nil 0)
+    ("fomr" "form" nil 1)
     ("fonetic" "phonetic" nil 0)
     ("fontrier" "fontier" nil 0)
     ("foootball" "football" nil 0)
@@ -2427,7 +2428,7 @@
     ("knowlegeable" "knowledgeable" nil 0)
     ("knwo" "know" nil 0)
     ("knwos" "knows" nil 0)
-    ("konw" "know" nil 0)
+    ("konw" "know" nil 1)
     ("konws" "knows" nil 0)
     ("kwno" "know" nil 0)
     ("labatory" "lavatory" nil 0)
@@ -3215,6 +3216,7 @@
     ("proclamed" "proclaimed" nil 0)
     ("proclaming" "proclaiming" nil 0)
     ("proclomation" "proclamation" nil 0)
+    ("producitivty" "productivity" nil 0)
     ("profesion" "profession" nil 0)
     ("profesor" "professor" nil 0)
     ("professer" "professor" nil 0)
@@ -3814,7 +3816,7 @@
     ("startegy" "strategy" nil 0)
     ("stateman" "statesman" nil 0)
     ("statememts" "statements" nil 0)
-    ("statment" "statement" nil 0)
+    ("statment" "statement" nil 1)
     ("steriods" "steroids" nil 0)
     ("sterotypes" "stereotypes" nil 0)
     ("stilus" "stylus" nil 0)
@@ -4096,7 +4098,7 @@
     ("thru" "through" nil 0)
     ("thsi" "this" nil 1)
     ("thsoe" "those" nil 0)
-    ("thta" "that" nil 0)
+    ("thta" "that" nil 3)
     ("thyat" "that" nil 0)
     ("tiem" "time" nil 0)
     ("tihkn" "think" nil 0)
@@ -4622,11 +4624,19 @@
 
 (define-abbrev-table 'sldb-mode-abbrev-table '())
 
+(define-abbrev-table 'slime-compiler-notes-mode-abbrev-table '())
+
 (define-abbrev-table 'slime-connection-list-mode-abbrev-table '())
+
+(define-abbrev-table 'slime-fuzzy-completions-mode-abbrev-table '())
 
 (define-abbrev-table 'slime-inspector-mode-abbrev-table '())
 
 (define-abbrev-table 'slime-thread-control-mode-abbrev-table '())
+
+(define-abbrev-table 'slime-trace-dialog--detail-mode-abbrev-table '())
+
+(define-abbrev-table 'slime-trace-dialog-mode-abbrev-table '())
 
 (define-abbrev-table 'slime-xref-mode-abbrev-table '())
 
