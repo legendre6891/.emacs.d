@@ -1,6 +1,6 @@
 #+TITLE: Emacs Configuration
 #+AUTHOR: Kevin Li
-#+DATE: January 22, 2017
+#+DATE: February 22, 2017
 
 * Prelude
   This file is tangled and loaded via =init.el=, which
@@ -46,7 +46,7 @@
       :ensure t)
   #+END_SRC
 
-
+  
 * General Settings
   These following settings should always be on, and depends
   only on an up-to-date Emacs installation. They try to
@@ -252,7 +252,7 @@
 *** Commenting
     Evil nerd commenter doesn't require =evil-mode=, but it is a good
     package.
-    #+BEGIN_SRC emacs-lisp
+    #+BEGIN_SRC emacs-lisp :tangle no
   (use-package evil-nerd-commenter
     :ensure t
     :init
@@ -618,18 +618,21 @@ General mode to manage keybindings.
 ** Fonts
 *** Activating a font
     #+BEGIN_SRC emacs-lisp :tangle yes
-  (defun my-set-face (font height)
-    (set-face-attribute 'default nil
-                        :family font
-                        :height (* height 10)
-                        :weight 'normal
-                        :width 'normal))
+      (defun my-set-face (font height)
+        (set-face-attribute 'default nil
+                            :family font
+                            :height (* height 10)
+                            :weight 'normal
+                            :width 'normal))
 
-  (if (eq system-type 'darwin)
-      (my-set-face "mononoki" 13))
+      (if (eq system-type 'darwin)
+          (set-face-attribute 'default nil
+                              :family "Fira Code"
+                              :height (* 13 10)
+                              :weight 'medium))
 
-  (if (eq system-type 'windows-nt)
-      (my-set-face "Consolas" 12))
+      (if (eq system-type 'windows-nt)
+          (my-set-face "Consolas" 12))
 
   (if (eq system-type 'gnu/linux)
       (my-set-face "Input" 10))
@@ -880,7 +883,7 @@ General mode to manage keybindings.
 ** TODO Add a shortcut for creating a snippet.
    
 
-* Company Mode goodness
+* Company Mode Goodness
 ** This is totally disabled for "typing pleasure!"
    Enabling company mode slowed the editor way down!
    And frankly it's not that useful.
@@ -953,29 +956,28 @@ General mode to manage keybindings.
   there in addition to Org mode.
 
   #+BEGIN_SRC emacs-lisp
-  (use-package smartparens
-      :ensure t
-      :diminish smartparens-mode
-      :init
-      (progn
-        (smartparens-global-mode 1)
-        (show-smartparens-global-mode 1)
-        (setq
-         sp-highlight-pair-overlay nil
-         sp-highlight-wrap-overlay nil
-         sp-highlight-wrap-tag-overlay nil)
-        (sp-local-pair 'LaTeX-mode "|" "|")
-  )
+    (use-package smartparens
+        :ensure t
+        :diminish smartparens-mode
+        :init
+        (progn
+          (smartparens-global-mode 1)
+          (show-smartparens-global-mode 1)
+          (setq
+           sp-highlight-pair-overlay nil
+           sp-highlight-wrap-overlay nil
+           sp-highlight-wrap-tag-overlay nil)
+          (sp-local-pair 'LaTeX-mode "|" "|"))
 
-      :config
-      (progn
-        (use-package smartparens-config)
-        (add-hook 'emacs-lisp-mode-hook 'turn-off-smartparens-mode)
-        (add-hook 'geiser-repl-mode-hook 'turn-off-smartparens-mode)
-        (add-hook 'racket-mode-hook 'turn-off-smartparens-mode)
-        (add-hook 'racket-repl-mode-hook 'turn-off-smartparens-mode)
-        (sp-pair "`" nil :actions :rem)
-        (sp-local-pair 'LaTeX-mode "|" "|")))
+        :config
+        (progn
+          (use-package smartparens-config)
+          (add-hook 'emacs-lisp-mode-hook 'turn-off-smartparens-mode)
+          (add-hook 'geiser-repl-mode-hook 'turn-off-smartparens-mode)
+          (add-hook 'racket-mode-hook 'turn-off-smartparens-mode)
+          (add-hook 'racket-repl-mode-hook 'turn-off-smartparens-mode)
+          (sp-pair "`" nil :actions :rem)
+          (sp-local-pair 'LaTeX-mode "|" "|")))
   #+END_SRC
 
 
@@ -2219,9 +2221,8 @@ General mode to manage keybindings.
    #+END_SRC
 ** Thing-At-Point
    #+BEGIN_SRC emacs-lisp
-(use-package thingatpt+
-:ensure t
-:init (tap-redefine-std-fns))
+     (use-package thingatpt+
+         :ensure t)
    #+END_SRC
 
 ** Multi Term
@@ -2253,6 +2254,69 @@ General mode to manage keybindings.
   (save-window-excursion
     (recompile)))
   #+END_SRC
+
+
+* Evil Mode
+It's finally time to try out =evil-mode= again.
+** Installation
+#+BEGIN_SRC emacs-lisp
+  (use-package evil
+      :ensure t
+      :config
+      (progn
+        (evil-mode t)
+        (evil-escape-mode)
+        (setq evil-ex-search-vim-style-regexp t
+              evil-search-module 'evil-search
+              evil-symbol-word-search t
+              evil-want-C-u-scroll t
+              evil-want-Y-yank-to-eol t)
+        ))
+
+
+  (use-package general
+      :ensure t)
+#+END_SRC
+
+** Evil-escape
+#+BEGIN_SRC emacs-lisp
+  (use-package evil-escape
+      :ensure t
+      :init
+      (setq-default evil-escape-key-sequence "jk"))
+#+END_SRC
+
+** Emacs bindings
+Some Emacs bindings are actually quite nice, so let's setup them
+instead of =evil-mode= bindings.
+#+BEGIN_SRC emacs-lisp 
+  (general-define-key :keymaps 'global
+                      :states '(insert emacs visual normal)
+                      "C-a" 'move-beginning-of-line
+                      "C-e" 'move-end-of-line)
+#+END_SRC
+To support =LaTeX=, it's better to restore the keybindings we have
+before.
+#+BEGIN_SRC emacs-lisp 
+    (general-define-key :keymaps 'LaTeX-mode-map
+                        :states '(normal emacs insert visual)
+                        "C-t" 'latex-compile
+                        "C-v" 'TeX-view)
+#+END_SRC
+
+** Other bindings
+#+BEGIN_SRC emacs-lisp 
+  (general-define-key :keymaps 'global
+                      :states '(normal insert)
+                      "C-b" #'ivy-switch-buffer)
+#+END_SRC
+** Visual Star
+#+BEGIN_SRC emacs-lisp 
+  (use-package evil-visualstar
+           :ensure t
+           :config
+           (global-evil-visualstar-mode t))
+#+END_SRC
 
 
 * Epilog

@@ -1,6 +1,6 @@
 # -*- mode: snippet -*-
 # name: minimal-latex
-# key:
+# key: new
 # --
 \documentclass[11pt]{article}
 \usepackage[utf8]{inputenc}
@@ -44,7 +44,7 @@
 \newcommand{\thistheoremname}{}
 \newtheorem*{genericthm}{\thistheoremname}
 \newenvironment{namedthm}[1]
-  {\renewcommand{\thistheoremname}{\fontfamily{lmss}\fontseries{bx}\selectfont#1}%
+  {\renewcommand{\thistheoremname}{\fontseries{bx}\selectfont#1}%
    \begin{genericthm}}
   {\end{genericthm}}
 
@@ -79,8 +79,6 @@
 
 \usepackage{graphicx}
 
-\renewcommand\theequation{\oldstylenums{\arabic{equation}}}
-
 \usepackage[final]{microtype}
 
 \usepackage[hang,flushmargin,symbol,perpage]{footmisc} 
@@ -101,29 +99,6 @@
 \usepackage{booktabs}
 \usepackage[section]{placeins}
 \usepackage{float}
-
-\newcounter{EquationCounter}
-\newcounter{FigureCounter}
-\newcounter{TableCounter}
-
-\newcommand{\Equation}{
-\def\figurename{Equation}
-\setcounter{figure}{\value{EquationCounter}}
-\stepcounter{EquationCounter}
-}
-
-\newcommand{\Figure}{
-  \def\figurename{Figure}
-\setcounter{figure}{\value{FigureCounter}}
-\stepcounter{FigureCounter}
-}
-
-\newcommand{\Table}{
-  \def\figurename{Table}
-\setcounter{figure}{\value{TableCounter}}
-\stepcounter{TableCounter}
-}
-
 
 %%%%%%%%%%%%%%%%%%%%
 % OPERATORS
