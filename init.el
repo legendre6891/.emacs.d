@@ -10,11 +10,11 @@
 (require 'org)
 
 ;; Check version of org before loading our file.
-(let ((version org-version))
-  (when (version< org-version "8.3.1")
-    (message-box "This emacs configuration requires
-Org version >= 8.3.1. Please run \"emacs -Q\" and
-nstall the latest version of Org mode.")))
+;; (let ((version org-version))
+;;   (when (version< org-version "8.3.1")
+;;     (message-box "This emacs configuration requires
+;; Org version >= 8.3.1. Please run \"emacs -Q\" and
+;; nstall the latest version of Org mode.")))
 
 
 (org-babel-load-file
