@@ -44,7 +44,7 @@
 \newcommand{\thistheoremname}{}
 \newtheorem*{genericthm}{\thistheoremname}
 \newenvironment{namedthm}[1]
-  {\renewcommand{\thistheoremname}{\fontseries{bx}\selectfont#1}%
+  {\renewcommand{\thistheoremname}{\bfseries #1}%
    \begin{genericthm}}
   {\end{genericthm}}
 
@@ -111,6 +111,7 @@
 \DeclareMathOperator{\Q}{\mathbf{Q}}
 \DeclareMathOperator{\R}{\mathbf{R}}
 \DeclareMathOperator{\Z}{\mathbf{Z}}
+\DeclareMathOperator{\C}{\mathbf{C}}
 
 \newcommand{\Pto}{\;\xrightarrow[\phantom{n\to\infty}]{\P}\;}
 \newcommand{\Dto}{\;\xRightarrow{\ \ \rm dist.\ \ }\;}
@@ -118,18 +119,18 @@
 \DeclareMathOperator{\CDF}{\textsc{CDF}}
 \DeclareMathOperator{\Cov}{\mathbf{Cov}}
 \DeclareMathOperator{\MSE}{MSE}
-\DeclareMathOperator{\Prob}{\mathbf{Prob}}
+\DeclareMathOperator{\Prob}{Prob}
 \DeclareMathOperator{\Var}{\mathbf{Var}}
 \DeclareMathOperator*{\plim}{plim}
 \newcommand\given[1][]{\:#1\vert\:}
 
-\DeclareMathOperator{\Bernoulli}{\textsc{B}}
+\DeclareMathOperator{\Bernoulli}{\mathfs{Ber}}
 \DeclareMathOperator{\Binomial}{\mathsf{Binomial}}
 \DeclareMathOperator{\GammaP}{\mathsf{Gamma}}
 \DeclareMathOperator{\IID}{\mathbin{\overset{\textsc{IID}}{\sim}}}
-\DeclareMathOperator{\Normal}{\textsc{Normal}}
+\DeclareMathOperator{\Normal}{\mathsf{Normal}}
 \DeclareMathOperator{\Pareto}{\mathsf{Pareto}}
-\DeclareMathOperator{\Poisson}{\textsc{Pois}}
+\DeclareMathOperator{\Poisson}{\mathsf{Pois}}
 \DeclareMathOperator{\Pois}{\mathsf{Pois}}
 \DeclareMathOperator{\Unif}{\textsc{Unif}}
 
@@ -217,9 +218,6 @@
  %
  %                   vertical
   \par}}                  % build paragraph
-
-
-
 
 
 \begin{document}

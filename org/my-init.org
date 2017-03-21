@@ -437,34 +437,34 @@ General mode to manage keybindings.
    We need let Emacs know about the the =LaTeX= path
    for =LaTeX= to work.
    #+BEGIN_SRC emacs-lisp
-  (if (eq system-type 'darwin)
-      (progn
-        (defun set-exec-path-from-shell-PATH ()
-          (let ((path-from-shell
-                 (shell-command-to-string
-                  "env TERM=vt100 /bin/sh -i -c 'echo $PATH'")))
+     (if (eq system-type 'darwin)
+         (progn
+           (defun set-exec-path-from-shell-PATH ()
+             (let ((path-from-shell
+                    (shell-command-to-string
+                     "env TERM=vt100 /bin/sh -i -c 'echo $PATH'")))
 
-            (setenv "PATH" path-from-shell)
-            (setq exec-path (split-string path-from-shell path-separator))))
+               (setenv "PATH" path-from-shell)
+               (setq exec-path (split-string path-from-shell path-separator))))
 
-        (when (display-graphic-p) (set-exec-path-from-shell-PATH))
+           (when (display-graphic-p) (set-exec-path-from-shell-PATH))
 
-        (setq mac-option-key-is-meta t)
-        (setq mac-command-key-is-meta t)
-        (setq mac-command-modifier 'meta)
+           (setq mac-option-key-is-meta t)
+           (setq mac-command-key-is-meta t)
+           (setq mac-command-modifier 'meta)
 
-        (setenv "PATH" (concat "/usr/texbin" ":" (getenv "PATH")))
+           (setenv "PATH" (concat "/usr/texbin" ":" (getenv "PATH")))
+           (setenv "PATH" (concat "/Library/TeX/texbin" ":" (getenv "PATH")))
+           (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
 
-        (setenv "PATH" (concat "/Library/TeX/texbin" ":" (getenv "PATH")))
+           (setq exec-path
+                 (append
+                  '("/usr/local/bin"
+                    "/Library/TeX/texbin")
+                  exec-path))
 
-        (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
 
-        (setq exec-path (append exec-path '("/usr/local/bin")))
-        (setq exec-path (append exec-path '("/Library/TeX/texbin")))
-
-        (setenv "PATH" (concat (getenv "PATH") ":/usr/bin"))
-
-        (setq exec-path (append exec-path '("/usr/bin")))))
+           (setenv "PATH" (concat (getenv "PATH") ":/usr/bin"))))
    #+END_SRC
 
 
@@ -630,9 +630,9 @@ General mode to manage keybindings.
 
       (if (eq system-type 'darwin)
           (set-face-attribute 'default nil
-                              :family "Fira Code"
+                              :family "Input"
                               :height (* 13 10)
-                              :weight 'medium))
+                              :weight 'regular))
 
       (if (eq system-type 'windows-nt)
           (my-set-face "Consolas" 12))
@@ -2296,7 +2296,8 @@ It's finally time to try out =evil-mode= again.
       (setq-default evil-escape-key-sequence "jk"))
 #+END_SRC
 
-** Emacs bindings
+** Evil-Mode specific bindings
+*** Readline mode bindings
 Some Emacs bindings are actually quite nice, so let's setup them
 instead of =evil-mode= bindings.
 #+BEGIN_SRC emacs-lisp 
@@ -2305,13 +2306,47 @@ instead of =evil-mode= bindings.
                       "C-a" 'move-beginning-of-line
                       "C-e" 'move-end-of-line)
 #+END_SRC
+
+*** LaTeX support
 To support =LaTeX=, it's better to restore the keybindings we have
 before.
 #+BEGIN_SRC emacs-lisp 
-    (general-define-key :keymaps 'LaTeX-mode-map
-                        :states '(normal emacs insert visual)
-                        "C-t" 'latex-compile
-                        "C-v" 'TeX-view)
+  (general-define-key :keymaps 'LaTeX-mode-map
+                      :states '(normal emacs insert visual)
+                      "C-t" 'latex-compile
+                      "C-v" 'TeX-view
+                      "M-=" 'LaTeX-fill-buffer)
+
+  (defun legendre/insert-equation ()
+    (interactive)
+    (unless (texmathp)
+      (cdlatex-environment "equation")))
+
+  (defun legendre/insert-and ()
+    (interactive)
+    (insert "\\quad \\text{and} \\quad"))
+
+  (defun legendre/insert-split ()
+    (interactive)
+    (if (texmathp)
+        (cdlatex-environment "split")
+      (progn
+        (cdlatex-environment "equation")
+        (cdlatex-environment "split"))))
+
+  (defun legendre/reformat-buffer ()
+    (interactive)
+    (save-excursion
+      (indent-region (point-min) (point-max) nil)))
+
+  (general-define-key :keymaps 'LaTeX-mode-map
+                      :states '(insert emacs)
+                      "M-e" #'legendre/insert-equation
+                      "M-s" #'legendre/insert-split
+                      "M-a" #'legendre/insert-and)
+
+  (general-define-key :keymaps 'global
+                      "M-=" #'legendre/reformat-buffer)
 #+END_SRC
 
 ** Other bindings
