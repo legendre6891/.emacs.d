@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: substack
+# key: sub
+# --
+\substack{$0}
