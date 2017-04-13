@@ -649,7 +649,7 @@ General mode to manage keybindings.
    #+BEGIN_SRC emacs-lisp
 (blink-cursor-mode 0)
    #+END_SRC
-
+   
 
 * Abbrev Mode
   Load the fat fingers abbrev.
@@ -1990,26 +1990,27 @@ General mode to manage keybindings.
    #+END_SRC
 ** Flycheck
    #+BEGIN_SRC emacs-lisp
-  (use-package flycheck
-      :ensure t)
+     (use-package flycheck
+         :ensure t)
 
-  (add-hook 'c++-mode-hook 'flycheck-mode)
-  (add-hook 'c-mode-hook   'flycheck-mode)
+     (add-hook 'c++-mode-hook 'flycheck-mode)
+     (add-hook 'c-mode-hook   'flycheck-mode)
 
-  (require 'flycheck-rtags)
+     (use-package flycheck-rtags
+     :ensure t)
 
-  (defun my-flycheck-rtags-setup ()
-    (flycheck-select-checker 'rtags)
-    (setq-local flycheck-highlighting-mode nil)
-    (setq-local flycheck-check-syntax-automatically nil))
+     (defun my-flycheck-rtags-setup ()
+       (flycheck-select-checker 'rtags)
+       (setq-local flycheck-highlighting-mode nil)
+       (setq-local flycheck-check-syntax-automatically nil))
 
-  (add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup)
+     (add-hook 'c-mode-common-hook #'my-flycheck-rtags-setup)
 
 
-  (use-package flycheck-irony
-      :ensure t)
-  (eval-after-load 'flycheck
-    '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
+     (use-package flycheck-irony
+         :ensure t)
+     (eval-after-load 'flycheck
+       '(add-hook 'flycheck-mode-hook #'flycheck-irony-setup))
    #+END_SRC
 ** CMake IDE
    Automatically calling =rdm= if possible.
