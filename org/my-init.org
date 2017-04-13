@@ -250,14 +250,13 @@
     #+END_SRC
 
 *** Commenting
-    Evil nerd commenter doesn't require =evil-mode=, but it is a good
-    package.
-    #+BEGIN_SRC emacs-lisp :tangle no
-  (use-package evil-nerd-commenter
-    :ensure t
-    :init
-    (progn
-      (evilnc-default-hotkeys)))
+Let's bring over the nice =vim-commentary= package into Emacs.
+    #+BEGIN_SRC emacs-lisp
+      (use-package evil-commentary
+        :ensure t
+        :init
+        (progn
+          (evil-commentary-mode)))
     #+END_SRC
 
 
