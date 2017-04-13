@@ -1573,7 +1573,7 @@ General mode to manage keybindings.
      #+END_SRC
 
 
-
+     
 ** Pretty Symbols
    Pretty symbols help when there is a lot of Greek letters. This doesn't
    quite work well yet (can't turn off the triangles),
@@ -1715,6 +1715,12 @@ General mode to manage keybindings.
        (define-key flyspell-mode-map (kbd "C-;") nil))
    #+END_SRC
 
+   
+** Disable Company
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'LaTeX-mode-hook (↑ (company-mode -1)))
+  (add-hook 'TeX-mode-hook (↑ (company-mode -1)))
+#+END_SRC
 
 ** My Own Package!
    Load my own package after everything has loaded.
