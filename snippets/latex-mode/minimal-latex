@@ -10,7 +10,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{tgtermes}
 \usepackage{inconsolata}
-\usepackage[subscriptcorrection, mtpcal]{mtpro2}
+\usepackage[subscriptcorrection, nofontinfo, mtpcal, mtpfrak, mtphrb]{mtpro2}
 \usepackage{amsmath}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
