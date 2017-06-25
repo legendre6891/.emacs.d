@@ -249,15 +249,6 @@
   (global-set-key (kbd "M-w") 'xah-copy-line-or-region) ;copy
     #+END_SRC
 
-*** Commenting
-Let's bring over the nice =vim-commentary= package into Emacs.
-    #+BEGIN_SRC emacs-lisp
-      (use-package evil-commentary
-        :ensure t
-        :init
-        (progn
-          (evil-commentary-mode)))
-    #+END_SRC
 
 
 ** General Mode (Keybinds!)
@@ -485,12 +476,18 @@ General mode to manage keybindings.
     GUI elements (e.g. linum-mode, theme, font).
 
     #+BEGIN_SRC emacs-lisp
-  (defhydra my-hydra-gui (:color blue)
-    ("f" menu-set-font "Set font.")
-    ("m" menu-bar-mode "Toggle menu bar.")
-    ("t" (call-interactively #'counsel-load-theme) "Load theme"))
+      (defhydra my-hydra-gui (:color blue)
+        ("f" menu-set-font "Set font.")
+        ("m" menu-bar-mode "Toggle menu bar.")
+        ("t" (call-interactively #'counsel-load-theme) "Load theme")
+        ("a"
+         (progn (set-background-color "AntiqueWhite")
+                (set-face-attribute 'fringe nil
+                                    :foreground (face-foreground 'default)
+                                    :background (face-background 'default)))
+         "Antique white colors. No fringe."))
 
-  (global-set-key (kbd "<f2>") #'my-hydra-gui/body)
+      (global-set-key (kbd "<f2>") #'my-hydra-gui/body)
     #+END_SRC
 
 
@@ -626,15 +623,20 @@ General mode to manage keybindings.
 
       (if (eq system-type 'darwin)
           (set-face-attribute 'default nil
-                              :family "Input"
+                              :family "Terminus (TTF)"
                               :height (* 13 10)
-                              :weight 'regular))
+                              :weight 'bold))
 
       (if (eq system-type 'windows-nt)
           (my-set-face "Consolas" 12))
 
-  (if (eq system-type 'gnu/linux)
-      (my-set-face "Input" 10))
+      (if (eq system-type 'gnu/linux)
+          (set-face-attribute 'default nil
+                              :family "Hack Regular"
+                              :height (* 13 10)
+                              :weight 'normal))
+
+
     #+END_SRC
 
 *** TODO cycle between fonts
@@ -765,26 +767,6 @@ General mode to manage keybindings.
   (global-set-key (kbd "M-J") 'mc/mark-all-like-this)
   (global-set-key (kbd "M-n") 'mc/mark-next-like-this-word)
   #+END_SRC
-
-
-* Evil Mode
-  After several iterations of
-  switching back and forth from Emacs and Vim, I gave Evil a go.
-  It worked great for a while, but in the end it was just more hassle
-  than it's worth, the reason being that key-binds in Emacs
-  and its many modes are not designed with modal input in mind.
-
-  Thus, it became a hassle to define new keys,
-  especially when I wanted to enable keys only for
-  insert mode only for certain key-maps. I can't find a good solution
-  for this, so I turned off =evil-mode= for the time being.
-
-  But my old =evil-mode= customizations are still useful
-  if I ever wanted to come back to it, so I include them here.
-** TODO Include evil mode stuff
-   I need to figure out a way to reference (and attach?) files
-   to an org document.
-
 
 
 * Yasnippet
@@ -1118,7 +1100,7 @@ General mode to manage keybindings.
 *** Inside Org Mode
     Larger LaTeX fonts; it seems that 1.4 is too large, so let's leave this
     *OFF* for now.
-    #+BEGIN_SRC emacs-lisp :tangle no
+    #+BEGIN_SRC emacs-lisp :tangle yes
   (plist-put org-format-latex-options :scale 1.4)
   (plist-put org-format-latex-options :html-scale 1.4)
     #+END_SRC
@@ -2268,17 +2250,18 @@ It's finally time to try out =evil-mode= again.
 #+BEGIN_SRC emacs-lisp
   (use-package evil
       :ensure t
-      :config
-      (progn
-        (evil-mode t)
-        (evil-escape-mode)
-        (setq evil-ex-search-vim-style-regexp t
-              evil-search-module 'evil-search
-              evil-symbol-word-search t
-              evil-want-C-u-scroll t
-              evil-want-Y-yank-to-eol t)
-        ))
 
+      :init
+      (setq evil-ex-search-vim-style-regexp t
+            ;; Need to set this INSIDE CUSTOMIZE!!!!
+            evil-search-module 'evil-search
+            evil-symbol-word-search t
+            evil-want-C-u-scroll t
+            evil-want-Y-yank-to-eol t)
+
+      :config
+      (evil-mode t)
+      (evil-escape-mode))
 
   (use-package general
       :ensure t)
@@ -2344,6 +2327,16 @@ before.
   (general-define-key :keymaps 'global
                       "M-=" #'legendre/reformat-buffer)
 #+END_SRC
+
+** Commenting
+   Let's bring over the nice =vim-commentary= package into Emacs.
+    #+BEGIN_SRC emacs-lisp
+      (use-package evil-commentary
+        :ensure t
+        :init
+        (progn
+          (evil-commentary-mode)))
+    #+END_SRC
 
 ** Other bindings
 #+BEGIN_SRC emacs-lisp 

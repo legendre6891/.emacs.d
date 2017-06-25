@@ -97,6 +97,18 @@
 
 (define-abbrev-table 'emacs-lisp-mode-abbrev-table '())
 
+(define-abbrev-table 'epa-info-mode-abbrev-table '())
+
+(define-abbrev-table 'epa-key-list-mode-abbrev-table '())
+
+(define-abbrev-table 'epa-key-mode-abbrev-table '())
+
+(define-abbrev-table 'ert-results-mode-abbrev-table '())
+
+(define-abbrev-table 'ert-simple-view-mode-abbrev-table '())
+
+(define-abbrev-table 'eshell-mode-abbrev-table '())
+
 (define-abbrev-table 'ess-julia-mode-abbrev-table '())
 
 (define-abbrev-table 'evil-command-window-mode-abbrev-table '())
@@ -369,7 +381,7 @@
     ("admissable" "admissible" nil 0)
     ("admited" "admitted" nil 0)
     ("admitedly" "admittedly" nil 0)
-    ("adn" "and" nil 1)
+    ("adn" "and" nil 2)
     ("adolecent" "adolescent" nil 0)
     ("adquire" "acquire" nil 0)
     ("adquired" "acquired" nil 0)
@@ -1014,6 +1026,7 @@
     ("ciricuit" "circuit" nil 0)
     ("ciriculum" "curriculum" nil 0)
     ("civillian" "civilian" nil 0)
+    ("claculate" "calculate" nil 0)
     ("claculations" "calculations" nil 0)
     ("claer" "clear" nil 0)
     ("claerer" "clearer" nil 0)
@@ -1926,6 +1939,7 @@
     ("formelly" "formerly" nil 0)
     ("formidible" "formidable" nil 0)
     ("formost" "foremost" nil 0)
+    ("formual" "formula" nil 0)
     ("forsaw" "foresaw" nil 0)
     ("forseeable" "foreseeable" nil 0)
     ("fortelling" "foretelling" nil 0)
@@ -2668,7 +2682,7 @@
     ("mkaing" "making" nil 0)
     ("mkea" "make" nil 0)
     ("moderm" "modem" nil 0)
-    ("modle" "model" nil 0)
+    ("modle" "model" nil 1)
     ("moent" "moment" nil 0)
     ("moeny" "money" nil 0)
     ("mohammedans" "muslims" nil 0)
@@ -3244,6 +3258,7 @@
     ("proffesion" "profession" nil 0)
     ("proffesional" "professional" nil 0)
     ("proffesor" "professor" nil 0)
+    ("profiels" "profiles" nil 0)
     ("profilic" "prolific" nil 0)
     ("progessed" "progressed" nil 0)
     ("programable" "programmable" nil 0)
@@ -3337,6 +3352,7 @@
     ("quarantaine" "quarantine" nil 0)
     ("quater" "quarter" nil 0)
     ("qudratic" "quadratic" nil 0)
+    ("quesiton" "question" nil 0)
     ("questoin" "question" nil 0)
     ("questonable" "questionable" nil 0)
     ("quicklyu" "quickly" nil 0)
@@ -3666,6 +3682,7 @@
     ("scoll" "scroll" nil 0)
     ("screenwrighter" "screenwriter" nil 0)
     ("scrutinity" "scrutiny" nil 0)
+    ("scuh" "such" nil 0)
     ("scuptures" "sculptures" nil 0)
     ("seach" "search" nil 0)
     ("seached" "searched" nil 0)
@@ -3953,6 +3970,7 @@
     ("suop" "soup" nil 0)
     ("superceeded" "superseded" nil 0)
     ("superintendant" "superintendent" nil 0)
+    ("supermodualr" "supermodular" nil 0)
     ("suphisticated" "sophisticated" nil 0)
     ("suplimented" "supplemented" nil 0)
     ("supose" "suppose" nil 0)
@@ -4049,8 +4067,8 @@
     ("techiniques" "techniques" nil 0)
     ("technitian" "technician" nil 0)
     ("technnology" "technology" nil 0)
-    ("technolgy" "technology" nil 0)
     ("teh" "the" nil 7)
+    ("technolgy" "technology" nil 1)
     ("tehy" "they" nil 0)
     ("telelevision" "television" nil 0)
     ("televsion" "television" nil 0)
@@ -4125,6 +4143,7 @@
     ("thta" "that" nil 3)
     ("thyat" "that" nil 0)
     ("tiem" "time" nil 0)
+    ("tiems" "times" nil 0)
     ("tihkn" "think" nil 0)
     ("tihs" "this" nil 0)
     ("timne" "time" nil 0)
@@ -4628,6 +4647,8 @@
 (define-abbrev-table 'rtags-dependency-tree-mode-abbrev-table '())
 
 (define-abbrev-table 'rtags-diagnostics-mode-abbrev-table '())
+
+(define-abbrev-table 'rtags-location-stack-visualize-mode-abbrev-table '())
 
 (define-abbrev-table 'rtags-mode-abbrev-table '())
 
