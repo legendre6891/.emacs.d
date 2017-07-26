@@ -6,12 +6,11 @@
   This file is tangled and loaded via =init.el=, which
   should just contain the following.
   #+BEGIN_SRC emacs-lisp :tangle no
-(require 'org)
-(org-babel-load-file
- (expand-file-name
-  "my-init.org"
-  (concat user-emacs-directory "org"
-   )))
+    (require 'org)
+    (org-babel-load-file
+     (expand-file-name
+      "my-init.org"
+      (concat user-emacs-directory "org")))
   #+END_SRC
 
 
