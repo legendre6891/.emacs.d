@@ -1899,7 +1899,7 @@
     ("fianite" "finite" nil 0)
     ("fianlly" "finally" nil 0)
     ("ficticious" "fictitious" nil 0)
-    ("fictious" "fictitious" nil 0)
+    ("fictious" "fictitious" nil 1)
     ("fidn" "find" nil 0)
     ("fiel" "file" nil 0)
     ("fiels" "files" nil 0)
@@ -2159,7 +2159,7 @@
     ("htikn" "think" nil 0)
     ("hting" "thing" nil 0)
     ("htink" "think" nil 0)
-    ("htis" "this" nil 0)
+    ("htis" "this" nil 1)
     ("humer" "humor" nil 0)
     ("humerous" "humorous" nil 0)
     ("huminoid" "humanoid" nil 0)
@@ -4073,8 +4073,16 @@
     ("techiniques" "techniques" nil 0)
     ("technitian" "technician" nil 0)
     ("technnology" "technology" nil 0)
+<<<<<<< HEAD
     ("technolgy" "technology" nil 1)
     ("teh" "the" nil 8)
+||||||| merged common ancestors
+    ("technolgy" "technology" nil 1)
+    ("teh" "the" nil 7)
+=======
+    ("teh" "the" nil 7)
+    ("technolgy" "technology" nil 1)
+>>>>>>> 473240b68c4f2c0d004fbc85ffa58c83846a22a2
     ("tehy" "they" nil 0)
     ("telelevision" "television" nil 0)
     ("televsion" "television" nil 0)
@@ -4164,6 +4172,7 @@
     ("tobbaco" "tobacco" nil 0)
     ("todays" "today" (quote s) 0)
     ("todya" "today" nil 0)
+    ("togehter" "together" nil 0)
     ("toghether" "together" nil 0)
     ("toke" "took" nil 0)
     ("tolerence" "tolerance" nil 0)
