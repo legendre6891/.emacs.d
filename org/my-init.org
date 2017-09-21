@@ -1849,6 +1849,15 @@ General mode to manage keybindings.
    #+END_SRC
 
 
+* Python
+Let's try using =elpy=.
+#+BEGIN_SRC emacs-lisp
+  (use-package elpy
+      :ensure t
+      :init
+      (elpy-enable))
+#+END_SRC
+
 * Julia
 ** TODO Write some configurations --- broken at the moment
    #+BEGIN_SRC emacs-lisp :tangle no
@@ -2295,6 +2304,11 @@ before.
                       "C-t" 'latex-compile
                       "C-v" 'TeX-view
                       "M-=" 'LaTeX-fill-buffer)
+
+  (general-define-key :keymaps 'plain-TeX-mode-map
+                      :states '(normal emacs insert visual)
+                      "C-t" 'my-tex-compile
+                      "C-v" 'TeX-view)
 
   (defun legendre/insert-equation ()
     (interactive)
