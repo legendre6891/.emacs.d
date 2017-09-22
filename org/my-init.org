@@ -1,7 +1,9 @@
 #+TITLE: Emacs Configuration
 #+AUTHOR: Kevin Li
 #+DATE: February 22, 2017
-
+#+BEGIN_SRC emacs-lisp
+  (defvar ido-cur-list nil)
+#+END_SRC
 * Prelude
   This file is tangled and loaded via =init.el=, which
   should just contain the following.
@@ -383,21 +385,23 @@ General mode to manage keybindings.
     Use Ido for most completions; sadly this doesn't quite cover 100% of
     the cases yet, but it's close.
     #+BEGIN_SRC emacs-lisp
-(ido-everywhere)
-(use-package ido-ubiquitous
-    :ensure t
-    :init
-    (progn
-      (ido-ubiquitous-mode 1)
-      (defmacro ido-ubiquitous-use-new-completing-read (cmd package)
-        `(eval-after-load ,package
-           '(defadvice ,cmd (around ido-ubiquitous-new activate)
-             (let ((ido-ubiquitous-enable-compatibility nil))
-               ad-do-it)))))
-    :config
-    (progn
-      (ido-ubiquitous-use-new-completing-read yas/expand 'yasnippet)
-      (ido-ubiquitous-use-new-completing-read yas/visit-snippet-file 'yasnippet)))
+      (ido-everywhere)
+      (use-package ido-completing-read+
+          :preface
+        (defvar ido-cur-list)
+          :ensure t
+          :init
+          (progn
+            (ido-ubiquitous-mode 1)
+            (defmacro ido-ubiquitous-use-new-completing-read (cmd package)
+              `(eval-after-load ,package
+                 '(defadvice ,cmd (around ido-ubiquitous-new activate)
+                   (let ((ido-ubiquitous-enable-compatibility nil))
+                     ad-do-it)))))
+          :config
+          (progn
+            (ido-ubiquitous-use-new-completing-read yas/expand 'yasnippet)
+            (ido-ubiquitous-use-new-completing-read yas/visit-snippet-file 'yasnippet)))
     #+END_SRC
     The last two lines are used to make make completing with =yasnippet=
     work well.
@@ -1312,7 +1316,7 @@ General mode to manage keybindings.
         (setq TeX-output-view-style
               '("^pdf$" "." "SumatraPDF.exe -reuse-instance %o"))
         (setq TeX-view-program-list
-              '(("SumatraPDF" "SumatraPDF.exe -reuse-instance %o")))
+              '(("SumatraPDF" "\"C:/Program Files/SumatraPDF/SumatraPDF.exe\" -reuse-instance %o")))
         (setq TeX-view-program-selection '((output-pdf "SumatraPDF")
                                            (output-dvi "Yap")))))
 
@@ -1848,6 +1852,15 @@ General mode to manage keybindings.
    #+END_SRC
 
 
+* Python
+Let's try using =elpy=.
+#+BEGIN_SRC emacs-lisp
+  (use-package elpy
+      :ensure t
+      :init
+      (elpy-enable))
+#+END_SRC
+
 * Julia
 ** TODO Write some configurations --- broken at the moment
    #+BEGIN_SRC emacs-lisp :tangle no
@@ -2294,6 +2307,11 @@ before.
                       "C-t" 'latex-compile
                       "C-v" 'TeX-view
                       "M-=" 'LaTeX-fill-buffer)
+
+  (general-define-key :keymaps 'plain-TeX-mode-map
+                      :states '(normal emacs insert visual)
+                      "C-t" 'my-tex-compile
+                      "C-v" 'TeX-view)
 
   (defun legendre/insert-equation ()
     (interactive)

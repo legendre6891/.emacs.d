@@ -93,6 +93,8 @@
 
 (define-abbrev-table 'elisp-byte-code-mode-abbrev-table '())
 
+(define-abbrev-table 'elpy-refactor-mode-abbrev-table '())
+
 (define-abbrev-table 'emacs-lisp-byte-code-mode-abbrev-table '())
 
 (define-abbrev-table 'emacs-lisp-mode-abbrev-table '())
@@ -1028,7 +1030,7 @@
     ("civillian" "civilian" nil 0)
     ("claculate" "calculate" nil 0)
     ("claculations" "calculations" nil 0)
-    ("claer" "clear" nil 0)
+    ("claer" "clear" nil 1)
     ("claerer" "clearer" nil 0)
     ("claerly" "clearly" nil 0)
     ("claimes" "claims" nil 0)
@@ -2025,6 +2027,7 @@
     ("goverment" "government" nil 0)
     ("govermental" "governmental" nil 0)
     ("governer" "governor" nil 0)
+    ("governining" "governing" nil 0)
     ("governmnet" "government" nil 0)
     ("govnerment" "government" nil 0)
     ("govorment" "government" nil 0)
@@ -2457,7 +2460,7 @@
     ("knowlegeable" "knowledgeable" nil 0)
     ("knwo" "know" nil 0)
     ("knwos" "knows" nil 0)
-    ("konw" "know" nil 2)
+    ("konw" "know" nil 3)
     ("konws" "knows" nil 0)
     ("kwno" "know" nil 0)
     ("labatory" "lavatory" nil 0)
@@ -2834,7 +2837,7 @@
     ("occurance" "occurrence" nil 0)
     ("occurances" "occurrences" nil 0)
     ("occured" "occurred" nil 0)
-    ("occurence" "occurrence" nil 0)
+    ("occurence" "occurrence" nil 1)
     ("occurences" "occurrences" nil 2)
     ("occuring" "occurring" nil 0)
     ("occurr" "occur" nil 0)
@@ -3186,6 +3189,7 @@
     ("preperation" "preparation" nil 0)
     ("preperations" "preparations" nil 0)
     ("preriod" "period" nil 0)
+    ("prescense" "presence" nil 0)
     ("presedential" "presidential" nil 0)
     ("presense" "presence" nil 0)
     ("presidenital" "presidential" nil 0)
@@ -3251,6 +3255,7 @@
     ("proclaming" "proclaiming" nil 0)
     ("proclomation" "proclamation" nil 0)
     ("producitivty" "productivity" nil 0)
+    ("proejct" "project" nil 0)
     ("profesion" "profession" nil 0)
     ("profesor" "professor" nil 0)
     ("professer" "professor" nil 0)
@@ -3965,6 +3970,7 @@
     ("sufferring" "suffering" nil 0)
     ("sufficent" "sufficient" nil 0)
     ("sufficently" "sufficiently" nil 0)
+    ("sufficiencly" "sufficiently" nil 2)
     ("sumary" "summary" nil 0)
     ("sunglases" "sunglasses" nil 0)
     ("suop" "soup" nil 0)
@@ -4067,8 +4073,16 @@
     ("techiniques" "techniques" nil 0)
     ("technitian" "technician" nil 0)
     ("technnology" "technology" nil 0)
+<<<<<<< HEAD
+    ("technolgy" "technology" nil 1)
+    ("teh" "the" nil 8)
+||||||| merged common ancestors
+    ("technolgy" "technology" nil 1)
+    ("teh" "the" nil 7)
+=======
     ("teh" "the" nil 7)
     ("technolgy" "technology" nil 1)
+>>>>>>> 473240b68c4f2c0d004fbc85ffa58c83846a22a2
     ("tehy" "they" nil 0)
     ("telelevision" "television" nil 0)
     ("televsion" "television" nil 0)
@@ -4504,6 +4518,8 @@
     ("zeebra" "zebra" nil 0)
    ))
 
+(define-abbrev-table 'grep-mode-abbrev-table '())
+
 (define-abbrev-table 'haskell-cabal-mode-abbrev-table '())
 
 (define-abbrev-table 'haskell-compilation-mode-abbrev-table '())
@@ -4541,6 +4557,8 @@
 (define-abbrev-table 'inferior-j-mode-abbrev-table '())
 
 (define-abbrev-table 'inferior-julia-mode-abbrev-table '())
+
+(define-abbrev-table 'inferior-python-mode-abbrev-table '())
 
 (define-abbrev-table 'ivy-occur-grep-mode-abbrev-table '())
 
@@ -4629,6 +4647,12 @@
 (define-abbrev-table 'process-menu-mode-abbrev-table '())
 
 (define-abbrev-table 'prog-mode-abbrev-table '())
+
+(define-abbrev-table 'python-mode-abbrev-table '())
+
+(define-abbrev-table 'python-mode-skeleton-abbrev-table
+  '(
+   ))
 
 (define-abbrev-table 'racket-describe-mode-abbrev-table '())
 
