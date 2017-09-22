@@ -4073,16 +4073,8 @@
     ("techiniques" "techniques" nil 0)
     ("technitian" "technician" nil 0)
     ("technnology" "technology" nil 0)
-<<<<<<< HEAD
-    ("technolgy" "technology" nil 1)
-    ("teh" "the" nil 8)
-||||||| merged common ancestors
-    ("technolgy" "technology" nil 1)
-    ("teh" "the" nil 7)
-=======
-    ("teh" "the" nil 7)
-    ("technolgy" "technology" nil 1)
->>>>>>> 473240b68c4f2c0d004fbc85ffa58c83846a22a2
+    ("technolgy" "technology" nil 0)
+    ("teh" "the" nil 6)
     ("tehy" "they" nil 0)
     ("telelevision" "television" nil 0)
     ("televsion" "television" nil 0)
@@ -4147,17 +4139,14 @@
     ("thrid" "third" nil 0)
     ("throrough" "thorough" nil 0)
     ("throughly" "thoroughly" nil 0)
-    ("throughotu" "throughout" nil 1)
     ("throught" "through" nil 0)
     ("througout" "throughout" nil 0)
-    ("throuhgout" "throughout" nil 0)
     ("thru" "through" nil 0)
     ("thsi" "this" nil 1)
     ("thsoe" "those" nil 0)
-    ("thta" "that" nil 3)
+    ("thta" "that" nil 0)
     ("thyat" "that" nil 0)
     ("tiem" "time" nil 0)
-    ("tiems" "times" nil 0)
     ("tihkn" "think" nil 0)
     ("tihs" "this" nil 0)
     ("timne" "time" nil 0)
@@ -4172,7 +4161,6 @@
     ("tobbaco" "tobacco" nil 0)
     ("todays" "today" (quote s) 0)
     ("todya" "today" nil 0)
-    ("togehter" "together" nil 0)
     ("toghether" "together" nil 0)
     ("toke" "took" nil 0)
     ("tolerence" "tolerance" nil 0)
@@ -4345,8 +4333,6 @@
     ("useing" "using" nil 0)
     ("usualy" "usually" nil 0)
     ("ususally" "usually" nil 0)
-    ("utliity" "utility" nil 0)
-    ("utliiy" "utility" nil 0)
     ("vaccum" "vacuum" nil 0)
     ("vaccume" "vacuum" nil 0)
     ("vacinity" "vicinity" nil 0)
@@ -4428,7 +4414,6 @@
     ("wayword" "wayward" nil 0)
     ("weaponary" "weaponry" nil 0)
     ("weas" "was" nil 0)
-    ("wehenver" "whenever" nil 0)
     ("wehn" "when" nil 0)
     ("weild" "wield" nil 0)
     ("weilded" "wielded" nil 0)
@@ -4438,7 +4423,6 @@
     ("whant" "want" nil 0)
     ("whants" "wants" nil 0)
     ("whcih" "which" nil 0)
-    ("whenvever" "whenever" nil 0)
     ("wheras" "whereas" nil 0)
     ("wherease" "whereas" nil 0)
     ("whereever" "wherever" nil 0)
@@ -4576,41 +4560,7 @@
 
 (define-abbrev-table 'literate-haskell-mode-abbrev-table '())
 
-(define-abbrev-table 'log-edit-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-cherry-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-diff-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-log-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-log-select-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-merge-preview-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-popup-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-process-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-reflog-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-refs-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-repolist-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-revision-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-stash-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-stashes-mode-abbrev-table '())
-
-(define-abbrev-table 'magit-status-mode-abbrev-table '())
-
 (define-abbrev-table 'markdown-mode-abbrev-table '())
-
-(define-abbrev-table 'message-mode-abbrev-table '())
 
 (define-abbrev-table 'messages-buffer-mode-abbrev-table '())
 
@@ -4666,8 +4616,6 @@
 
 (define-abbrev-table 'reftex-select-label-mode-abbrev-table '())
 
-(define-abbrev-table 'reftex-toc-mode-abbrev-table '())
-
 (define-abbrev-table 'rtags-dependency-tree-mode-abbrev-table '())
 
 (define-abbrev-table 'rtags-diagnostics-mode-abbrev-table '())
@@ -4721,8 +4669,6 @@
 (define-abbrev-table 'speedbar-mode-abbrev-table '())
 
 (define-abbrev-table 'tabulated-list-mode-abbrev-table '())
-
-(define-abbrev-table 'tar-mode-abbrev-table '())
 
 (define-abbrev-table 'term-mode-abbrev-table '())
 
