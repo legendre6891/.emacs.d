@@ -4,6 +4,8 @@
 #+BEGIN_SRC emacs-lisp
   (defvar ido-cur-list nil)
 #+END_SRC
+
+
 * Prelude
   This file is tangled and loaded via =init.el=, which
   should just contain the following.
@@ -933,38 +935,6 @@ General mode to manage keybindings.
     #+END_SRC
 
 
-* Smartparens
-  =Smartparens= is almost a necessity in C-like languages; it is less
-  essentially useless in Lisps because we will be using =paredit=. Also,
-  smartparens is kind of useful in (La)TeX mode, so we should turn it on
-  there in addition to Org mode.
-
-  #+BEGIN_SRC emacs-lisp
-    (use-package smartparens
-        :ensure t
-        :diminish smartparens-mode
-        :init
-        (progn
-          (smartparens-global-mode 1)
-          (show-smartparens-global-mode 1)
-          (setq
-           sp-highlight-pair-overlay nil
-           sp-highlight-wrap-overlay nil
-           sp-highlight-wrap-tag-overlay nil)
-          (sp-local-pair 'LaTeX-mode "|" "|"))
-
-        :config
-        (progn
-          (use-package smartparens-config)
-          (add-hook 'emacs-lisp-mode-hook 'turn-off-smartparens-mode)
-          (add-hook 'geiser-repl-mode-hook 'turn-off-smartparens-mode)
-          (add-hook 'racket-mode-hook 'turn-off-smartparens-mode)
-          (add-hook 'racket-repl-mode-hook 'turn-off-smartparens-mode)
-          (sp-pair "`" nil :actions :rem)
-          (sp-local-pair 'LaTeX-mode "|" "|")))
-  #+END_SRC
-
-
 * Paredit
 
   Enable =paredit=; I still prefer it over =smartparens= because it
@@ -1119,12 +1089,6 @@ General mode to manage keybindings.
   (setq org-highlight-latex-and-related '(latex script))
     #+END_SRC
 
-    Make smart-parens do their thing.
-    #+BEGIN_SRC emacs-lisp
-  (sp-local-pair 'org-mode "$" "$")
-    #+END_SRC
-
-**** TODO Make the dollar sign $ type actual dollars.
 
 *** Exporting to LaTeX
 **** Margins and Microtype
@@ -1442,16 +1406,9 @@ General mode to manage keybindings.
 
 
 *** Automatic Parentheses
-    Thankfully, [[Smartparens][=smartparens=]] can be ued in LaTeX mode no problem;
-    therefore, we don't need to have CDLaTeX do the work.
-
     Also, LaTeX-combo-keys, could also disable the caret.
     #+BEGIN_SRC emacs-lisp
   (setq cdlatex-paired-parens "$")
-  ;; (define-key cdlatex-mode-map "$" nil)
-  (define-key cdlatex-mode-map "(" nil)
-  (define-key cdlatex-mode-map "{" nil)
-  (define-key cdlatex-mode-map "[" nil)
   (define-key cdlatex-mode-map "|" nil)
   (define-key cdlatex-mode-map "<" nil)
   (define-key cdlatex-mode-map "^" nil)
@@ -1693,14 +1650,14 @@ General mode to manage keybindings.
 
 ** Flyspell Mode
    #+BEGIN_SRC emacs-lisp
-     (add-hook 'LaTeX-mode-hook     (lambda () (interactive) (flyspell-mode t)))
-     (add-hook 'plain-TeX-mode-hook (lambda () (interactive) (flyspell-mode t)))
+          (add-hook 'LaTeX-mode-hook     (lambda () (interactive) (flyspell-mode t)))
+          (add-hook 'plain-TeX-mode-hook (lambda () (interactive) (flyspell-mode t)))
 
-     (with-eval-after-load 'flyspell
-       (define-key flyspell-mode-map (kbd "C-;") nil))
+          (with-eval-after-load 'flyspell
+            (define-key flyspell-mode-map (kbd "C-;") nil)
+            (define-key flyspell-mode-map (kbd "C-.") nil))
    #+END_SRC
 
-   
 ** Disable Company
 #+BEGIN_SRC emacs-lisp
   (add-hook 'LaTeX-mode-hook (↑ (company-mode -1)))
@@ -1860,6 +1817,7 @@ Let's try using =elpy=.
       :init
       (elpy-enable))
 #+END_SRC
+
 
 * Julia
 ** TODO Write some configurations --- broken at the moment

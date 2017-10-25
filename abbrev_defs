@@ -587,7 +587,7 @@
     ("apperances" "appearances" nil 0)
     ("appereance" "appearance" nil 0)
     ("appereances" "appearances" nil 0)
-    ("applicaiton" "application" nil 0)
+    ("applicaiton" "application" nil 1)
     ("applicaitons" "applications" nil 0)
     ("appologies" "apologies" nil 0)
     ("appology" "apology" nil 0)
@@ -3433,6 +3433,7 @@
     ("recivership" "receivership" nil 0)
     ("recogise" "recognise" nil 0)
     ("recogize" "recognize" nil 0)
+    ("recognzing" "recognizing" nil 1)
     ("recomend" "recommend" nil 0)
     ("recomended" "recommended" nil 0)
     ("recomending" "recommending" nil 0)
@@ -4430,7 +4431,8 @@
     ("wayword" "wayward" nil 0)
     ("weaponary" "weaponry" nil 0)
     ("weas" "was" nil 0)
-    ("wehn" "when" nil 1)
+    ("wehenver" "whenever" nil 0)
+    ("wehn" "when" nil 0)
     ("weild" "wield" nil 0)
     ("weilded" "wielded" nil 0)
     ("wendsay" "Wednesday" nil 0)
@@ -4578,8 +4580,6 @@
 
 (define-abbrev-table 'markdown-mode-abbrev-table '())
 
-(define-abbrev-table 'message-mode-abbrev-table '())
-
 (define-abbrev-table 'messages-buffer-mode-abbrev-table '())
 
 (define-abbrev-table 'nxml-mode-abbrev-table '())
@@ -4637,8 +4637,6 @@
 (define-abbrev-table 'rtags-dependency-tree-mode-abbrev-table '())
 
 (define-abbrev-table 'rtags-diagnostics-mode-abbrev-table '())
-
-(define-abbrev-table 'rtags-location-stack-visualize-mode-abbrev-table '())
 
 (define-abbrev-table 'rtags-mode-abbrev-table '())
 
