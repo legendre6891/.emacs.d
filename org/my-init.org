@@ -2359,7 +2359,7 @@ before.
 ** Other bindings
 #+BEGIN_SRC emacs-lisp 
   (general-define-key :keymaps 'global
-                      :states '(normal insert)
+                      :states '(normal)
                       "C-b" #'ivy-switch-buffer)
 #+END_SRC
 ** Visual Star
