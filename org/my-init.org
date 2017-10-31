@@ -1408,9 +1408,6 @@ General mode to manage keybindings.
 *** Automatic Parentheses
     Also, LaTeX-combo-keys, could also disable the caret.
     #+BEGIN_SRC emacs-lisp
-  (setq cdlatex-paired-parens "$")
-  (define-key cdlatex-mode-map "|" nil)
-  (define-key cdlatex-mode-map "<" nil)
   (define-key cdlatex-mode-map "^" nil)
     #+END_SRC
 
@@ -1429,9 +1426,9 @@ General mode to manage keybindings.
         (mapcar (→ simple-math-template)
                 '(
                   ("bi" "Insert \\binom{}{}" "\\binom{?}{}")
-                  ("ggr(" "Insert \biggl( \biggr)" "\\biggl(? \\biggr")
+                  ("ggr(" "Insert \biggl( \biggr)" "\\biggl(? \\biggr)")
                   ("ggr|" "Insert \biggl| \biggr|" "\\biggl|? \\biggr|")
-                  ("ggr{" "Insert \biggl\{ \biggr\}" "\\biggl\\{? \\biggr\\")
+                  ("ggr{" "Insert \biggl\{ \biggr\}" "\\biggl\\{? \\biggr\\}")
                   ("ggr[" "Insert \biggl[ \biggr]" "\\biggl[? \\biggr")
                   ("ce" "Insert ceilings" "\\lceil? \\rceil")
                   ("fl" "Insert floors" "\\lfloor? \\rfloor")
@@ -1558,14 +1555,9 @@ General mode to manage keybindings.
   (eval-after-load 'latex
     '(define-key LaTeX-mode-map (kbd "C-t") 'latex-compile))
 
-  (eval-after-load 'latex
-    '(define-key LaTeX-mode-map (kbd "C-v") 'TeX-view))
-
   (eval-after-load 'plain-tex
     '(define-key plain-TeX-mode-map (kbd "C-t") 'my-tex-compile))
 
-  (eval-after-load 'plain-tex
-    '(define-key plain-TeX-mode-map (kbd "C-v") 'TeX-view))
     #+END_SRC
 
 *** Moving
