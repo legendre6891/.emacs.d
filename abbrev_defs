@@ -71,6 +71,30 @@
 
 (define-abbrev-table 'change-log-mode-abbrev-table '())
 
+(define-abbrev-table 'cider-browse-ns-mode-abbrev-table '())
+
+(define-abbrev-table 'cider-connections-buffer-mode-abbrev-table '())
+
+(define-abbrev-table 'cider-docview-mode-abbrev-table '())
+
+(define-abbrev-table 'cider-inspector-mode-abbrev-table '())
+
+(define-abbrev-table 'cider-repl-history-mode-abbrev-table '())
+
+(define-abbrev-table 'cider-repl-mode-abbrev-table '())
+
+(define-abbrev-table 'cider-stacktrace-mode-abbrev-table '())
+
+(define-abbrev-table 'cider-test-report-mode-abbrev-table '())
+
+(define-abbrev-table 'clojure-mode-abbrev-table '())
+
+(define-abbrev-table 'clojurec-mode-abbrev-table '())
+
+(define-abbrev-table 'clojurescript-mode-abbrev-table '())
+
+(define-abbrev-table 'clojurex-mode-abbrev-table '())
+
 (define-abbrev-table 'cmake-mode-abbrev-table '())
 
 (define-abbrev-table 'comint-mode-abbrev-table '())
@@ -117,11 +141,15 @@
 
 (define-abbrev-table 'evil-list-view-mode-abbrev-table '())
 
+(define-abbrev-table 'ffip-diff-mode-abbrev-table '())
+
 (define-abbrev-table 'flycheck-error-list-mode-abbrev-table '())
 
 (define-abbrev-table 'fundamental-mode-abbrev-table '())
 
 (define-abbrev-table 'gfm-mode-abbrev-table '())
+
+(define-abbrev-table 'gfm-view-mode-abbrev-table '())
 
 (define-abbrev-table 'global-abbrev-table
   '(
@@ -1219,6 +1247,8 @@
     ("consious" "conscious" nil 0)
     ("consistant" "consistent" nil 0)
     ("consistantly" "consistently" nil 0)
+    ("consistituent" "constituent" nil 0)
+    ("consitituent" "constituent" nil 0)
     ("consituencies" "constituencies" nil 0)
     ("consituency" "constituency" nil 0)
     ("consituted" "constituted" nil 0)
@@ -2343,6 +2373,7 @@
     ("infrigement" "infringement" nil 0)
     ("ingenius" "ingenious" nil 0)
     ("ingreediants" "ingredients" nil 0)
+    ("ingreidents" "ingredients" nil 0)
     ("inhabitans" "inhabitants" nil 0)
     ("inherantly" "inherently" nil 0)
     ("inheritage" "heritage" nil 0)
@@ -2408,7 +2439,7 @@
     ("intevene" "intervene" nil 0)
     ("inthe" "in" the 0)
     ("intial" "initial" nil 0)
-    ("intially" "initially" nil 0)
+    ("intially" "initially" nil 1)
     ("intrduced" "introduced" nil 0)
     ("intrest" "interest" nil 0)
     ("introdued" "introduced" nil 0)
@@ -4456,7 +4487,7 @@
     ("whn" "when" nil 0)
     ("wholey" "wholly" nil 0)
     ("wholy" "wholly" nil 0)
-    ("whta" "what" nil 0)
+    ("whta" "what" nil 1)
     ("whther" "whether" nil 0)
     ("wich" "which" nil 0)
     ("widesread" "widespread" nil 0)
@@ -4585,7 +4616,11 @@
 
 (define-abbrev-table 'markdown-mode-abbrev-table '())
 
+(define-abbrev-table 'markdown-view-mode-abbrev-table '())
+
 (define-abbrev-table 'messages-buffer-mode-abbrev-table '())
+
+(define-abbrev-table 'nrepl-messages-mode-abbrev-table '())
 
 (define-abbrev-table 'nxml-mode-abbrev-table '())
 
@@ -4644,6 +4679,8 @@
 (define-abbrev-table 'rtags-dependency-tree-mode-abbrev-table '())
 
 (define-abbrev-table 'rtags-diagnostics-mode-abbrev-table '())
+
+(define-abbrev-table 'rtags-location-stack-visualize-mode-abbrev-table '())
 
 (define-abbrev-table 'rtags-mode-abbrev-table '())
 

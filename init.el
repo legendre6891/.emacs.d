@@ -22,6 +22,7 @@
   "my-init.org"
   (concat user-emacs-directory "org")))
 
+(load (expand-file-name "~/quicklisp/slime-helper.el"))
 
 ;; (add-to-list 'load-path "~/.emacs.d/org-ref/")
 ;; (use-package dash
