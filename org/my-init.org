@@ -1,10 +1,6 @@
 #+TITLE: Emacs Configuration
 #+AUTHOR: Kevin Li
 #+DATE: February 22, 2017
-#+BEGIN_SRC emacs-lisp
-  (defvar ido-cur-list nil)
-#+END_SRC
-
 
 * Prelude
   This file is tangled and loaded via =init.el=, which
@@ -65,33 +61,40 @@
   (if (not (file-exists-p custom-file))
       (write-region "(ignore \"Custom file loaded\")" nil custom-file))
 
-  (load custom-file)
+  (load-file custom-file)
    #+END_SRC
 
-   The =custom-file= is not kept under version control, so it is
-   convenient to put some personal settings in there that shouldn't be
-   seen on Github.  
+Personal customizations should into the =personal-file=; for some
+reason, putting stuff in the =custom-file= does not work so well. The
+=personal-file= and the =custom-file= are not kept under version control.
+
+#+BEGIN_SRC emacs-lisp
+  (setq personal-file "~/.emacs.d/personal-file.el")
+  (unless (file-exists-p personal-file)
+    (write-region "" nil personal-file))
+
+  (load-file personal-file)
+#+END_SRC
 
    The following function takes in a symbol and a
    prompt; if the symbol isn't defined at this point (after the custom
    file's loaded), then prompt the user for its value. Afterwards, put in the
    custom file so it needn't be asked again.
    #+BEGIN_SRC emacs-lisp
-(defun ensure-in-custom (SYM PROMPT)
-  (interactive)
-  (if (not (boundp SYM))
-      (let* ((entry (read-from-minibuffer PROMPT))
-             (symbol (symbol-name SYM))
-             (piece `(setq ,SYM ,entry)))
-        (eval piece)
-        (write-region (concat (prin1-to-string piece) "\n")
-         nil custom-file 'append)
-        )))
+     (defun ensure-in-file (FILE SYM PROMPT)
+       (interactive)
+       (if (not (boundp SYM))
+           (let* ((entry (read-from-minibuffer PROMPT))
+                  (symbol (symbol-name SYM))
+                  (piece `(setq ,SYM ,entry)))
+             (eval piece)
+             (write-region (concat (prin1-to-string piece) "\n")
+              nil FILE 'append))))
    #+END_SRC
    Now make sure that our full name and email address are always defined.
    #+BEGIN_SRC emacs-lisp
-(ensure-in-custom 'full-name "Enter your full name: ")
-(ensure-in-custom 'email-address "Enter your email address: ")
+(ensure-in-file personal-file 'full-name "Enter your full name: ")
+(ensure-in-file personal-file 'email-address "Enter your email address: ")
    #+END_SRC
 
 
@@ -309,10 +312,44 @@ General mode to manage keybindings.
      See [[Yasnippet]] and Hydra; there, =<f1>= and =<f2>= is also bound.
 **** F5
      #+BEGIN_SRC emacs-lisp
-       (global-set-key (kbd "<f5>")
-                       (lambda ()
-                         (interactive)
-                         (ansi-term "/usr/local/bin/bash")))
+       (use-package ivy)
+       (use-package cl)
+
+       (defun read-lines (FILE)
+         "Return a list of lines of a file"
+         (with-temp-buffer
+           (insert-file-contents FILE)
+           (split-string (buffer-string) "\n" t)))
+
+       (setq etc-shells "/etc/shells")
+       (setq default-shell (getenv "SHELL"))
+       (setq shell-list
+         (remove-if-not #'file-executable-p (read-lines etc-shells)))
+
+       (defvar ivy-shell-map
+         (let ((map (make-sparse-keymap)))
+           (define-key map (kbd "<f5>") #'ivy-done)
+           map))
+
+       (when (file-exists-p etc-shells)
+         (global-set-key
+          (kbd "<f5>")
+          (lambda () (interactive)
+                  (ivy-read "Launch shell: " shell-list
+                            :history 'shell-hist
+                            :preselect default-shell
+                            :keymap ivy-shell-map
+                            :action (lambda (sh) (ansi-term sh))))))
+
+
+       (setq default-terminal
+             (cond ((eq system-type 'gnu/linux) "st")
+                   ))
+
+       (when default-terminal
+         (global-set-key (kbd "<f6>")
+                         (lambda () (interactive) (call-process default-terminal nil 0))))
+
      #+END_SRC
      
 *** Pause-key
@@ -423,9 +460,9 @@ General mode to manage keybindings.
 *** Smex
     Instead of using =Smex=, let's try out =counsel-M-x=.
     #+BEGIN_SRC emacs-lisp
-
+      (use-package smex
+          :ensure t)
     #+END_SRC
-
 
 
 ** Mac OS X specific settings
@@ -615,6 +652,14 @@ General mode to manage keybindings.
          :defer t)
 
      (use-package gruvbox-theme
+         :ensure t
+         :defer t)
+
+     (use-package eink-theme
+         :ensure t
+         :defer t)
+
+     (use-package doom-themes
          :ensure t
          :defer t)
    #+END_SRC
@@ -937,6 +982,16 @@ General mode to manage keybindings.
           (lambda (arg) (call-interactively 'company-complete))
           ))
     #+END_SRC
+
+
+* Projectile
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :ensure t)
+
+  (use-package counsel-projectile
+    :ensure t)
+#+END_SRC
 
 
 * Paredit
@@ -1753,7 +1808,9 @@ Clojure mostly uses =CIDER=.
   (use-package cider
       :ensure t
       :config
-      (define-key cider-repl-mode-map (kbd "C-l") #'cider-repl-clear-buffer))
+      (define-key cider-repl-mode-map (kbd "C-l") #'cider-repl-clear-buffer)
+      (setq cider-pprint-fn 'fipp)
+      (setq cider-repl-use-pretty-printing 't))
 #+END_SRC
 
 
