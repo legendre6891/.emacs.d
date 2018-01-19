@@ -74,6 +74,31 @@ reason, putting stuff in the =custom-file= does not work so well. The
     (write-region "" nil personal-file))
 
   (load-file personal-file)
+
+  (defun my-reload-theme (x)
+    "Disable current themes and load theme X. Taken from abo-abo/counsel"
+    (mapc #'disable-theme custom-enabled-themes)
+    (load-theme (intern x) t)
+    (when (fboundp 'powerline-reset)
+      (powerline-reset)))
+
+  (defun after-init-personal-settings ()
+    (interactive)
+    (when (boundp 'my-custom-theme)
+      (my-reload-theme my-custom-theme))
+
+    (when (boundp 'my-custom-font)
+      (apply 'set-face-attribute 'default nil my-custom-font)))
+
+  (add-hook 'after-init-hook #'after-init-personal-settings t)
+#+END_SRC
+
+For example, the following could be the contents of the personal
+file.
+#+BEGIN_SRC emacs-lisp :tangle no
+(setq my-custom-theme "doom-vibrant")
+(setq my-custom-font
+      (list :family "Hack" :height (* 10 12) :weight 'normal))
 #+END_SRC
 
    The following function takes in a symbol and a
@@ -663,41 +688,6 @@ General mode to manage keybindings.
          :ensure t
          :defer t)
    #+END_SRC
-
-
-** Fonts
-*** Activating a font
-    #+BEGIN_SRC emacs-lisp :tangle yes
-      (defun my-set-face (font height)
-        (set-face-attribute 'default nil
-                            :family font
-                            :height (* height 10)
-                            :weight 'normal
-                            :width 'normal))
-
-      (if (eq system-type 'darwin)
-          (set-face-attribute 'default nil
-                              :family "Terminus (TTF)"
-                              :height (* 13 10)
-                              :weight 'bold))
-
-      (if (eq system-type 'windows-nt)
-          (my-set-face "Consolas" 12))
-
-      (if (eq system-type 'gnu/linux)
-          (set-face-attribute 'default nil
-                              :family "Hack Regular"
-                              :height (* 10 10)
-                              :weight 'normal))
-
-
-    #+END_SRC
-
-*** TODO cycle between fonts
-    Write a function (a la Spacemacs) that allows me to switch between fonts.
-**** With ido support?
-
-*** TODO Check whether the font exists
 
 
 ** Disable blinking cursor
