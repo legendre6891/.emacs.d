@@ -6,7 +6,7 @@
 (let ((file-name-handler-alist nil))
 
 
-  (package-initialize) ;; for org mode
+;;  (package-initialize) ;; for org mode
   (require 'org)
 
   ;; Check version of org before loading our file.
