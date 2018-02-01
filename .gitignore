@@ -27,3 +27,4 @@ irony/bin/irony-server
 games/
 bookmarks
 *.elc
+personal-file.el
