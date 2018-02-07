@@ -366,10 +366,18 @@ General mode to manage keybindings.
                             :keymap ivy-shell-map
                             :action (lambda (sh) (ansi-term sh))))))
 
+       (use-package term
+           :config
+         (define-key term-raw-map (kbd "<f1>")
+           (lambda ()
+             (interactive)
+             (set-process-query-on-exit-flag (get-buffer-process (current-buffer)) nil)
+             (term-kill-subjob)
+             (kill-this-buffer))))
+
 
        (setq default-terminal
-             (cond ((eq system-type 'gnu/linux) "st")
-                   ))
+             (cond ((eq system-type 'gnu/linux) "st")))
 
        (when default-terminal
          (global-set-key (kbd "<f6>")
@@ -685,8 +693,7 @@ General mode to manage keybindings.
          :defer t)
 
      (use-package doom-themes
-         :ensure t
-         :defer t)
+         :load-path "experimental/emacs-doom-themes")
    #+END_SRC
 
 
@@ -1799,6 +1806,7 @@ Clojure mostly uses =CIDER=.
       :ensure t
       :config
       (define-key cider-repl-mode-map (kbd "C-l") #'cider-repl-clear-buffer)
+      (define-key cider-mode-map (kbd "<tab>") #'complete-symbol)
       (setq cider-pprint-fn 'fipp)
       (setq cider-repl-use-pretty-printing 't))
 #+END_SRC

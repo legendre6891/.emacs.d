@@ -1,0 +1,6 @@
+[submodule "lisp/emacs-doom-themes"]
+	path = lisp/emacs-doom-themes
+	url = git@github.com:legendre6891/emacs-doom-themes.git
+[submodule "experimental/emacs-doom-themes"]
+	path = experimental/emacs-doom-themes
+	url = https://github.com/hlissner/emacs-doom-themes.git
