@@ -84,10 +84,10 @@ reason, putting stuff in the =custom-file= does not work so well. The
 
   (defun after-init-personal-settings ()
     (interactive)
-    (when (boundp 'my-custom-theme)
+    (when (bound-and-true-p my-custom-theme)
       (my-reload-theme my-custom-theme))
 
-    (when (boundp 'my-custom-font)
+    (when (bound-and-true-p my-custom-font)
       (apply 'set-face-attribute 'default nil my-custom-font)))
 
   (add-hook 'after-init-hook #'after-init-personal-settings t)
