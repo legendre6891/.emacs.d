@@ -81,7 +81,7 @@
 
 \usepackage[final]{microtype}
 
-\usepackage[hang,flushmargin,symbol,perpage]{footmisc} 
+\usepackage[hang,symbol,perpage]{footmisc}
 \setfnsymbol{wiley}
 
 \usepackage[skins,theorems]{tcolorbox}
@@ -180,7 +180,7 @@
       % math object without additional horizontal spacing.
   \kern\dimen@
   \copy0 %                       second \perp
-} 
+}
 \makeatother
 
 \makeatletter
