@@ -123,6 +123,7 @@
 \DeclareMathOperator{\Var}{\mathbf{Var}}
 \DeclareMathOperator*{\plim}{plim}
 \newcommand\given[1][]{\:#1\vert\:}
+\DeclareMathOperator{\KL}{KL}
 
 \DeclareMathOperator{\Bernoulli}{\mathfs{Ber}}
 \DeclareMathOperator{\Binomial}{\mathsf{Binomial}}

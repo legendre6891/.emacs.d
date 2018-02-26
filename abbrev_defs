@@ -73,6 +73,12 @@
 
 (define-abbrev-table 'cider-browse-ns-mode-abbrev-table '())
 
+(define-abbrev-table 'cider-browse-spec-example-mode-abbrev-table '())
+
+(define-abbrev-table 'cider-browse-spec-mode-abbrev-table '())
+
+(define-abbrev-table 'cider-browse-spec-view-mode-abbrev-table '())
+
 (define-abbrev-table 'cider-connections-buffer-mode-abbrev-table '())
 
 (define-abbrev-table 'cider-docview-mode-abbrev-table '())
@@ -144,6 +150,8 @@
 (define-abbrev-table 'ffip-diff-mode-abbrev-table '())
 
 (define-abbrev-table 'flycheck-error-list-mode-abbrev-table '())
+
+(define-abbrev-table 'flymake-diagnostics-buffer-mode-abbrev-table '())
 
 (define-abbrev-table 'fundamental-mode-abbrev-table '())
 
@@ -1429,6 +1437,7 @@
     ("definiton" "definition" nil 0)
     ("defintion" "definition" nil 0)
     ("degrate" "degrade" nil 0)
+    ("deisrable" "desirable" nil 0)
     ("delagates" "delegates" nil 0)
     ("delapidated" "dilapidated" nil 0)
     ("delerious" "delirious" nil 0)
@@ -4556,6 +4565,8 @@
     ("zeebra" "zebra" nil 0)
    ))
 
+(define-abbrev-table 'gnus-group-mode-abbrev-table '())
+
 (define-abbrev-table 'grep-mode-abbrev-table '())
 
 (define-abbrev-table 'haskell-cabal-mode-abbrev-table '())
@@ -4583,6 +4594,8 @@
 (define-abbrev-table 'help-mode-abbrev-table '())
 
 (define-abbrev-table 'html-mode-abbrev-table '())
+
+(define-abbrev-table 'ibuffer-mode-abbrev-table '())
 
 (define-abbrev-table 'idl-mode-abbrev-table '())
 
@@ -4617,6 +4630,8 @@
 (define-abbrev-table 'markdown-mode-abbrev-table '())
 
 (define-abbrev-table 'markdown-view-mode-abbrev-table '())
+
+(define-abbrev-table 'message-mode-abbrev-table '())
 
 (define-abbrev-table 'messages-buffer-mode-abbrev-table '())
 

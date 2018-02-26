@@ -45,3 +45,5 @@
   )
 (put 'erase-buffer 'disabled nil)
 (put 'upcase-region 'disabled nil)
+
+(after-init-personal-settings)
