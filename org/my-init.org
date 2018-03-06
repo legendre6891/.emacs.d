@@ -1472,32 +1472,36 @@ General mode to manage keybindings.
 
 **** Math Shortcuts
      #+BEGIN_SRC emacs-lisp
-  (defun simple-math-template (key docstring expansion)
-    `(,key ,docstring ,expansion cdlatex-position-cursor nil nil t))
+       (defun simple-math-template (key docstring expansion)
+         `(,key ,docstring ,expansion cdlatex-position-cursor nil nil t))
 
-  (setq my-math-templates 
-        (mapcar (→ simple-math-template)
-                '(
-                  ("bi" "Insert \\binom{}{}" "\\binom{?}{}")
-                  ("ggr(" "Insert \biggl( \biggr)" "\\biggl(? \\biggr)")
-                  ("ggr|" "Insert \biggl| \biggr|" "\\biggl|? \\biggr|")
-                  ("ggr{" "Insert \biggl\{ \biggr\}" "\\biggl\\{? \\biggr\\}")
-                  ("ggr[" "Insert \biggl[ \biggr]" "\\biggl[? \\biggr")
-                  ("ce" "Insert ceilings" "\\lceil? \\rceil")
-                  ("fl" "Insert floors" "\\lfloor? \\rfloor")
-                  ("ggrce" "Insert ceilings" "\\biggl\\lceil? \\biggr\\rceil")
-                  ("ggrfl" "Insert floor" "\\biggl\\lfloor? \\biggr\\rfloor")
-                  ("int" "Insert integrals without limits" "\\int_{?}^{}")
-                  ("sum" "Insert sums without limits" "\\sum_{?}^{}")
-                  ("prod" "Insert products without limits" "\\prod_{?}^{}")
-                  ("prodl" "Insert products" "\\prod\\limits_{?}^{}"))))
+       (setq my-math-templates 
+             (mapcar (→ simple-math-template)
+                     '(
+                       ("bi" "Insert \\binom{}{}" "\\binom{?}{}")
+                       ("ggr(" "Insert \biggl( \biggr)" "\\biggl(? \\biggr)")
+                       ("ggr|" "Insert \biggl| \biggr|" "\\biggl|? \\biggr|")
+                       ("ggr{" "Insert \biggl\{ \biggr\}" "\\biggl\\{? \\biggr\\}")
+                       ("ggr[" "Insert \biggl[ \biggr]" "\\biggl[? \\biggr")
+                       ("ce" "Insert ceilings" "\\lceil? \\rceil")
+                       ("fl" "Insert floors" "\\lfloor? \\rfloor")
+                       ("ggrce" "Insert ceilings" "\\biggl\\lceil? \\biggr\\rceil")
+                       ("ggrfl" "Insert floor" "\\biggl\\lfloor? \\biggr\\rfloor")
+                       ("int" "Insert integrals without limits" "\\int_{?}^{}")
+                       ("sum" "Insert sums without limits" "\\sum_{?}^{}")
+                       ("prod" "Insert products without limits" "\\prod_{?}^{}")
+                       ("prodl" "Insert products" "\\prod\\limits_{?}^{}"))))
 
-  (setq cdlatex-command-alist my-math-templates)
+       (setq cdlatex-command-alist my-math-templates)
 
-  (setq cdlatex-math-modify-alist
-        '((?t "\\text" nil t nil nil)
-          (?s "\\mathscr" nil t nil nil)
-          ))
+       (setq cdlatex-math-modify-alist
+             '((?t "\\text" nil t nil nil)
+               (?s "\\mathscr" nil t nil nil)))
+
+       (setq cdlatex-math-symbol-alist
+             '(
+               (?' ("\\nabla" "\\prime"))
+               ))
      #+END_SRC
 
 
