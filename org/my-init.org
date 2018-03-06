@@ -346,17 +346,19 @@ General mode to manage keybindings.
            (insert-file-contents FILE)
            (split-string (buffer-string) "\n" t)))
 
-       (setq etc-shells "/etc/shells")
-       (setq default-shell (getenv "SHELL"))
-       (setq shell-list
-         (remove-if-not #'file-executable-p (read-lines etc-shells)))
 
        (defvar ivy-shell-map
          (let ((map (make-sparse-keymap)))
            (define-key map (kbd "<f5>") #'ivy-done)
            map))
 
+       (setq etc-shells "/etc/shells")
        (when (file-exists-p etc-shells)
+         (setq default-shell (getenv "SHELL"))
+
+         (setq shell-list
+               (remove-if-not #'file-executable-p (read-lines etc-shells)))
+
          (global-set-key
           (kbd "<f5>")
           (lambda () (interactive)
@@ -693,7 +695,8 @@ General mode to manage keybindings.
          :defer t)
 
      (use-package doom-themes
-         :load-path "experimental/emacs-doom-themes")
+         :ensure t
+         :defer t)
    #+END_SRC
 
 
@@ -2234,16 +2237,8 @@ Let's try using =elpy=.
 
 ** Pretty Print
    #+BEGIN_SRC emacs-lisp
-    (unless (boundp 'x-max-tooltip-size)
-      (setq x-max-tooltip-size '(80 . 40)))
-
-  (use-package pp+
-    :ensure t)
-   #+END_SRC
-** Thing-At-Point
-   #+BEGIN_SRC emacs-lisp
-     (use-package thingatpt+
-         :ensure t)
+       (unless (boundp 'x-max-tooltip-size)
+         (setq x-max-tooltip-size '(80 . 40)))
    #+END_SRC
 
 ** Multi Term
