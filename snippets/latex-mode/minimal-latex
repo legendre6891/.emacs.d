@@ -81,7 +81,7 @@
 
 \usepackage[final]{microtype}
 
-\usepackage[hang,flushmargin,symbol,perpage]{footmisc} 
+\usepackage[hang,symbol,perpage]{footmisc}
 \setfnsymbol{wiley}
 
 \usepackage[skins,theorems]{tcolorbox}
@@ -123,6 +123,7 @@
 \DeclareMathOperator{\Var}{\mathbf{Var}}
 \DeclareMathOperator*{\plim}{plim}
 \newcommand\given[1][]{\:#1\vert\:}
+\DeclareMathOperator{\KL}{KL}
 
 \DeclareMathOperator{\Bernoulli}{\mathfs{Ber}}
 \DeclareMathOperator{\Binomial}{\mathsf{Binomial}}
@@ -180,7 +181,7 @@
       % math object without additional horizontal spacing.
   \kern\dimen@
   \copy0 %                       second \perp
-} 
+}
 \makeatother
 
 \makeatletter

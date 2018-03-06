@@ -90,7 +90,7 @@ reason, putting stuff in the =custom-file= does not work so well. The
     (when (bound-and-true-p my-custom-font)
       (apply 'set-face-attribute 'default nil my-custom-font)))
 
-  (add-hook 'after-init-hook #'after-init-personal-settings t)
+(add-hook 'after-init-hook #'after-init-personal-settings t)
 #+END_SRC
 
 For example, the following could be the contents of the personal
@@ -854,18 +854,18 @@ General mode to manage keybindings.
 
 ** Install and Disable Tab Key
    #+BEGIN_SRC emacs-lisp
-  (use-package yasnippet
-      :ensure t
-      :diminish yas-minor-mode
-      :init
-      (progn
-        (setq yas-snippet-dirs
-              (list (concat user-emacs-directory
-                            (file-name-as-directory "snippets")))))
-      :config
-      (progn
-        (yas-global-mode)
-        (disable-yasnippet-tab-key)))
+     (use-package yasnippet
+         :ensure t
+         :diminish yas-minor-mode
+         :init
+         (setq yas-snippet-dirs
+               (list (concat user-emacs-directory
+                             (file-name-as-directory "snippets"))))
+         (setq yas-triggers-in-field t)
+         :config
+         (progn
+           (yas-global-mode)
+           (disable-yasnippet-tab-key)))
    #+END_SRC
 
    Use ido prompting method.
@@ -1319,74 +1319,72 @@ General mode to manage keybindings.
     xdvi are quite good. I stole the code below from somewhere (on
     TeX.SX). It works, and I don't want to mess with it.
     #+BEGIN_SRC emacs-lisp
-  (if (eq system-type 'darwin)
-      (setq
-       ;; Set the list of viewers for Mac OS X.
-       TeX-view-program-list
-       '(("Preview.app" "open -a Preview.app %o")
-         ("Skim" "open -a Skim.app %o")
-         ("displayline" "displayline %n %o %b")
-         ("open" "open %o"))
-       ;; Select the viewers for each file type.
-       TeX-view-program-selection
-       '((output-dvi "open")
-         (output-pdf "Skim")
-         (output-html "open"))))
+      (if (eq system-type 'darwin)
+          (setq
+           ;; Set the list of viewers for Mac OS X.
+           TeX-view-program-list
+           '(("Preview.app" "open -a Preview.app %o")
+             ("Skim" "open -a Skim.app %o")
+             ("displayline" "displayline %n %o %b")
+             ("open" "open %o"))
+           ;; Select the viewers for each file type.
+           TeX-view-program-selection
+           '((output-dvi "open")
+             (output-pdf "Skim")
+             (output-html "open"))))
 
-  (if (eq system-type 'windows-nt)
-      (progn 
-        (setq TeX-output-view-style
-              '("^pdf$" "." "SumatraPDF.exe -reuse-instance %o"))
-        (setq TeX-view-program-list
-              '(("SumatraPDF" "\"C:/Program Files/SumatraPDF/SumatraPDF.exe\" -reuse-instance %o")))
-        (setq TeX-view-program-selection '((output-pdf "SumatraPDF")
-                                           (output-dvi "Yap")))))
+      (if (eq system-type 'windows-nt)
+          (progn 
+            (setq TeX-output-view-style
+                  '("^pdf$" "." "SumatraPDF.exe -reuse-instance %o"))
+            (setq TeX-view-program-list
+                  '(("SumatraPDF" "\"C:/Program Files/SumatraPDF/SumatraPDF.exe\" -reuse-instance %o")))
+            (setq TeX-view-program-selection '((output-pdf "SumatraPDF")
+                                               (output-dvi "Yap")))))
 
-  (when (eq system-type 'gnu/linux)
-    (setq TeX-view-program-list '(("MUPDF" "mupdf -r 153 %o")
-                                  ("ZATHURA" "zathura %o")
-                                  ("LLPP" "llpp %o")
-                                  ("XDVI" "xdvi %o")))
-    (setq TeX-view-program-selection '(
-                                       (output-pdf "ZATHURA")
-                                       (output-pdf "LLPP")
-                                       (output-pdf "Evince")
-                                       (output-dvi "xdvi"))))
+      (when (eq system-type 'gnu/linux)
+        (setq TeX-view-program-list '(("MUPDF" "mupdf -r 153 %o")
+                                      ("LLPP" "llpp %o")
+                                      ("XDVI" "xdvi %o")))
+        (setq TeX-view-program-selection '((output-pdf "Zathura")
+                                           (output-pdf "LLPP")
+                                           (output-pdf "Evince")
+                                           (output-dvi "xdvi"))))
 
 
-  ;; ;; See http://tex.stackexchange.com/questions/207889/how-to-set-up-forward-inverse-searches-with-auctex-and-zathura
-  ;; (setq zathura-procs ())
-  ;; (defun zathura-forward-search ()
-  ;;   ;; Open the compiled pdf in Zathura with synctex. This is complicated since
-  ;;   ;; 1) Zathura refuses to acknowledge Synctex directive if the pdf is not
-  ;;   ;; already opened
-  ;;   ;; 2) This means we have to bookkeep open Zathura processes ourselves: first
-  ;;   ;; open a new pdf from the beginning, if it is not already open. Then call
-  ;;   ;; Zathura again with the synctex directive.
-  ;;   (interactive)
-  ;;   (let* ((zathura-launch-buf (get-buffer-create "*Zathura Output*"))
-  ;;          (pdfname (TeX-master-file "pdf"))
-  ;;          (zatentry (assoc pdfname zathura-procs))
-  ;;          (zatproc (if (and zatentry (process-live-p (cdr zatentry)))
-  ;;                       (cdr zatentry)
-  ;;                     (progn
-  ;;                       (let ((proc (progn (message "Launching Zathura")
-  ;;                                          (start-process "zathura-launch"
-  ;;                                                         zathura-launch-buf "zathura"
-  ;;                                                          "-x" "emacsclient +%{line} %{input}" pdfname))))
-  ;;                         (when zatentry
-  ;;                           (setq zathura-procs (delq zatentry zathura-procs)))
-  ;;                         (add-to-list 'zathura-procs (cons pdfname proc))
-  ;;                         (set-process-query-on-exit-flag proc nil)
-  ;;                         proc))))
-  ;;          (pid (process-id zatproc))
-  ;;          (synctex (format "%s:0:%s"
-  ;;                           (TeX-current-line)
-  ;;                           (TeX-current-file-name-master-relative)))
-  ;;          )
-  ;;     (start-process "zathura-synctex" zathura-launch-buf "zathura" "--synctex-forward" synctex pdfname)
-  ;;     (start-process "raise-zathura-wmctrl" zathura-launch-buf "wmctrl" "-a" pdfname)
-  ;;     ))
+      ;; ;; See http://tex.stackexchange.com/questions/207889/how-to-set-up-forward-inverse-searches-with-auctex-and-zathura
+      ;; (setq zathura-procs ())
+      ;; (defun zathura-forward-search ()
+      ;;   ;; Open the compiled pdf in Zathura with synctex. This is complicated since
+      ;;   ;; 1) Zathura refuses to acknowledge Synctex directive if the pdf is not
+      ;;   ;; already opened
+      ;;   ;; 2) This means we have to bookkeep open Zathura processes ourselves: first
+      ;;   ;; open a new pdf from the beginning, if it is not already open. Then call
+      ;;   ;; Zathura again with the synctex directive.
+      ;;   (interactive)
+      ;;   (let* ((zathura-launch-buf (get-buffer-create "*Zathura Output*"))
+      ;;          (pdfname (TeX-master-file "pdf"))
+      ;;          (zatentry (assoc pdfname zathura-procs))
+      ;;          (zatproc (if (and zatentry (process-live-p (cdr zatentry)))
+      ;;                       (cdr zatentry)
+      ;;                     (progn
+      ;;                       (let ((proc (progn (message "Launching Zathura")
+      ;;                                          (start-process "zathura-launch"
+      ;;                                                         zathura-launch-buf "zathura"
+      ;;                                                          "-x" "emacsclient +%{line} %{input}" pdfname))))
+      ;;                         (when zatentry
+      ;;                           (setq zathura-procs (delq zatentry zathura-procs)))
+      ;;                         (add-to-list 'zathura-procs (cons pdfname proc))
+      ;;                         (set-process-query-on-exit-flag proc nil)
+      ;;                         proc))))
+      ;;          (pid (process-id zatproc))
+      ;;          (synctex (format "%s:0:%s"
+      ;;                           (TeX-current-line)
+      ;;                           (TeX-current-file-name-master-relative)))
+      ;;          )
+      ;;     (start-process "zathura-synctex" zathura-launch-buf "zathura" "--synctex-forward" synctex pdfname)
+      ;;     (start-process "raise-zathura-wmctrl" zathura-launch-buf "wmctrl" "-a" pdfname)
+      ;;     ))
     #+END_SRC
 
 *** Minor modes for editing LaTeX
@@ -1477,32 +1475,36 @@ General mode to manage keybindings.
 
 **** Math Shortcuts
      #+BEGIN_SRC emacs-lisp
-  (defun simple-math-template (key docstring expansion)
-    `(,key ,docstring ,expansion cdlatex-position-cursor nil nil t))
+       (defun simple-math-template (key docstring expansion)
+         `(,key ,docstring ,expansion cdlatex-position-cursor nil nil t))
 
-  (setq my-math-templates 
-        (mapcar (→ simple-math-template)
-                '(
-                  ("bi" "Insert \\binom{}{}" "\\binom{?}{}")
-                  ("ggr(" "Insert \biggl( \biggr)" "\\biggl(? \\biggr)")
-                  ("ggr|" "Insert \biggl| \biggr|" "\\biggl|? \\biggr|")
-                  ("ggr{" "Insert \biggl\{ \biggr\}" "\\biggl\\{? \\biggr\\}")
-                  ("ggr[" "Insert \biggl[ \biggr]" "\\biggl[? \\biggr")
-                  ("ce" "Insert ceilings" "\\lceil? \\rceil")
-                  ("fl" "Insert floors" "\\lfloor? \\rfloor")
-                  ("ggrce" "Insert ceilings" "\\biggl\\lceil? \\biggr\\rceil")
-                  ("ggrfl" "Insert floor" "\\biggl\\lfloor? \\biggr\\rfloor")
-                  ("int" "Insert integrals without limits" "\\int_{?}^{}")
-                  ("sum" "Insert sums without limits" "\\sum_{?}^{}")
-                  ("prod" "Insert products without limits" "\\prod_{?}^{}")
-                  ("prodl" "Insert products" "\\prod\\limits_{?}^{}"))))
+       (setq my-math-templates 
+             (mapcar (→ simple-math-template)
+                     '(
+                       ("bi" "Insert \\binom{}{}" "\\binom{?}{}")
+                       ("ggr(" "Insert \biggl( \biggr)" "\\biggl(? \\biggr)")
+                       ("ggr|" "Insert \biggl| \biggr|" "\\biggl|? \\biggr|")
+                       ("ggr{" "Insert \biggl\{ \biggr\}" "\\biggl\\{? \\biggr\\}")
+                       ("ggr[" "Insert \biggl[ \biggr]" "\\biggl[? \\biggr")
+                       ("ce" "Insert ceilings" "\\lceil? \\rceil")
+                       ("fl" "Insert floors" "\\lfloor? \\rfloor")
+                       ("ggrce" "Insert ceilings" "\\biggl\\lceil? \\biggr\\rceil")
+                       ("ggrfl" "Insert floor" "\\biggl\\lfloor? \\biggr\\rfloor")
+                       ("int" "Insert integrals without limits" "\\int_{?}^{}")
+                       ("sum" "Insert sums without limits" "\\sum_{?}^{}")
+                       ("prod" "Insert products without limits" "\\prod_{?}^{}")
+                       ("prodl" "Insert products" "\\prod\\limits_{?}^{}"))))
 
-  (setq cdlatex-command-alist my-math-templates)
+       (setq cdlatex-command-alist my-math-templates)
 
-  (setq cdlatex-math-modify-alist
-        '((?t "\\text" nil t nil nil)
-          (?s "\\mathscr" nil t nil nil)
-          ))
+       (setq cdlatex-math-modify-alist
+             '((?t "\\text" nil t nil nil)
+               (?s "\\mathscr" nil t nil nil)))
+
+       (setq cdlatex-math-symbol-alist
+             '(
+               (?' ("\\nabla" "\\prime"))
+               ))
      #+END_SRC
 
 
@@ -2048,14 +2050,20 @@ Let's try using =elpy=.
 
 * CMake Support
   #+BEGIN_SRC emacs-lisp
-  (use-package cmake-mode
-      :ensure t)
+    (use-package cmake-mode
+        :ensure t)
 
-  (use-package cmake-font-lock
-      :ensure t)
+    (use-package cmake-font-lock
+        :ensure t)
 
-  (autoload 'cmake-font-lock-activate "cmake-font-lock" nil t)
-  (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
+
+    (defun my-cmake-common-hook ()
+        (setup-yasnippet-next-key (kbd "TAB")))
+
+
+    (autoload 'cmake-font-lock-activate "cmake-font-lock" nil t)
+    (add-hook 'cmake-mode-hook 'cmake-font-lock-activate)
+    (add-hook 'cmake-mode-hook #'my-cmake-common-hook)
   #+END_SRC
 
 
