@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: pkg
+# key: pkg
+# --
+find_package(${1:mypackage} ${2:1.0} ${3:REQUIRED})
