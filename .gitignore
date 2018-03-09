@@ -28,3 +28,4 @@ games/
 bookmarks
 *.elc
 personal-file.el
+/projectile-bookmarks.eld
