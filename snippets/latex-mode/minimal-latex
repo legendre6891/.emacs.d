@@ -52,7 +52,8 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% MARGINS
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\usepackage[margin=0.75in]{geometry}
+\usepackage[margin=1in]{geometry}
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% HEADERS
@@ -63,12 +64,12 @@
 \titleformat*{\subsubsection}{\fontfamily{lmss}\selectfont\bfseries}
 \def\sectionfont{\fontfamily{lmss}\selectfont\bfseries}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% TikZ
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \usepackage{tikz}
 \usetikzlibrary{calc,matrix}
-
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -81,7 +82,7 @@
 
 \usepackage[final]{microtype}
 
-\usepackage[hang,symbol,perpage]{footmisc}
+\usepackage[hang,symbol,perpage,bottom]{footmisc}
 \setfnsymbol{wiley}
 
 \usepackage[skins,theorems]{tcolorbox}
@@ -99,6 +100,7 @@
 \usepackage{booktabs}
 \usepackage[section]{placeins}
 \usepackage{float}
+
 
 %%%%%%%%%%%%%%%%%%%%
 % OPERATORS
@@ -125,15 +127,22 @@
 \newcommand\given[1][]{\:#1\vert\:}
 \DeclareMathOperator{\KL}{KL}
 
-\DeclareMathOperator{\Bernoulli}{\mathfs{Ber}}
-\DeclareMathOperator{\Binomial}{\mathsf{Binomial}}
-\DeclareMathOperator{\GammaP}{\mathsf{Gamma}}
-\DeclareMathOperator{\IID}{\mathbin{\overset{\textsc{IID}}{\sim}}}
-\DeclareMathOperator{\Normal}{\mathsf{Normal}}
-\DeclareMathOperator{\Pareto}{\mathsf{Pareto}}
-\DeclareMathOperator{\Poisson}{\mathsf{Pois}}
-\DeclareMathOperator{\Pois}{\mathsf{Pois}}
-\DeclareMathOperator{\Unif}{\textsc{Unif}}
+
+\font\DistributionNameFont=qx-lmvtt10 at 12pt
+\def\DistributionName#1{\text{\DistributionNameFont #1}}
+
+\font\iidfont=qx-lmtt8 at 8pt
+\def\iidtoken{\text{\iidfont{I\kern-0.9ptI\kern-0.3pt D}}}
+
+\DeclareMathOperator{\Bernoulli}{\DistributionName{Bernoulli}}
+\DeclareMathOperator{\Binomial}{\DistributionName{Binomial}}
+\DeclareMathOperator{\GammaP}{\DistributionName{Gamma}}
+\DeclareMathOperator{\IID}{\mathbin{\overset{\iidtoken}{\sim}}}
+\DeclareMathOperator{\Normal}{\DistributionName{Normal}}
+\DeclareMathOperator{\Pareto}{\DistributionName{Pareto}}
+\DeclareMathOperator{\Poisson}{\DistributionName{Pois}}
+\DeclareMathOperator{\Pois}{\DistributionName{Poisson}}
+\DeclareMathOperator{\Unif}{\DistributionName{Unif}}
 
 \DeclareMathOperator*{\maximize}{maximize\,}
 \DeclareMathOperator*{\minimize}{minimize\,}
@@ -146,6 +155,8 @@
 
 \DeclareMathOperator{\diag}{diag}
 \DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\op}{op}
+
 
 
 \makeatletter

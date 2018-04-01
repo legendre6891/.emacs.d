@@ -69,28 +69,29 @@ reason, putting stuff in the =custom-file= does not work so well. The
 =personal-file= and the =custom-file= are not kept under version control.
 
 #+BEGIN_SRC emacs-lisp
-  (setq personal-file "~/.emacs.d/personal-file.el")
-  (unless (file-exists-p personal-file)
-    (write-region "" nil personal-file))
+    (setq personal-file "~/.emacs.d/personal-file.el")
+    (unless (file-exists-p personal-file)
+      (write-region "" nil personal-file))
 
-  (load-file personal-file)
+(load-file personal-file)
 
-  (defun my-reload-theme (x)
-    "Disable current themes and load theme X. Taken from abo-abo/counsel"
-    (mapc #'disable-theme custom-enabled-themes)
-    (load-theme (intern x) t)
-    (when (fboundp 'powerline-reset)
-      (powerline-reset)))
+    (defun my-reload-theme (x)
+      "Disable current themes and load theme X. Taken from abo-abo/counsel"
+      (mapc #'disable-theme custom-enabled-themes)
+      (load-theme (intern x) t)
+      (when (fboundp 'powerline-reset)
+        (powerline-reset)))
 
-  (defun after-init-personal-settings ()
-    (interactive)
-    (when (bound-and-true-p my-custom-theme)
-      (my-reload-theme my-custom-theme))
+    (defun after-init-personal-settings ()
+      (interactive)
+      (load-file personal-file)
+      (when (bound-and-true-p my-custom-theme)
+        (my-reload-theme my-custom-theme))
 
-    (when (bound-and-true-p my-custom-font)
-      (apply 'set-face-attribute 'default nil my-custom-font)))
+      (when (bound-and-true-p my-custom-font)
+        (apply 'set-face-attribute 'default nil my-custom-font)))
 
-(add-hook 'after-init-hook #'after-init-personal-settings t)
+  (add-hook 'after-init-hook #'after-init-personal-settings t)
 #+END_SRC
 
 For example, the following could be the contents of the personal
@@ -550,7 +551,7 @@ General mode to manage keybindings.
 
 *** GUI Hydra
     I want a hydra to control various
-    GUI elements (e.g. linum-mode, theme, font).
+    GUI elements (e.g. theme and font).
 
     #+BEGIN_SRC emacs-lisp
       (defhydra my-hydra-gui (:color blue)
@@ -705,6 +706,15 @@ General mode to manage keybindings.
 (blink-cursor-mode 0)
    #+END_SRC
    
+
+** Line numbers
+Emacs 26 has line numbers.
+#+BEGIN_SRC emacs-lisp
+  (when (fboundp 'display-line-numbers-mode)
+    (global-display-line-numbers-mode)
+    (setq-default display-line-numbers-width 3))
+#+END_SRC
+
 
 * Abbrev Mode
   Load the fat fingers abbrev.
@@ -1668,6 +1678,7 @@ General mode to manage keybindings.
     (my-define-latex-keys LaTeX-mode-map "C-0" "\\biggl[ ? \\biggr]")
     (my-define-latex-keys LaTeX-mode-map "C-." "\\{ ? \\}")
     (my-define-latex-keys LaTeX-mode-map "C-," "\\langle ? \\rangle")
+    (my-define-latex-keys LaTeX-mode-map "C-|" "\\biggl| ? \\biggr|")
     )
 
   (with-eval-after-load 'plain-tex
@@ -1690,6 +1701,7 @@ General mode to manage keybindings.
     (my-define-latex-keys plain-TeX-mode-map "C-." "\\{ ? \\}")
     (my-define-latex-keys plain-TeX-mode-map "C-," "\\langle ? \\rangle")
     (my-define-latex-keys plain-TeX-mode-map "C-o" "\\circ?")
+    (my-define-latex-keys plain-TeX-mode-map "C-|" "\\biggl| ? \\biggr|")
   )
     #+END_SRC
 
