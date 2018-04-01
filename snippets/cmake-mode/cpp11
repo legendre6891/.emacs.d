@@ -1,0 +1,4 @@
+# key: cpp11
+# name: cpp11
+# --
+target_compile_features(${1:exe} PRIVATE cxx_std_${2:14})$0

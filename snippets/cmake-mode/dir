@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: dir
+# key: dir
+# --
+add_subdirectory($1)$0

@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: project
+# key: project
+# --
+project(${1:myapp} ${2:CXX})$0
